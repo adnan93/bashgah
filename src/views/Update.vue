@@ -3,10 +3,10 @@
     <b-row dir="rtl">
       <b-col cols="1"> </b-col>
       <b-col cols="10">
-        <b-card class="mt-3">
+        <b-card >
           <template #header>
             <div style="text-align: center">
-              <b class="mb-0">ويرايش اطلاعات کاربر</b>
+              <b class="mb-0">ويرايش اطلاعات مشتری</b>
             </div>
           </template>
 

@@ -36,6 +36,13 @@ const routes = [
   },
 
 
+  {
+    path: '/Programs',
+    name: 'Programs',
+    component: () => import('../views/Programs.vue')
+  },
+
+
 
   
  

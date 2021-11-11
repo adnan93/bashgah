@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <div id="nav">
+    <div >
       <b-card-group deck class="mr-2">
         <b-card>
           <template #header>
@@ -48,6 +48,7 @@
 
             <b-col cols="3"> </b-col>
           </b-row>
+
         </b-card>
       </b-card-group>
 

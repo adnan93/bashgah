@@ -38,6 +38,10 @@
               <h6><b style="color: #bea44d">امتیاز کاربران </b></h6>
             </b-nav-item>
 
+            <b-nav-item class="ml-2" href="/Programs">
+              <h6><b style="color: #bea44d">برنامه های کاربران </b></h6>
+            </b-nav-item>
+
             <!-- <b-nav-item class="ml-2" href="#">
               <h6><b style="color: #bea44d"> اخبار توليد و تجارت </b></h6>
             </b-nav-item>

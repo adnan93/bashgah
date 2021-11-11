@@ -4,7 +4,7 @@
       <b-card>
         <template #header>
           <div style="text-align: center">
-            <b class="mb-0">امتیازات کاربران</b>
+            <b class="mb-0">برنامه های کاربران</b>
           </div>
         </template>
 
@@ -22,7 +22,7 @@
                     rounded
                     large
                     @click="login()"
-                    >افزودن امتیاز
+                    >افزودن برنامه
                   </v-btn>
                 </b-col>
                 <b-col> </b-col>
