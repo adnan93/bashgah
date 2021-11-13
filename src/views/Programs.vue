@@ -4,16 +4,14 @@
       <b-card>
         <template #header>
           <div style="text-align: center">
-            <b class="mb-0">برنامه های کاربران</b>
+            <b class="mb-0">برنامه های  کاربران</b>
           </div>
         </template>
 
         <b-row dir="rtl">
-          <b-col cols="1"> </b-col>
-
-          <b-col cols="10">
+          <b-col cols="12">
             <div>
-              <b-row>
+              <b-row dir="rtl">
                 <b-col class="mb-5">
                   <v-btn
                     class="btnsize"
@@ -21,74 +19,364 @@
                     elevation="3"
                     rounded
                     large
-                    @click="login()"
+                    @click="openCreateModal"
                     >افزودن برنامه
                   </v-btn>
+
+                  <div>
+                    <b-modal
+                      v-model="showCreateModal"
+                      dir="rtl"
+                      id="create-modal"
+                      title=" افزودن برنامه"
+                      :header-bg-variant="headerBgVariant"
+                      :header-text-variant="headerTextVariant"
+                    >
+                      <b-container fluid>
+                        <b-row>
+                          <b-col>
+                            <b-form-input
+                              type="text"
+                              v-model="form.Title"
+                              placeholder="نام برنامه "
+                              required
+                              outlined
+                            />
+
+                            <br />
+
+                            <b-form-input
+                              v-model="form.PointsNeeded"
+                              placeholder=" تعداد امتیاز مورد نیاز"
+                              required
+                              outlined
+                            />
+
+                            <br />
+
+                            <b-form-input
+                              v-model="form.Description"
+                              placeholder="توضیحات"
+                              required
+                              outlined
+                            />
+
+                            <br />
+                          </b-col>
+                        </b-row>
+                      </b-container>
+
+                      <template #modal-footer>
+                        <div class="w-100">
+                          <v-btn
+                            class="btnsize"
+                            color="#bea44d"
+                            elevation="5"
+                            rounded
+                            larg
+                            @click="setNewScore"
+                            >ثبت
+                          </v-btn>
+
+                          <v-btn
+                            class="select2"
+                            color="#bea44d"
+                            elevation="3"
+                            rounded
+                            larg
+                            outlined
+                            @click="closeCreateModal"
+                            >انصراف
+                          </v-btn>
+                        </div>
+                      </template>
+                    </b-modal>
+                  </div>
+
+                  <!-- Edit Modal -->
+                  <div>
+                    <b-modal
+                      v-model="showEditModal"
+                      dir="rtl"
+                      id="create-modal"
+                      title=" ویرایش امتیاز"
+                      :header-bg-variant="headerBgVariant"
+                      :header-text-variant="headerTextVariant"
+                    >
+                      <b-container fluid>
+                        <b-row>
+                          <b-col>
+                            <b-form-input
+                              type="text"
+                              v-model="form.Title"
+                              placeholder="نام برنامه "
+                              required
+                              outlined
+                            />
+
+                            <br />
+
+                            <b-form-input
+                              v-model="form.PointsNeeded"
+                              placeholder=" امتیاز مورد نیاز"
+                              required
+                              outlined
+                            />
+
+                            <br />
+
+                            <b-form-input
+                              v-model="form.Description"
+                              placeholder="توضیحات"
+                              required
+                              outlined
+                            />
+
+                            <br />
+                          </b-col>
+                        </b-row>
+                      </b-container>
+
+                      <template #modal-footer>
+                        <div class="w-100">
+                          <v-btn
+                            class="btnsize"
+                            color="#bea44d"
+                            elevation="5"
+                            rounded
+                            larg
+                            @click="updateScore"
+                            >ویرایش
+                          </v-btn>
+
+                          <v-btn
+                            class="select2"
+                            color="#bea44d"
+                            elevation="3"
+                            rounded
+                            larg
+                            outlined
+                            @click="closeEditModal"
+                            >انصراف
+                          </v-btn>
+                        </div>
+                      </template>
+                    </b-modal>
+                  </div>
+
+                  <!-- Delete Modal -->
+                  <div>
+                    <b-modal
+                      v-model="showDeleteModal"
+                      dir="rtl"
+                      id="create-modal"
+                      title=" حذف برنامه"
+                      :header-bg-variant="headerBgVariant"
+                      :header-text-variant="headerTextVariant"
+                    >
+                      <b-container fluid>
+                        <b-row>
+                          <b-col>
+                            <h4>برنامه مورد نظر حذف شود؟</h4>
+                          </b-col>
+                        </b-row>
+                      </b-container>
+
+                      <template #modal-footer>
+                        <div class="w-100">
+                          <v-btn
+                            class="btnsize"
+                            color="#bea44d"
+                            elevation="5"
+                            rounded
+                            larg
+                            @click="deleteScore"
+                            >بلی
+                          </v-btn>
+
+                          <v-btn
+                            class="select2"
+                            color="#bea44d"
+                            elevation="3"
+                            rounded
+                            larg
+                            outlined
+                            @click="closeDeletModal"
+                            >انصراف
+                          </v-btn>
+                        </div>
+                      </template>
+                    </b-modal>
+                  </div>
                 </b-col>
                 <b-col> </b-col>
               </b-row>
 
-              <v-data-table
-                :headers="headers"
-                :items="desserts"
-                sort-by="calories"
-                class="elevation-1"
-                dir="rtl"
-              >
-                <template v-slot:item.actions="{ item }">
-                  <v-icon color="red" big class="mr-2" @click="editItem(item)">
-                    mdi-pencil
-                  </v-icon>
-                  <v-icon color="blue" big @click="deleteItem(item)">
-                    mdi-delete
-                  </v-icon>
-                </template>
+              <div>
+                <b-table
+                  :items="items"
+                  :fields="fields"
+                  striped
+                  responsive="sm"
+                  hover
+                >
+                  <template #cell(actions)="row">
+                    <v-icon
+                      @click="editRow(row)"
+                      style="font-size: 20px; color: blue"
+                      >edit</v-icon
+                    >
 
-              </v-data-table>
+                    <v-icon
+                      @click="deletRow(row)"
+                      style="font-size: 20px; color: red"
+                      >delete_outline</v-icon
+                    >
+                  </template>
+                </b-table>
+              </div>
             </div>
           </b-col>
-
-          <b-col cols="1"> </b-col>
         </b-row>
       </b-card>
     </b-card-group>
-
-
-    
- 
-
-   
   </div>
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
   data() {
     return {
-      dialog: false,
-      headers: [
+      //create
+      form: {
+        PointsNeeded: "",
+        Title: "",
+        Description: "",
+      },
+
+      //Edit
+      editForm: {
+        Id: "",
+        PointsNeeded: "",
+        Title: "",
+        Description: "",
+      },
+
+      //Delete
+
+      //modal
+      showCreateModal: false,
+      showEditModal: false,
+      showDeleteModal: false,
+      headerBgVariant: "dark",
+      headerTextVariant: "light",
+
+      //table
+      fields: [
+        { ActivityName: "نام برنامه" },
+        { Points: " تعداد امتیاز مورد " },
+        { Description: "توضیحات" },
+        { actions: "عملیات" },
+      ],
+
+      items: [
         {
-          text: "نام فعالیت",
-          align: "start",
-          sortable: true,
-          value: "name",
-        },
-        {
-          text: "امتیاز",
-          align: "start",
-          sortable: true,
-          value: "name",
-        },
-        {
-          text: "توضیحات",
-          align: "start",
-          sortable: true,
-          value: "name",
+          Description: "true",
+
+          ActivityName: "Dickerson",
+          Points: "Macdonald",
         },
 
-        { text: "عملیات", value: "actions", sortable: false },
+        {
+          Description: "true",
+
+          ActivityName: "Dickerson",
+          Points: "Macdonald",
+        },
+        {
+          Description: "true",
+
+          ActivityName: "Dickerson",
+          Points: "Macdonald",
+        },
+        {
+          Description: "true",
+
+          ActivityName: "Dickerson",
+          Points: "Macdonald",
+        },
       ],
     };
+  },
+
+  methods: {
+    //create
+    openCreateModal() {
+      this.showCreateModal = true;
+    },
+    closeCreateModal() {
+      this.showCreateModal = false;
+    },
+    
+    async setNewScore() {
+      await axios
+        .post(`http://localhost:8080/api/Program/Create`, this.form)
+
+        .then((response) => {
+          console.log(response);
+        })
+        .catch((e) => {
+          this.errors.push(e);
+        });
+      this.showCreateModal = false;
+    },
+
+    //Edit
+    editRow(row) {
+      this.openEditModal();
+      console.log("row111", row);
+    },
+
+    openEditModal() {
+      this.showEditModal = true;
+    },
+    closeEditModal() {
+      this.showEditModal = false;
+    },
+
+    async updateScore() {
+      await axios
+        .post(`http://localhost:8080/api/Program/Update`, this.editForm)
+        .then((response) => {
+          console.log(response);
+        })
+        .catch((e) => {
+          this.errors.push(e);
+        });
+
+      this.showEditModal = false;
+    },
+
+    //delete
+    deletRow(row) {
+      this.openDeleteModal();
+      console.log("row111", row);
+    },
+
+    openDeleteModal() {
+      this.showDeleteModal = true;
+    },
+
+    closeDeletModal() {
+      this.showDeleteModal = false;
+    },
+
+    deleteScore() {
+      this.closeDeletModal();
+    },
+
   },
 };
 </script>

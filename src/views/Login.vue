@@ -76,7 +76,6 @@
               </v-btn>
             </template>
           </v-snackbar>
-
         </b-card>
       </b-card-group>
 
@@ -104,9 +103,11 @@ export default {
   data() {
     return {
 
-       text: "",
+      snackbarGreen: false,
+      text : "",
+      token: "",
 
-    //  url1: `${config.paseUrl}` + "api/v1/CurrentPrice/GetTalagram",
+      //  url1: `${config.paseUrl}` + "api/v1/CurrentPrice/GetTalagram",
       // url2: `${config.paseUrl}` +"api/v1/ArchivedPrice/GetSekeByTimeFrame/?timeframe=5",
 
       //date
@@ -128,19 +129,13 @@ export default {
     async onSubmit(event) {
       event.preventDefault();
 
-      await axios.post(`http://localhost:8080/api/Customer/Login`, this.form) .then((response) => {
-          console.log(response);
-
-          // if (response.data.Description == "کد احراز هویت صحیح نمی باشد") {
-          //   this.snackbarColor = "red";
-          // } else if (response.data.Description == " ") {
-          //   this.snackbarColor = "success";
-          // }
-
-          this.text = response.data.JoinedErrors;
-          this.signUpLoading = false;
-
-          this.snackbarGreen = true;
+      await axios
+        .post(`http://localhost:8080/api/Customer/Login`, this.form)
+        .then((response) => {
+          //console.log(response);
+          this.token = response.data.Token;
+          this.text = response.data.Message;           
+          this.snackbarGreen =true;
         })
         .catch((e) => {
           this.errors.push(e);

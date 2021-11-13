@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <div >
+    <div>
       <b-card-group deck class="mr-2">
         <b-card>
           <template #header>
@@ -22,7 +22,7 @@
 
                 <div class="container">
                   <v-btn
-                    class="btnsize "
+                    class="btnsize"
                     color="#bea44d"
                     elevation="5"
                     rounded
@@ -48,7 +48,6 @@
 
             <b-col cols="3"> </b-col>
           </b-row>
-
         </b-card>
       </b-card-group>
 
@@ -63,16 +62,15 @@
 
 <script>
 import axios from "axios";
-import config from "@/config";
-
+// import config from "@/config";
 // import { createChart } from "lightweight-charts";
-//  import { LightweightCharts } from "lightweight-charts";
+// import { LightweightCharts } from "lightweight-charts";
 
 export default {
   name: "App",
   data() {
     return {
-      url1: `${config.paseUrl}` + "api/v1/CurrentPrice/GetTalagram",
+      // url1: `${config.paseUrl}` + "api/v1/CurrentPrice/GetTalagram",
       // url2: `${config.paseUrl}` +"api/v1/ArchivedPrice/GetSekeByTimeFrame/?timeframe=5",
 
       //date
@@ -88,13 +86,11 @@ export default {
   components: {},
   mounted() {},
   methods: {
-     login(){
-      this.$router.push('Login') 
-
+    login() {
+      this.$router.push("Login");
     },
-    signup(){
-      this.$router.push('SignUp') 
-
+    signup() {
+      this.$router.push("SignUp");
     },
     numberWithCommas(x) {
       return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
