@@ -51,7 +51,7 @@
                       large
                       type="submit"
                       variant="primary"
-                      >ثبت
+                      >ورود
                     </v-btn>
                   </b-form>
                 </b-card>
@@ -102,9 +102,8 @@ export default {
 
   data() {
     return {
-
       snackbarGreen: false,
-      text : "",
+      text: "",
       token: "",
 
       //  url1: `${config.paseUrl}` + "api/v1/CurrentPrice/GetTalagram",
@@ -132,10 +131,13 @@ export default {
       await axios
         .post(`http://localhost:8080/api/Customer/Login`, this.form)
         .then((response) => {
-          //console.log(response);
+          console.log("res", response);
           this.token = response.data.Token;
-          this.text = response.data.Message;           
-          this.snackbarGreen =true;
+          this.text = response.data.Message;
+          this.snackbarGreen = true;
+          if (response.data.MessageType == 1) {
+            this.$router.push({ path: "/Update" });
+          }
         })
         .catch((e) => {
           this.errors.push(e);
