@@ -61,7 +61,6 @@
 </template>
 
 <script>
-import axios from "axios";
 // import config from "@/config";
 // import { createChart } from "lightweight-charts";
 // import { LightweightCharts } from "lightweight-charts";
@@ -70,8 +69,7 @@ export default {
   name: "App",
   data() {
     return {
-      // url1: `${config.paseUrl}` + "api/v1/CurrentPrice/GetTalagram",
-      // url2: `${config.paseUrl}` +"api/v1/ArchivedPrice/GetSekeByTimeFrame/?timeframe=5",
+
 
       //date
       today: 0,
@@ -104,16 +102,8 @@ export default {
   async created() {
     //date
     this.today = new Date().toLocaleDateString("fa-IR");
-    await axios
 
-      .get(`http://localhost:8080/api/v1/CurrentPrice/GetTalagram`, {})
-
-      // .get(this.url1, {
-      // })
-      .then(() => {})
-      .catch((e) => {
-        this.errors.push(e);
-      });
+  
   },
 };
 </script>

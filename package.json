@@ -17,16 +17,19 @@
     "bootstrap": "^5.1.1",
     "bootstrap-vue": "^2.21.2",
     "core-js": "^3.6.5",
+    "es6-promise": "^4.2.8",
     "joi": "^17.4.2",
     "lightweight": "^0.1.0",
     "lightweight-charts": "^3.6.1",
     "material-design-icons": "^3.0.1",
-    "trading-vue-js": "^1.0.2",
+
     "vee-validate": "^4.5.5",
     "vue": "^2.6.14",
     "vue-multiselect": "^2.1.6",
     "vue-router": "^3.2.0",
+    "vue-sweetalert2": "^5.0.2",
     "vuetify": "^2.4.0",
+    "vuex": "^3.6.2",
     "yup": "^0.32.11"
   },
   "devDependencies": {

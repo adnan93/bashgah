@@ -47,6 +47,7 @@
 
                             <b-form-input
                               v-model="form.Points"
+                               type="number"
                               placeholder="تعداد امتیاز"
                               required
                               outlined
@@ -245,8 +246,13 @@
 
 <script>
 import axios from "axios";
+import { mapGetters } from "vuex";
 
 export default {
+  name: "Score",
+
+  computed: mapGetters(["getToken", "getMessage"]),
+
   data() {
     return {
       //create
@@ -314,6 +320,8 @@ export default {
     //create
     openCreateModal() {
       this.showCreateModal = true;
+      console.log("getToken", this.getToken);
+      console.log("getMessage", this.getMessage);
     },
     closeCreateModal() {
       this.showCreateModal = false;
@@ -334,7 +342,12 @@ export default {
 
     async updateScore() {
       await axios
-        .post(`http://localhost:8080/api/Score/Update`, this.editForm)
+        .post(`http://localhost:8080/api/Score/Update`, this.editForm, {
+          headers: {
+            token: localStorage.getItem("token"),
+          },
+        })
+
         .then((response) => {
           console.log(response);
         })
@@ -365,7 +378,16 @@ export default {
 
     async setNewScore() {
       await axios
-        .post(`http://localhost:8080/api/Score/Create`, this.form)
+        .post(
+          `http://localhost:8080/api/Score/Create`,
+          this.form,
+
+          {
+            headers: {
+              token: localStorage.getItem("token"),
+            },
+          }
+        )
 
         .then((response) => {
           console.log(response);
@@ -373,6 +395,8 @@ export default {
         .catch((e) => {
           this.errors.push(e);
         });
+              this.showCreateModal = false;
+
     },
   },
 };

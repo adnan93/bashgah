@@ -13,7 +13,9 @@
           </template>
 
           <b-row>
-            <b-col cols="3"> </b-col>
+            <b-col cols="3">
+              {{ getMessage }}
+            </b-col>
 
             <b-col cols="6">
               <div dir="rtl">
@@ -89,14 +91,12 @@
 </template>
 
 <script>
-import axios from "axios";
-// import config from "@/config";
-
-// import { createChart } from "lightweight-charts";
-//  import { LightweightCharts } from "lightweight-charts";
+// import axios from "axios";
+import { mapGetters, mapActions } from "vuex";
 
 export default {
   name: "Login",
+  computed: mapGetters(["getToken", "getMessage"]),
 
   components: {},
 
@@ -105,9 +105,6 @@ export default {
       snackbarGreen: false,
       text: "",
       token: "",
-
-      //  url1: `${config.paseUrl}` + "api/v1/CurrentPrice/GetTalagram",
-      // url2: `${config.paseUrl}` +"api/v1/ArchivedPrice/GetSekeByTimeFrame/?timeframe=5",
 
       //date
       today: 0,
@@ -119,29 +116,18 @@ export default {
       },
     };
   },
-  mounted() {},
+
   methods: {
-    numberWithCommas(x) {
-      return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-    },
+    ...mapActions(["logIn"]),
 
     async onSubmit(event) {
       event.preventDefault();
+      this.logIn(this.form);
 
-      await axios
-        .post(`http://localhost:8080/api/Customer/Login`, this.form)
-        .then((response) => {
-          console.log("res", response);
-          this.token = response.data.Token;
-          this.text = response.data.Message;
-          this.snackbarGreen = true;
-          if (response.data.MessageType == 1) {
-            this.$router.push({ path: "/Update" });
-          }
-        })
-        .catch((e) => {
-          this.errors.push(e);
-        });
+      console.log("getToken", this.getToken);
+    },
+    numberWithCommas(x) {
+      return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     },
   },
 
