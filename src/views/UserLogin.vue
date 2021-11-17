@@ -14,7 +14,6 @@
 
           <b-row>
             <b-col cols="3">
-              {{ getMessage }}
             </b-col>
 
             <b-col cols="6">
@@ -22,15 +21,15 @@
                 <b-card class="mt-3">
                   <template #header>
                     <div style="text-align: center">
-                      <b class="mb-0">ورود به باشگاه</b>
+                      <b class="mb-0">ورود USER</b>
                     </div>
                   </template>
 
                   <b-form @submit="onSubmit">
                     <b-form-input
                       type="tel"
-                      v-model="form.Mobile"
-                      placeholder="شماره موبایل"
+                      v-model="form.Username"
+                      placeholder="نام کاربری"
                       required
                     />
 
@@ -55,6 +54,8 @@
                       variant="primary"
                       >ورود
                     </v-btn>
+
+             
                   </b-form>
                 </b-card>
               </div>
@@ -63,7 +64,7 @@
             <b-col cols="3"> </b-col>
           </b-row>
 
-          <v-snackbar v-model="snackbarGreen" color="snackbarColor" dir="rtl">
+          <v-snackbar v-model="snackbarGreen" :color="snackColor" dir="rtl">
             {{ text }}
 
             <template v-slot:action="{ attrs }">
@@ -96,12 +97,14 @@ import { mapGetters, mapActions } from "vuex";
 
 export default {
   name: "Login",
-  computed: mapGetters(["getToken", "getMessage"]),
+  computed: mapGetters(["getToken", "getMessage", "getMessageType"]),
 
   components: {},
 
   data() {
     return {
+      //snackbar
+      snackColor: "",
       snackbarGreen: false,
       text: "",
       token: "",
@@ -111,7 +114,7 @@ export default {
 
       //form
       form: {
-        Mobile: "",
+        Username: "",
         Password: "",
       },
     };
@@ -122,12 +125,20 @@ export default {
 
     async onSubmit(event) {
       event.preventDefault();
-      this.logIn(this.form);
+     await this.logIn(this.form);
+      this.text = await this.getMessage;
+     
 
-      console.log("getToken", this.getToken);
-    },
-    numberWithCommas(x) {
-      return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      if ((await this.getMessageType) == 1) {
+        this.snackColor = "green";
+       this.$router.push({ path: "/Score" });
+
+
+      } else {
+        this.snackColor = "red";
+      }
+       this.snackbarGreen = true;
+
     },
   },
 

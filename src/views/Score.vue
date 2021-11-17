@@ -27,7 +27,7 @@
                     <b-modal
                       v-model="showCreateModal"
                       dir="rtl"
-                      id="create-modal"
+                      id="modal-center"
                       title=" افزودن امتیاز"
                       :header-bg-variant="headerBgVariant"
                       :header-text-variant="headerTextVariant"
@@ -47,7 +47,7 @@
 
                             <b-form-input
                               v-model="form.Points"
-                               type="number"
+                              type="number"
                               placeholder="تعداد امتیاز"
                               required
                               outlined
@@ -70,12 +70,13 @@
                       <template #modal-footer>
                         <div class="w-100">
                           <v-btn
+                            :loading="createLoading"
                             class="btnsize"
                             color="#bea44d"
                             elevation="5"
                             rounded
                             larg
-                            @click="setNewScore"
+                            @click="addNewScore"
                             >ثبت
                           </v-btn>
 
@@ -99,7 +100,7 @@
                     <b-modal
                       v-model="showEditModal"
                       dir="rtl"
-                      id="create-modal"
+                      id="modal-center"
                       title=" ویرایش امتیاز"
                       :header-bg-variant="headerBgVariant"
                       :header-text-variant="headerTextVariant"
@@ -109,7 +110,7 @@
                           <b-col>
                             <b-form-input
                               type="text"
-                              v-model="form.ActivityName"
+                              v-model="editForm.ActivityName"
                               placeholder="نام فعالیت "
                               required
                               outlined
@@ -118,8 +119,9 @@
                             <br />
 
                             <b-form-input
-                              v-model="form.Points"
+                              v-model="editForm.Points"
                               placeholder="تعداد امتیاز"
+                              type="number"
                               required
                               outlined
                             />
@@ -127,7 +129,7 @@
                             <br />
 
                             <b-form-input
-                              v-model="form.Description"
+                              v-model="editForm.Description"
                               placeholder="توضیحات"
                               required
                               outlined
@@ -141,12 +143,13 @@
                       <template #modal-footer>
                         <div class="w-100">
                           <v-btn
+                            :loading="editLoading"
                             class="btnsize"
                             color="#bea44d"
                             elevation="5"
                             rounded
                             larg
-                            @click="updateScore"
+                            @click="updateScorebtn"
                             >ویرایش
                           </v-btn>
 
@@ -170,7 +173,7 @@
                     <b-modal
                       v-model="showDeleteModal"
                       dir="rtl"
-                      id="create-modal"
+                      id="modal-center"
                       title=" حذف امتیاز"
                       :header-bg-variant="headerBgVariant"
                       :header-text-variant="headerTextVariant"
@@ -186,12 +189,13 @@
                       <template #modal-footer>
                         <div class="w-100">
                           <v-btn
+                            :loading="deleteLoading"
                             class="btnsize"
                             color="#bea44d"
                             elevation="5"
                             rounded
                             larg
-                            @click="deleteScore"
+                            @click="deleteScorebtn"
                             >بلی
                           </v-btn>
 
@@ -239,23 +243,51 @@
             </div>
           </b-col>
         </b-row>
+
+        <v-snackbar v-model="snackbarGreen" :color="snackColor" dir="rtl">
+          {{ text }}
+
+          <template v-slot:action="{ attrs }">
+            <v-btn
+              color="dark"
+              rounded
+              v-bind="attrs"
+              text
+              @click="snackbarGreen = false"
+            >
+              x
+            </v-btn>
+          </template>
+        </v-snackbar>
       </b-card>
     </b-card-group>
   </div>
 </template>
 
 <script>
-import axios from "axios";
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 
 export default {
   name: "Score",
 
-  computed: mapGetters(["getToken", "getMessage"]),
+  computed: mapGetters([
+    "getScores",
+    "getActivityName",
+    "getPoints",
+    "getDescription",
+    "getMessage",
+    "getMessageType",
+  ]),
 
   data() {
     return {
+      //snackbar
+      text: "",
+      snackbarGreen: false,
+      snackColor: "",
+
       //create
+      createLoading: false,
       form: {
         Points: "",
         ActivityName: "",
@@ -263,13 +295,18 @@ export default {
       },
 
       //Edit
+      editLoading: false,
+      editedRow: "",
       editForm: {
+        Id: "",
         Points: "",
         ActivityName: "",
         Description: "",
       },
 
       //Delete
+      deleteLoading: false,
+      row: "",
 
       //modal
       showCreateModal: false,
@@ -286,51 +323,63 @@ export default {
         { actions: "عملیات" },
       ],
 
-      items: [
-        {
-          Description: "true",
-
-          ActivityName: "Dickerson",
-          Points: "Macdonald",
-        },
-
-        {
-          Description: "true",
-
-          ActivityName: "Dickerson",
-          Points: "Macdonald",
-        },
-        {
-          Description: "true",
-
-          ActivityName: "Dickerson",
-          Points: "Macdonald",
-        },
-        {
-          Description: "true",
-
-          ActivityName: "Dickerson",
-          Points: "Macdonald",
-        },
-      ],
+      items: [],
     };
   },
 
   methods: {
+    ...mapActions([
+      "getUserScores",
+      "setNewScore",
+      "deleteScore",
+      "getScoreById",
+      "updateScore",
+    ]),
+
     //create
     openCreateModal() {
       this.showCreateModal = true;
-      console.log("getToken", this.getToken);
-      console.log("getMessage", this.getMessage);
+      // console.log("getToken", this.getToken);
+      // console.log("getMessage", this.getMessage);
     },
     closeCreateModal() {
       this.showCreateModal = false;
     },
 
+    async addNewScore() {
+      this.createLoading = true;
+      await this.setNewScore(this.form);
+      await this.getUserScores();
+      this.items = this.getScores;
+
+      this.text = await this.getMessage;
+
+      if ((await this.getMessageType) == 1) {
+        this.snackColor = "green";
+      } else {
+        this.snackColor = "red";
+      }
+
+      this.snackbarGreen = true;
+
+      this.createLoading = false;
+
+      this.showCreateModal = false;
+    },
+
     //Edit
-    editRow(row) {
+
+    async editRow(row) {
+      this.editedRow = row;
+      this.editForm.Id = row.item.Id;
       this.openEditModal();
-      console.log("row111", row);
+      await this.getScoreById(this.editedRow.item.Id);
+
+      console.log("this.getActivityName", await this.getActivityName);
+
+      this.editForm.ActivityName = await this.getActivityName;
+      this.editForm.Points = await this.getPoints;
+      this.editForm.Description = await this.getDescription;
     },
 
     openEditModal() {
@@ -340,28 +389,32 @@ export default {
       this.showEditModal = false;
     },
 
-    async updateScore() {
-      await axios
-        .post(`http://localhost:8080/api/Score/Update`, this.editForm, {
-          headers: {
-            token: localStorage.getItem("token"),
-          },
-        })
+    async updateScorebtn() {
+      this.editLoading = true;
+      await this.updateScore(this.editForm);
 
-        .then((response) => {
-          console.log(response);
-        })
-        .catch((e) => {
-          this.errors.push(e);
-        });
+      await this.getUserScores();
+      this.items = this.getScores;
+
+      this.text = await this.getMessage;
+
+      if ((await this.getMessageType) == 1) {
+        this.snackColor = "green";
+      } else {
+        this.snackColor = "red";
+      }
+
+      this.snackbarGreen = true;
+
+      this.editLoading = false;
 
       this.showEditModal = false;
     },
 
     //delete
     deletRow(row) {
+      this.row = row;
       this.openDeleteModal();
-      console.log("row111", row);
     },
 
     openDeleteModal() {
@@ -372,32 +425,35 @@ export default {
       this.showDeleteModal = false;
     },
 
-    deleteScore() {
-      this.closeDeletModal();
+    async deleteScorebtn() {
+      this.deleteLoading = true;
+
+      let deletedId = this.row.item.Id;
+      console.log("ID :", deletedId);
+
+      await this.deleteScore(deletedId);
+
+      this.text = await this.getMessage;
+
+      if ((await this.getMessageType) == 1) {
+        this.snackColor = "green";
+      } else {
+        this.snackColor = "red";
+      }
+
+      this.snackbarGreen = true;
+
+      await this.getUserScores();
+      this.items = this.getScores;
+
+      this.deleteLoading = false;
+
+      this.showDeleteModal = false;
     },
-
-    async setNewScore() {
-      await axios
-        .post(
-          `http://localhost:8080/api/Score/Create`,
-          this.form,
-
-          {
-            headers: {
-              token: localStorage.getItem("token"),
-            },
-          }
-        )
-
-        .then((response) => {
-          console.log(response);
-        })
-        .catch((e) => {
-          this.errors.push(e);
-        });
-              this.showCreateModal = false;
-
-    },
+  },
+  async created() {
+    await this.getUserScores();
+    this.items = this.getScores;
   },
 };
 </script>

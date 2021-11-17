@@ -32,7 +32,7 @@
                   </v-btn>
 
                   <v-btn
-                    :loading="resetLoading"
+                   
                     class="select2"
                     color="#bea44d"
                     elevation="3"
@@ -43,6 +43,15 @@
                     >ثبت نام</v-btn
                   >
                 </div>
+                   <a
+                    class="btnsize"
+                    color="#bea44d"
+                    elevation="5"
+                    rounded
+                    x-large
+                    @click="UserLogin()"
+                    >user
+                  </a>
               </div>
             </b-col>
 
@@ -84,8 +93,12 @@ export default {
   components: {},
   mounted() {},
   methods: {
+    UserLogin(){
+      this.$router.push("UserLogin");
+
+    },
     login() {
-      this.$router.push("Login");
+      this.$router.push("customerLogin");
     },
     signup() {
       this.$router.push("SignUp");

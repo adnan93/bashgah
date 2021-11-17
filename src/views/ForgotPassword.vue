@@ -20,27 +20,11 @@
                 <b-card class="mt-3">
                   <template #header>
                     <div style="text-align: center">
-                      <b class="mb-0">ثبت نام در باشگاه</b>
+                      <b class="mb-0">بازیابی کلمه عبور</b>
                     </div>
                   </template>
 
                   <b-form @submit="onSubmit">
-                    <b-form-input
-                      v-model="form.Name"
-                      type="text"
-                      placeholder="نام "
-                      required
-                    ></b-form-input>
-                    <br />
-
-                    <b-form-input
-                      v-model="form.Family"
-                      type="text"
-                      placeholder="نام خانوادگی"
-                      required
-                    ></b-form-input>
-                    <br />
-
                     <b-form-input
                       v-model="form.Mobile"
                       placeholder="شماره موبایل"
@@ -51,7 +35,7 @@
                     <b-form-input
                       v-model="form.Password"
                       type="text"
-                      placeholder="رمز عبور"
+                      placeholder="رمز عبور جدید "
                       required
                     ></b-form-input>
                     <br />
@@ -104,31 +88,29 @@
                     :footer-bg-variant="bodyBgVariant"
                     :footer-text-variant="footerTextVariant"
                   >
-                 
-                      <b-form-input
-                        v-model="PhoneNumber"
-                        placeholder=" شماره موبایل خود را وارد کنید"
-                        required
-                      ></b-form-input>
+                    <b-form-input
+                      v-model="PhoneNumber"
+                      placeholder=" شماره موبایل خود را وارد کنید"
+                      required
+                    ></b-form-input>
 
-                      <template #modal-footer>
-                        <div class="w-100">
-                          <v-btn
-                            :loading="getCodeLoading"
-                            class="btnsize ml-1"
-                            color="#bea44d"
-                            elevation="5"
-                            rounded
-                            large
-                            type="submit"
-                            variant="primary"
-                            @click="getCode()"
-                          >
-                            درخواست کد تایید
-                          </v-btn>
-                        </div>
-                      </template>
-         
+                    <template #modal-footer>
+                      <div class="w-100">
+                        <v-btn
+                          :loading="getCodeLoading"
+                          class="btnsize ml-1"
+                          color="#bea44d"
+                          elevation="5"
+                          rounded
+                          large
+                          type="submit"
+                          variant="primary"
+                          @click="getCode()"
+                        >
+                          درخواست کد تایید
+                        </v-btn>
+                      </div>
+                    </template>
                   </b-modal>
 
                   <v-snackbar
@@ -209,27 +191,22 @@ export default {
 
       //form
       form: {
+        Id: "",
         Mobile: "",
         VerificationCode: "",
         Password: "",
-        Name: "",
-        Family: "",
       },
     };
   },
   components: {},
   mounted() {},
   methods: {
-    numberWithCommas(x) {
-      return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-    },
-
     async onSubmit(event) {
       event.preventDefault();
       this.signUpLoading = true;
 
       await axios
-        .post(`http://localhost:8080/api/Customer/Register`, this.form)
+        .post(`http://localhost:8080/api/Customer/ForgotPassword`, this.form)
         .then((response) => {
           console.log(response);
 

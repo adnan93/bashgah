@@ -1,7 +1,13 @@
 import Vue from "vue";
 import Vuex from "vuex"
 //import auth from "./auth"
-import login from "./modules/login"
+import scores from "./modules/scores"
+import program from "./modules/program"
+import customerLogin from "./modules/customerLogin"   
+import userlogin from "./modules/userlogin"
+
+
+
 
 Vue.use(Vuex)
 
@@ -20,7 +26,11 @@ export default new Vuex.Store({
     },
 
     modules: {
-        login
+        
+        scores,
+        program,
+        customerLogin,
+        userlogin
 
     }
 
