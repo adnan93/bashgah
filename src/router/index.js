@@ -52,6 +52,14 @@ const routes = [
     name: 'ForgotPassword',
     component: () => import('../views/ForgotPassword.vue')
   },
+  {
+    path: '/customerProfile',
+    name: 'customerProfile',
+    component: () => import('../views/customerProfile.vue')
+  },
+
+  
+
 
 
 
