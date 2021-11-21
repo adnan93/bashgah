@@ -48,7 +48,7 @@
                             <b-form-input
                               v-model="form.PointsNeeded"
                               type="number"
-                              placeholder="تعداد برنامه"
+                              placeholder="تعداد امتیاز مورد نیاز"
                               required
                               outlined
                             />

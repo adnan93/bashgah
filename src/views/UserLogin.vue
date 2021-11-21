@@ -52,6 +52,7 @@
                       large
                       type="submit"
                       variant="primary"
+                      :loading= "loadingbtn"
                       >ورود
                     </v-btn>
 
@@ -103,6 +104,7 @@ export default {
 
   data() {
     return {
+      loadingbtn: false,
       //snackbar
       snackColor: "",
       snackbarGreen: false,
@@ -124,6 +126,7 @@ export default {
     ...mapActions(["logIn"]),
 
     async onSubmit(event) {
+      this.loadingbtn=true;
       event.preventDefault();
      await this.logIn(this.form);
       this.text = await this.getMessage;
@@ -137,6 +140,8 @@ export default {
       } else {
         this.snackColor = "red";
       }
+            this.loadingbtn=false;
+
        this.snackbarGreen = true;
 
     },

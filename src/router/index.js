@@ -56,7 +56,15 @@ const routes = [
     path: '/customerProfile',
     name: 'customerProfile',
     component: () => import('../views/customerProfile.vue')
-  },
+  }, 
+
+  {
+    path: '/Customer',
+    name: 'Customer',
+    component: () => import('../views/Customer.vue')
+  }, 
+
+
 
   
 

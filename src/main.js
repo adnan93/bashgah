@@ -12,6 +12,9 @@ import 'es6-promise/auto'
 import VueSweetalert2 from 'vue-sweetalert2';
 import 'sweetalert2/dist/sweetalert2.min.css';
 
+import VuePersianDatetimePicker from 'vue-persian-datetime-picker';
+Vue.component('date-picker', VuePersianDatetimePicker);
+
 
 Vue.use(VueSweetalert2);
 Vue.use(Vuex)

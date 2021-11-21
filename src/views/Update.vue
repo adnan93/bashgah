@@ -18,6 +18,7 @@
                 label="نام"
                 required
                 outlined
+                dense
               />
 
               <br />
@@ -28,20 +29,21 @@
                 label="نام خانوادگی"
                 required
                 outlined
+                dense
               />
 
               <br />
 
-              <v-text-field
+              <!-- <v-text-field
                 v-model="form.BirthDate"
                 label="تاریخ تولد"
                 required
                 outlined
               />
 
-              <br />
+              <br /> -->
 
-               <v-select
+              <v-select
                 class="select"
                 :items="Province"
                 :item-text="'Name'"
@@ -56,7 +58,7 @@
               </v-select>
               <br />
 
-               <v-select
+              <v-select
                 class="select"
                 :items="cities"
                 :item-text="'Name'"
@@ -72,15 +74,12 @@
 
               <br />
 
-           
-
-             
-
               <v-text-field
                 v-model="form.Mobile"
                 label="شماره موبایل"
                 required
                 outlined
+                dense
               />
 
               <v-select
@@ -119,6 +118,7 @@
                 label="رمز عبور"
                 @click:append="show4 = !show4"
                 outlined
+                dense
               ></v-text-field>
 
               <br />
@@ -129,15 +129,19 @@
                 label="آدرس"
                 outlined
                 required
+                dense
+
               />
               <br />
 
               <v-text-field
                 v-model="form.Email"
+                style="hight: 150px;"
                 type="email"
                 label="ایمیل"
                 outlined
                 required
+                dense
               />
               <br />
 
@@ -153,7 +157,7 @@
               </v-select>
               <br />
 
-                 <v-select
+              <v-select
                 class="select"
                 :items="Gender"
                 :item-text="'Name'"
@@ -166,9 +170,14 @@
                 dense
               >
               </v-select>
-              <br />
+       
 
-             
+              <div>
+                <date-picker v-model="form.BirthDate"
+                 label="تاریخ تولد"
+                ></date-picker>
+              </div>
+               <br />
 
               <!-- <v-file-input
                 v-model="files"
@@ -193,6 +202,7 @@
                 accept="image/*"
                 @change="onFilePicked"
               />
+                  <br />
             </b-col>
           </b-row>
 
@@ -204,10 +214,11 @@
             large
             @click="updateCust()"
             variant="primary"
+            :loading="loadingbtn"
             >ثبت
           </v-btn>
 
-          <v-btn
+          <!-- <v-btn
             :loading="resetLoading"
             class="select2"
             color="#bea44d"
@@ -217,12 +228,28 @@
             outlined
             @click="signup()"
             >انصراف</v-btn
-          >
+          > -->
         </b-card>
       </b-col>
 
       <b-col cols="1"> </b-col>
     </b-row>
+
+    <v-snackbar v-model="snackbarGreen" color="green" dir="rtl">
+            {{ text }}
+
+            <template v-slot:action="{ attrs }">
+              <v-btn
+                color="dark"
+                rounded
+                v-bind="attrs"
+                text
+                @click="snackbarGreen = false"
+              >
+                x
+              </v-btn>
+            </template>
+          </v-snackbar>
   </div>
 </template>
 
@@ -233,6 +260,8 @@ import axios from "axios";
 export default {
   name: "Update",
   async created() {
+      this.snackbarGreen = true;
+
     let rest = await axios.get(`http://localhost:8080/api/Province/GetAll`, {
       headers: {
         token: localStorage.getItem("token"),
@@ -304,10 +333,15 @@ export default {
     );
     this.cities = res.data;
     console.log("cities", res.data);
+
   },
 
   data() {
     return {
+
+        text: "  در حال دریافت اطلاعات ...",
+      loadingbtn: false,
+      date: "",
       //img
       title: "Image Upload",
       dialog: false,
@@ -363,6 +397,9 @@ export default {
         { Name: "شغل آزاد", Value: 1 },
       ],
 
+   
+
+
       show4: false,
     };
   },
@@ -402,6 +439,7 @@ export default {
     },
 
     async updateCust() {
+      this.loadingbtn =true;
       await axios
         .post(`http://localhost:8080/api/Customer/Update`, this.form, {
           headers: {
@@ -416,6 +454,9 @@ export default {
         .catch((e) => {
           this.errors.push(e);
         });
+
+              this.loadingbtn =false;
+
     },
 
     //   async submitUpdateUserImage() {

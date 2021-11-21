@@ -51,6 +51,7 @@
                       large
                       type="submit"
                       variant="primary"
+                      :loading="loadingbtn"
                       >ورود
                     </v-btn>
                     <a href="/ForgotPassword" style="text-decoration: none">
@@ -103,6 +104,7 @@ export default {
 
   data() {
     return {
+      loadingbtn: false,
       //snack
       snackColor: "",
       snackbarGreen: false,
@@ -124,6 +126,7 @@ export default {
     ...mapActions(["CustomerLogIn"]),
 
     async onSubmit(event) {
+      this.loadingbtn =true;
       event.preventDefault();
       await this.CustomerLogIn(this.form);
 
@@ -137,7 +140,10 @@ export default {
         this.snackColor = "red";
       }
       this.snackbarGreen = true;
+      this.loadingbtn =false;
+
     },
+
   },
 
   async created() {

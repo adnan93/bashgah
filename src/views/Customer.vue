@@ -17,7 +17,7 @@
 
             <b-col cols="6">
               <div align="center">
-                <h2>به باشگاه مشتریان طلاگرام خوش آمدید</h2>
+                <h2> کاربر گرامی خوش آمدید</h2>
                 <br />
 
                 <div class="container">
@@ -27,26 +27,23 @@
                     elevation="5"
                     rounded
                     x-large
-                    @click="UserLogin()"
-                  >
-                    <v-icon style="font-size: 20px; color: black"
-                      >portrait</v-icon
-                    >
-                    مدیر
+                    @click="login()"
+                    >ورود
                   </v-btn>
 
                   <v-btn
+                   
                     class="select2"
                     color="#bea44d"
                     elevation="3"
                     rounded
                     x-large
                     outlined
-                    @click="GoToCustomer()"
+                    @click="signup()"
+                    >ثبت نام</v-btn
                   >
-                    <v-icon style="font-size: 20px">people_alt</v-icon> کاربر
-                  </v-btn>
                 </div>
+               
               </div>
             </b-col>
 
@@ -73,6 +70,8 @@ export default {
   name: "App",
   data() {
     return {
+
+
       //date
       today: 0,
 
@@ -86,14 +85,15 @@ export default {
   components: {},
   mounted() {},
   methods: {
-    UserLogin() {
+    UserLogin(){
       this.$router.push("UserLogin");
+
     },
     login() {
       this.$router.push("customerLogin");
     },
-    GoToCustomer() {
-      this.$router.push("Customer");
+    signup() {
+      this.$router.push("SignUp");
     },
     numberWithCommas(x) {
       return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -107,6 +107,8 @@ export default {
   async created() {
     //date
     this.today = new Date().toLocaleDateString("fa-IR");
+
+  
   },
 };
 </script>
