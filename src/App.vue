@@ -42,6 +42,10 @@
               <h6><b style="color: #bea44d">برنامه های کاربران </b></h6>
             </b-nav-item>
 
+              <b-nav-item class="ml-2" href="/" @click="logout()" >
+              <h6><b style="color: #bea44d">خروج </b></h6>
+            </b-nav-item>
+
             <!-- <b-nav-item class="ml-2" href="#">
               <h6><b style="color: #bea44d"> اخبار توليد و تجارت </b></h6>
             </b-nav-item>
@@ -61,7 +65,25 @@
  
  <script>
 export default {
-  created() {},
+  data(){
+    return {
+     token : localStorage.getItem("token"),
+
+    }
+  },
+  created() {
+    // console.log("login..", this.token)
+
+  },
+  methods:{
+    logout(){
+      if(this.token){
+                localStorage.removeItem("token") ;
+      }
+     
+
+    }
+  }
 };
 </script>
  
