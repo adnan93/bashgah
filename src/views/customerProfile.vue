@@ -31,238 +31,227 @@
 
           <b-row>
             <b-col cols="1"> </b-col>
-
             <b-col cols="10">
               <div dir="rtl" class="container">
-                <b-row>
-                  <b-col align="center">
+                <b-row dir="rtl">
+                  <div>
                     <b-row dir="rtl">
-                      <b-col cols="12">
+                      <b-col class="mb-5">
+                        <v-btn
+                          class="btnsize"
+                          color="#bea44d"
+                          elevation="3"
+                          rounded
+                          large
+                          @click="openCreateModal"
+                        >
+                          <v-icon style="font-size: 20px">star_outline</v-icon>
+                          افزودن فعالیت
+                        </v-btn>
+
+                        <!-- add new -->
                         <div>
-                          <b-row dir="rtl">
-                            <b-col class="mb-5">
-                              <v-btn
-                                class="btnsize"
-                                color="#bea44d"
-                                elevation="3"
-                                rounded
-                                large
-                                @click="openCreateModal"
-                                >افزودن فعالیت
-                              </v-btn>
+                          <b-modal
+                            v-model="showCreateModal"
+                            dir="rtl"
+                            id="modal-center"
+                            title=" افزودن فعالیت"
+                            :header-bg-variant="headerBgVariant"
+                            :header-text-variant="headerTextVariant"
+                          >
+                            <b-container fluid>
+                              <b-row>
+                                <b-col>
+                                  <h3>فعالیت مد نظر را اضافه کنید:</h3>
+                                  <hr />
 
-                              <!-- add new -->
-                              <div>
-                                <b-modal
-                                  v-model="showCreateModal"
-                                  dir="rtl"
-                                  id="modal-center"
-                                  title=" افزودن فعالیت"
-                                  :header-bg-variant="headerBgVariant"
-                                  :header-text-variant="headerTextVariant"
-                                >
-                                  <b-container fluid>
-                                    <b-row>
-                                      <b-col>
-                                        <h3>فعالیت مد نظر را اضافه کنید:</h3>
-                                        <hr />
+                                  <div>
+                                    <b-table
+                                      :items="AllScores"
+                                      :fields="scorefields"
+                                      striped
+                                      responsive="sm"
+                                      hover
+                                    >
+                                      <template #cell(actions)="row">
+                                        <v-icon
+                                          @click="addNewScoreToCustomer(row)"
+                                          style="
+                                            font-size: 20px;
+                                            color: #bea44d;
+                                          "
+                                          >add_circle
+                                        </v-icon>
+                                      </template>
+                                    </b-table>
+                                  </div>
+                                </b-col>
+                              </b-row>
+                            </b-container>
 
-                                        <div>
-                                          <b-table
-                                            :items="AllScores"
-                                            :fields="fields"
-                                            striped
-                                            responsive="sm"
-                                            hover
-                                          >
-                                            <template #cell(actions)="row">
-                                              <v-icon
-                                                @click="
-                                                  addNewScoreToCustomer(row)
-                                                "
-                                                style="
-                                                  font-size: 20px;
-                                                  color: #bea44d;
-                                                "
-                                                >add_circle
-                                              </v-icon>
-                                            </template>
-                                          </b-table>
-                                        </div>
-                                      </b-col>
-                                    </b-row>
-                                  </b-container>
-
-                                  <template #modal-footer>
-                                    <div class="w-100">
-                                      <v-btn
-                                        class="select2"
-                                        color="#bea44d"
-                                        elevation="3"
-                                        rounded
-                                        larg
-                                        outlined
-                                        @click="closeCreateModal"
-                                        >انصراف
-                                      </v-btn>
-                                    </div>
-                                  </template>
-                                </b-modal>
+                            <template #modal-footer>
+                              <div class="w-100">
+                                <v-btn
+                                  class="select2"
+                                  color="#bea44d"
+                                  elevation="3"
+                                  rounded
+                                  larg
+                                  outlined
+                                  @click="closeCreateModal"
+                                  >انصراف
+                                </v-btn>
                               </div>
-
-                              <!-- Edit Modal -->
-                              <div>
-                                <b-modal
-                                  v-model="showEditModal"
-                                  dir="rtl"
-                                  id="modal-center"
-                                  title=" ویرایش امتیاز"
-                                  :header-bg-variant="headerBgVariant"
-                                  :header-text-variant="headerTextVariant"
-                                >
-                                  <b-container fluid>
-                                    <b-row>
-                                      <b-col>
-                                        <b-form-input
-                                          type="text"
-                                          v-model="editForm.ActivityName"
-                                          placeholder="نام فعالیت "
-                                          required
-                                          outlined
-                                        />
-
-                                        <br />
-
-                                        <b-form-input
-                                          v-model="editForm.Points"
-                                          placeholder="تعداد امتیاز"
-                                          type="number"
-                                          required
-                                          outlined
-                                        />
-
-                                        <br />
-
-                                        <b-form-input
-                                          v-model="editForm.Description"
-                                          placeholder="توضیحات"
-                                          required
-                                          outlined
-                                        />
-
-                                        <br />
-                                      </b-col>
-                                    </b-row>
-                                  </b-container>
-
-                                  <template #modal-footer>
-                                    <div class="w-100">
-                                      <v-btn
-                                        :loading="editLoading"
-                                        class="btnsize"
-                                        color="#bea44d"
-                                        elevation="5"
-                                        rounded
-                                        larg
-                                        @click="updateScorebtn"
-                                        >ویرایش
-                                      </v-btn>
-
-                                      <v-btn
-                                        class="select2"
-                                        color="#bea44d"
-                                        elevation="3"
-                                        rounded
-                                        larg
-                                        outlined
-                                        @click="closeEditModal"
-                                        >انصراف
-                                      </v-btn>
-                                    </div>
-                                  </template>
-                                </b-modal>
-                              </div>
-
-                              <!-- Delete Modal -->
-                              <div>
-                                <b-modal
-                                  v-model="showDeleteModal"
-                                  dir="rtl"
-                                  id="modal-center"
-                                  title=" حذف امتیاز"
-                                  :header-bg-variant="headerBgVariant"
-                                  :header-text-variant="headerTextVariant"
-                                >
-                                  <b-container fluid>
-                                    <b-row>
-                                      <b-col>
-                                        <h4>امتیاز مورد نظر حذف شود؟</h4>
-                                      </b-col>
-                                    </b-row>
-                                  </b-container>
-
-                                  <template #modal-footer>
-                                    <div class="w-100">
-                                      <v-btn
-                                        :loading="deleteLoading"
-                                        class="btnsize"
-                                        color="#bea44d"
-                                        elevation="5"
-                                        rounded
-                                        larg
-                                        @click="deleteScorebtn"
-                                        >بلی
-                                      </v-btn>
-
-                                      <v-btn
-                                        class="select2"
-                                        color="#bea44d"
-                                        elevation="3"
-                                        rounded
-                                        larg
-                                        outlined
-                                        @click="closeDeletModal"
-                                        >انصراف
-                                      </v-btn>
-                                    </div>
-                                  </template>
-                                </b-modal>
-                              </div>
-                            </b-col>
-                            <b-col> </b-col>
-                          </b-row>
-
-                          <div>
-                            <b-table
-                              :items="CustomerScores"
-                              :fields="fields"
-                              striped
-                              responsive="sm"
-                              hover
-                            >
-                              <template #cell(actions)="row">
-                                <v-icon
-                                  @click="editRow(row)"
-                                  style="font-size: 20px; color: blue"
-                                  >edit</v-icon
-                                >
-
-                                <v-icon
-                                  @click="deletRow(row)"
-                                  style="font-size: 20px; color: red"
-                                  >delete_outline</v-icon
-                                >
-                              </template>
-                            </b-table>
-                          </div>
+                            </template>
+                          </b-modal>
                         </div>
                       </b-col>
+                      <b-col> </b-col>
                     </b-row>
-                  </b-col>
 
-                  <b-col align="center">
-                    <h5>افزودن برنامه جدید</h5>
-                  </b-col>
+                    <div>
+                      <b-table
+                        :items="CustomerScores"
+                        :fields="fields"
+                        striped
+                        responsive="sm"
+                        hover
+                      >
+                        <template #cell(actions)=""> </template>
+                      </b-table>
+                    </div>
+                  </div>
+                </b-row>
+              </div>
+            </b-col>
+
+            <b-col cols="1"> </b-col>
+          </b-row>
+
+          <hr />
+
+          <b-row>
+            <b-col cols="1"> </b-col>
+            <b-col cols="10">
+              <div dir="rtl" class="container">
+                <b-row dir="rtl">
+                  <div>
+                    <b-row dir="rtl">
+                      <b-col class="mb-5">
+                        <v-btn
+                          class="btnsize"
+                          color="#bea44d"
+                          elevation="3"
+                          rounded
+                          large
+                          @click="openCreateProgramModal"
+                        >
+                          <v-icon style="font-size: 20px">fact_check</v-icon>
+                          افزودن برنامه
+                        </v-btn>
+
+                        <!-- add new -->
+                        <div>
+                          <b-modal
+                            v-model="showCreateProgramModal"
+                            dir="rtl"
+                            id="modal-center"
+                            title=" افزودن برنامه"
+                            :header-bg-variant="headerBgVariant"
+                            :header-text-variant="headerTextVariant"
+                          >
+                            <b-container fluid>
+                              <b-row>
+                                <b-col>
+                                  <h3>برنامه مد نظر را اضافه کنید :</h3>
+
+                                  <hr />
+
+                                  <div>
+                                    <b-table
+                                      :items="AllPrograms"
+                                      :fields="programsFields"
+                                      striped
+                                      responsive="sm"
+                                      hover
+                                    >
+                                      <template #cell(actions)="row">
+
+                                        <v-icon
+                                          style="
+                                            font-size: 20px;
+                                            color: #bea44d;
+                                          "
+                                          v-show="showIcon(row)"
+                                        >
+                                          done
+                                        </v-icon>
+                                            
+
+
+                                        <v-icon
+                                          @click="addNewProgramToCustomer(row)"
+                                          style="
+                                            font-size: 20px;
+                                            color: #bea44d;
+                                          "
+                                          v-show="showIcon(row)"
+                                        >
+                                          add_circle
+                                        </v-icon>
+
+                                      </template>
+
+                                    </b-table>
+                                  </div>
+                                </b-col>
+                              </b-row>
+                            </b-container>
+
+                            <template #modal-footer>
+                              <div class="w-100">
+                                <v-btn
+                                  class="select2"
+                                  color="#bea44d"
+                                  elevation="3"
+                                  rounded
+                                  larg
+                                  outlined
+                                  @click="closeCreateProgramModal"
+                                  >انصراف
+                                </v-btn>
+                              </div>
+                            </template>
+                          </b-modal>
+                        </div>
+                      </b-col>
+                      <b-col> </b-col>
+                    </b-row>
+
+                    <div>
+                      <b-table
+                        :items="CustomerPrograms"
+                        :fields="program"
+                        striped
+                        responsive="sm"
+                        hover
+                      >
+                        <template #cell(actions)="row">
+                          <v-icon
+                            @click="editRow(row)"
+                            style="font-size: 20px; color: blue"
+                            >edit</v-icon
+                          >
+
+                          <v-icon
+                            @click="deletRow(row)"
+                            style="font-size: 20px; color: red"
+                            >delete_outline</v-icon
+                          >
+                        </template>
+                      </b-table>
+                    </div>
+                  </div>
                 </b-row>
               </div>
             </b-col>
@@ -307,6 +296,7 @@ export default {
 
   data() {
     return {
+ 
       //snackbar
       snackColor: "",
       snackbarGreen: false,
@@ -317,7 +307,9 @@ export default {
       createLoading: false,
 
       AllScores: [],
+      AllPrograms: [],
       CustomerScores: [],
+      CustomerPrograms: [],
 
       form: {
         Points: "",
@@ -353,7 +345,7 @@ export default {
       //modal
       showCreateModal: false,
       showEditModal: false,
-      showDeleteModal: false,
+      showCreateProgramModal: false,
       headerBgVariant: "dark",
       headerTextVariant: "light",
 
@@ -364,11 +356,38 @@ export default {
         { Description: "توضیحات" },
       ],
 
+      program: [
+        { Title: "نام برنامه" },
+        { PointsNeeded: "امتیاز لازم" },
+        { Description: "توضیحات" },
+      ],
+
+      //scorefields
+      scorefields: [
+        { ActivityName: "نام فعالیت" },
+        { Points: "تعداد امتیاز" },
+        { Description: "توضیحات" },
+        { actions: "عمليات" },
+      ],
+
+      programsFields: [
+        { Title: "نام برنامه" },
+        { PointsNeeded: "تعداد امتیاز لازم" },
+        { Description: "توضیحات" },
+        { actions: "عمليات" },
+      ],
+      Title: "",
+
       items: [],
     };
   },
 
   methods: {
+    showIcon(row){
+      console.log(row)
+      return true;
+
+    },
     //create
     openCreateModal() {
       this.showCreateModal = true;
@@ -379,19 +398,18 @@ export default {
       this.showCreateModal = false;
     },
 
-    async addNewScore() {
-      this.createLoading = true;
+    openCreateProgramModal() {
+      this.showCreateProgramModal = true;
+    },
 
-      this.snackbarGreen = true;
-
-      this.createLoading = false;
-
-      this.showCreateModal = false;
+    closeCreateProgramModal() {
+      this.showCreateProgramModal = false;
     },
 
     //add new score
 
     async addNewScoreToCustomer(row) {
+
       let temp = [];
       this.editedRow = row;
       this.selectedName = row.item.ActivityName;
@@ -407,19 +425,18 @@ export default {
         temp.push(item.ActivityName);
       }
       console.log("temp", temp);
-      console.log("selectedId:", this.selectedName);
+      console.log("selectedName:", this.selectedName);
 
       if (temp.includes(this.selectedName)) {
-        console.log("added ");
+        console.log("has been added ! ");
         this.snackColor = "red";
         this.text = "اين فعاليت قبلا اضافه شده !";
         this.snackbarGreen = true;
       } else {
         console.log("noot");
-        this.snackColor = "green";
+        // this.snackColor = "green";
 
-        this.snackbarGreen = true;
-        this.text = "فعالیت با موفقیت اضافه شده";
+        // this.text = "فعالیت با موفقیت اضافه شده";
 
         await axios
           .post(
@@ -433,6 +450,15 @@ export default {
           )
           .then((response) => {
             // this.CustomerScores = response.data;
+
+            this.text = response.data.Description;
+
+            if (response.data.MessageType == 0) {
+              this.snackColor = "red";
+            } else {
+              this.snackColor = "green";
+            }
+            this.snackbarGreen = true;
             console.log("add new score:", response.data);
           });
 
@@ -466,32 +492,95 @@ export default {
       }
     },
 
+    //add new program
+    async addNewProgramToCustomer(row) {
+
+            this.showTrueIcon=true;
+      this.showPlusIcon= false;
+
+      let temp = [];
+      this.editedRow = row;
+      this.Title = row.item.Title;
+      this.selectedId = row.item.Id;
+      // this.openEditModal();
+      console.log("CustomerPrograms:", this.CustomerPrograms);
+
+      console.log("AllPrograms:", this.AllPrograms);
+
+      console.log("selectedId:", this.selectedId);
+
+      for (let item of this.CustomerPrograms) {
+        temp.push(item.Title);
+      }
+      console.log("temp", temp);
+      console.log("selectedId:", this.selectedName);
+
+      if (temp.includes(this.Title)) {
+        console.log("added ");
+        this.snackColor = "red";
+        this.text = "اين برنامه قبلا اضافه شده !";
+        this.snackbarGreen = true;
+      } else {
+        console.log("noot");
+        this.snackColor = "green";
+
+        await axios
+          .post(
+            `http://localhost:8080/api/Customer/AddProgramToCustomer/${this.selectedId}`,
+            this.selectedId,
+            {
+              headers: {
+                token: localStorage.getItem("token"),
+              },
+            }
+          )
+          .then((response) => {
+            // this.CustomerScores = response.data;
+            this.snackbarGreen = true;
+            this.text = response.data.Description;
+            if (response.data.MessageType == 0) {
+              this.snackColor = "red";
+            } else {
+              this.snackColor = "green";
+            }
+
+            console.log("add new progrma:", response.data);
+          });
+
+        await axios
+          .get(`http://localhost:8080/api/Customer/GetCustomerPrograms`, {
+            headers: {
+              token: localStorage.getItem("token"),
+            },
+          })
+          .then((response) => {
+            this.CustomerPrograms = response.data;
+            console.log("Customer programs:", response.data);
+          })
+          .catch((e) => {
+            this.errors.push(e);
+          });
+
+        //Customer Points
+        await axios
+          .get(`http://localhost:8080/api/Customer/GetCustomerPoints`, {
+            headers: {
+              token: localStorage.getItem("token"),
+            },
+          })
+          .then((response) => {
+            this.points = response.data;
+          })
+          .catch((e) => {
+            this.errors.push(e);
+          });
+      }
+    },
+
     openEditModal() {
       this.showEditModal = true;
     },
     closeEditModal() {
-      this.showEditModal = false;
-    },
-
-    async updateScorebtn() {
-      this.editLoading = true;
-      await this.updateScore(this.editForm);
-
-      await this.getUserScores();
-      // this.items = this.getScores;
-
-      this.text = await this.getMessage;
-
-      // if ((await this.getMessageType) == 1) {
-      //   this.snackColor = "green";
-      // } else {
-      //   this.snackColor = "red";
-      // }
-
-      this.snackbarGreen = true;
-
-      this.editLoading = false;
-
       this.showEditModal = false;
     },
   },
@@ -537,7 +626,37 @@ export default {
       })
       .then((response) => {
         this.AllScores = response.data;
-        console.log("All scores:", response.data);
+        //   console.log("All scores:", response.data);
+      })
+      .catch((e) => {
+        this.errors.push(e);
+      });
+
+    //get All programs
+    await axios
+      .get(`http://localhost:8080/api/Program/GetAll`, {
+        headers: {
+          token: localStorage.getItem("token"),
+        },
+      })
+      .then((response) => {
+        this.AllPrograms = response.data;
+        console.log("All programs:", response.data);
+      })
+      .catch((e) => {
+        this.errors.push(e);
+      });
+
+    //GetCustomerScores
+    await axios
+      .get(`http://localhost:8080/api/Customer/GetCustomerPrograms`, {
+        headers: {
+          token: localStorage.getItem("token"),
+        },
+      })
+      .then((response) => {
+        this.CustomerPrograms = response.data;
+        console.log("Customer programs:", response.data);
       })
       .catch((e) => {
         this.errors.push(e);
@@ -552,7 +671,7 @@ export default {
       })
       .then((response) => {
         this.CustomerScores = response.data;
-        console.log("Customer scores:", response.data);
+        //   console.log("Customer scores:", response.data);
       })
       .catch((e) => {
         this.errors.push(e);

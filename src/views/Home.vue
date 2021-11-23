@@ -31,7 +31,7 @@
                   >
                     <v-icon style="font-size: 20px; color: black"
                       >portrait</v-icon
-                    >
+                    > 
                     مدیر
                   </v-btn>
 

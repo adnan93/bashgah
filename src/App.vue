@@ -42,7 +42,12 @@
               <h6><b style="color: #bea44d">برنامه های کاربران </b></h6>
             </b-nav-item>
 
-              <b-nav-item class="ml-2" href="/" @click="logout()" >
+            <b-nav-item
+              class="ml-2"
+              href="/"
+              @click="logout()"
+             
+            >
               <h6><b style="color: #bea44d">خروج </b></h6>
             </b-nav-item>
 
@@ -65,25 +70,28 @@
  
  <script>
 export default {
-  data(){
+  data() {
     return {
-     token : localStorage.getItem("token"),
-
-    }
+      token: localStorage.getItem("token"),
+      show: true,
+    };
   },
   created() {
     // console.log("login..", this.token)
-
   },
-  methods:{
-    logout(){
-      if(this.token){
-                localStorage.removeItem("token") ;
+  methods: {
+    logout() {
+      if (this.token) {
+        localStorage.removeItem("token");
       }
-     
+    },
 
-    }
-  }
+    showBtn() {
+      if (this.token) {
+        return true;
+      } else return false;
+    },
+  },
 };
 </script>
  

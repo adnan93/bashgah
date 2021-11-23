@@ -54,6 +54,7 @@
                 required
                 outlined
                 dense
+                @change="OstanChange()"
               >
               </v-select>
               <br />
@@ -130,13 +131,12 @@
                 outlined
                 required
                 dense
-
               />
               <br />
 
               <v-text-field
                 v-model="form.Email"
-                style="hight: 150px;"
+                style="hight: 150px"
                 type="email"
                 label="ایمیل"
                 outlined
@@ -170,14 +170,14 @@
                 dense
               >
               </v-select>
-       
 
               <div>
-                <date-picker v-model="form.BirthDate"
-                 label="تاریخ تولد"
+                <date-picker
+                  v-model="form.BirthDate"
+                  label="تاریخ تولد"
                 ></date-picker>
               </div>
-               <br />
+              <br />
 
               <!-- <v-file-input
                 v-model="files"
@@ -202,7 +202,7 @@
                 accept="image/*"
                 @change="onFilePicked"
               />
-                  <br />
+              <br />
             </b-col>
           </b-row>
 
@@ -236,20 +236,20 @@
     </b-row>
 
     <v-snackbar v-model="snackbarGreen" color="green" dir="rtl">
-            {{ text }}
+      {{ text }}
 
-            <template v-slot:action="{ attrs }">
-              <v-btn
-                color="dark"
-                rounded
-                v-bind="attrs"
-                text
-                @click="snackbarGreen = false"
-              >
-                x
-              </v-btn>
-            </template>
-          </v-snackbar>
+      <template v-slot:action="{ attrs }">
+        <v-btn
+          color="dark"
+          rounded
+          v-bind="attrs"
+          text
+          @click="snackbarGreen = false"
+        >
+          x
+        </v-btn>
+      </template>
+    </v-snackbar>
   </div>
 </template>
 
@@ -260,7 +260,7 @@ import axios from "axios";
 export default {
   name: "Update",
   async created() {
-      this.snackbarGreen = true;
+    this.snackbarGreen = true;
 
     let rest = await axios.get(`http://localhost:8080/api/Province/GetAll`, {
       headers: {
@@ -269,6 +269,8 @@ export default {
     });
 
     this.Province = rest.data;
+
+    console.log("Province: ", rest.data);
 
     //  console.log('Province', this.Province);
 
@@ -305,7 +307,6 @@ export default {
     this.form.BirthDate = response.data.BirthDate.toString();
 
     this.form.Degree = response.data.Degree;
-    console.log("Degree: ", this.form.Degree);
 
     this.form.JobType = response.data.JobType;
 
@@ -315,16 +316,9 @@ export default {
 
     this.form.CityId = response.data.CityId;
 
-    this.form.ProvinceId = response.data.ProvinceId;
-
-    console.log("ProvinceId: ", this.form.ProvinceId);
-
-    this.form.ProfilePictrue = response.data.ProfilePictrue;
-
     let res = await axios.get(
-      `http://localhost:8080/api/City/GetByProvinceId/${this.form.ProvinceId}`,
-      this.form.ProvinceId,
-
+      `http://localhost:8080/api/City/GetByProvinceId/${response.data.ProvinceId}`,
+      response.data.ProvinceId,
       {
         headers: {
           token: localStorage.getItem("token"),
@@ -332,14 +326,19 @@ export default {
       }
     );
     this.cities = res.data;
-    console.log("cities", res.data);
+
+    this.form.ProvinceId = response.data.ProvinceId;
+
+    this.form.ProfilePictrue = response.data.ProfilePictrue;
+  },
+  mounted(){
+  // window.location.reload(true);
 
   },
 
   data() {
     return {
-
-        text: "  در حال دریافت اطلاعات ...",
+      text: "  در حال دریافت اطلاعات ...",
       loadingbtn: false,
       date: "",
       //img
@@ -397,18 +396,29 @@ export default {
         { Name: "شغل آزاد", Value: 1 },
       ],
 
-   
-
-
       show4: false,
     };
   },
 
   watch: {
-    getOstan() {},
+
   },
 
   methods: {
+    async OstanChange() {
+      let res = await axios.get(
+        `http://localhost:8080/api/City/GetByProvinceId/${this.form.ProvinceId}`,
+        this.form.ProvinceId,
+        {
+          headers: {
+            token: localStorage.getItem("token"),
+          },
+        }
+      );
+      this.cities = res.data;
+      console.log("cities", this.cities);
+    },
+
     pickFile() {
       this.$refs.image.click();
     },
@@ -439,7 +449,9 @@ export default {
     },
 
     async updateCust() {
-      this.loadingbtn =true;
+      console.log("form: ", this.form);
+
+      this.loadingbtn = true;
       await axios
         .post(`http://localhost:8080/api/Customer/Update`, this.form, {
           headers: {
@@ -447,16 +459,14 @@ export default {
           },
         })
         .then((response) => {
-          console.log(response);
+          console.log("updated customer: ", response);
 
           this.$router.push({ path: "/customerProfile" });
         })
         .catch((e) => {
           this.errors.push(e);
         });
-
-              this.loadingbtn =false;
-
+      this.loadingbtn = false;
     },
 
     //   async submitUpdateUserImage() {
