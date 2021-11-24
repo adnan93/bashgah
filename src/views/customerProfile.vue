@@ -177,16 +177,16 @@
                                     >
                                       <template #cell(actions)="row">
 
-                                        <v-icon
+                                        <!-- <v-icon
                                           style="
                                             font-size: 20px;
                                             color: #bea44d;
                                           "
-                                          v-show="showIcon(row)"
+                                          v-show="showTrueIcon(row)"
                                         >
                                           done
                                         </v-icon>
-                                            
+                                             -->
 
 
                                         <v-icon
@@ -195,7 +195,7 @@
                                             font-size: 20px;
                                             color: #bea44d;
                                           "
-                                          v-show="showIcon(row)"
+                                       
                                         >
                                           add_circle
                                         </v-icon>
@@ -274,6 +274,7 @@
               </v-btn>
             </template>
           </v-snackbar>
+          
         </b-card>
       </b-card-group>
 
@@ -304,8 +305,10 @@ export default {
       token: "",
 
       //create
-      createLoading: false,
+      trueIcon: false,
+      addIcon: true,
 
+      createLoading: false,
       AllScores: [],
       AllPrograms: [],
       CustomerScores: [],
@@ -383,11 +386,18 @@ export default {
   },
 
   methods: {
-    showIcon(row){
+    showTrueIcon(row){
       console.log(row)
-      return true;
-
+      this.trueIcon =false;
+      return this.trueIcon;
     },
+
+    showAddIcon(row){
+      console.log(row)
+     this.addIcon =true;
+     return this.addIcon;
+    },
+
     //create
     openCreateModal() {
       this.showCreateModal = true;
@@ -502,6 +512,8 @@ export default {
       this.editedRow = row;
       this.Title = row.item.Title;
       this.selectedId = row.item.Id;
+      
+
       // this.openEditModal();
       console.log("CustomerPrograms:", this.CustomerPrograms);
 
@@ -574,6 +586,9 @@ export default {
           .catch((e) => {
             this.errors.push(e);
           });
+
+       
+           
       }
     },
 

@@ -42,12 +42,7 @@
               <h6><b style="color: #bea44d">برنامه های کاربران </b></h6>
             </b-nav-item>
 
-            <b-nav-item
-              class="ml-2"
-              href="/"
-              @click="logout()"
-             
-            >
+            <b-nav-item class="ml-2" @click="checkLogout()">
               <h6><b style="color: #bea44d">خروج </b></h6>
             </b-nav-item>
 
@@ -61,6 +56,66 @@
           </b-navbar-nav>
         </b-collapse>
       </b-navbar>
+
+      <!-- add new -->
+      <div>
+        <b-modal
+          v-model="showCreateModal"
+          dir="rtl"
+          id="modal-center"
+          title=" خروج"
+          :header-bg-variant="headerBgVariant"
+          :header-text-variant="headerTextVariant"
+        >
+        <h3> آیا از خروج مطمئن هستید ؟</h3>
+          <template #modal-footer>
+            <div class="w-100">
+              <v-btn
+                class="select2"
+                color="#bea44d"
+                elevation="3"
+                rounded
+                larg
+                outlined
+                @click="closeCreateModal"
+                >انصراف
+              </v-btn>
+
+              <v-btn
+                    class="btnsize"
+                    color="#bea44d"
+                    elevation="5"
+                    rounded
+                    large
+                    @click="logout()"
+                  >
+                  بلی
+                  </v-btn>
+            </div>
+
+
+              
+          </template>
+        </b-modal>
+      </div>
+
+      
+          <v-snackbar v-model="snackbarGreen" color="green" dir="rtl">
+            {{ text }}
+
+            <template v-slot:action="{ attrs }">
+              <v-btn
+                color="dark"
+                rounded
+                v-bind="attrs"
+                text
+                @click="snackbarGreen = false"
+              >
+                x
+              </v-btn>
+            </template>
+          </v-snackbar>
+
     </b-row>
     <router-view />
   </v-app>
@@ -74,22 +129,53 @@ export default {
     return {
       token: localStorage.getItem("token"),
       show: true,
+      //logout
+      showCreateModal: false,
+
+      //modal
+      headerBgVariant: "dark",
+      headerTextVariant: "light",
+
+       //snachbar
+       text: "با موفقیت خارج شدید",
+       snackbarGreen: false,
+
     };
+
+   
+
   },
   created() {
     // console.log("login..", this.token)
   },
   methods: {
+    checkLogout(){
+      this.openCreateModal();
+    },
+
     logout() {
+       localStorage.removeItem("token");
       if (this.token) {
         localStorage.removeItem("token");
       }
+      this.closeCreateModal();
+      this.$router.push({ path: "/" });
+              this.snackbarGreen = true;
+
     },
 
     showBtn() {
       if (this.token) {
         return true;
       } else return false;
+    },
+
+    openCreateModal() {
+      this.showCreateModal = true;
+    },
+
+    closeCreateModal() {
+      this.showCreateModal = false;
     },
   },
 };

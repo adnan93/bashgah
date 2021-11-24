@@ -25,45 +25,50 @@
                   </template>
 
                   <b-form @submit="onSubmit">
-                    <b-form-input
+                    <v-text-field
                       v-model="form.Name"
                       type="text"
                       placeholder="نام "
                       required
-                    ></b-form-input>
-                    <br />
+                      outlined
+                      dense
+                    />
 
-                    <b-form-input
+                    <v-text-field
                       v-model="form.Family"
                       type="text"
                       placeholder="نام خانوادگی"
                       required
-                    ></b-form-input>
-                    <br />
+                      outlined
+                      dense
+                    />
 
-                    <b-form-input
+                    <v-text-field
                       v-model="form.Mobile"
                       placeholder="شماره موبایل"
                       required
-                    ></b-form-input>
-                    <br />
+                      outlined
+                      dense
+                    />
 
-                    <b-form-input
+                    <v-text-field
+                      :append-icon="show4 ? 'mdi-eye' : 'mdi-eye-off'"
                       v-model="form.Password"
-                      type="text"
-                      placeholder="رمز عبور"
+                      :type="show4 ? 'text' : 'password'"
                       required
-                    ></b-form-input>
-                    <br />
+                      placeholder="رمز عبور "
+                      @click:append="show4 = !show4"
+                      outlined
+                      dense
+                    />
 
-                    <div>
-                      <b-form-input
-                        v-model="form.VerificationCode"
-                        placeholder="کد تایید"
-                        required
-                      >
-                      </b-form-input>
-                    </div>
+                    <v-text-field
+                      v-model="form.VerificationCode"
+                      placeholder="کد تایید"
+                      required
+                      outlined
+                      dense
+                    />
 
                     <br />
 
@@ -104,31 +109,29 @@
                     :footer-bg-variant="bodyBgVariant"
                     :footer-text-variant="footerTextVariant"
                   >
-                 
-                      <b-form-input
-                        v-model="PhoneNumber"
-                        placeholder=" شماره موبایل خود را وارد کنید"
-                        required
-                      ></b-form-input>
+                    <b-form-input
+                      v-model="PhoneNumber"
+                      placeholder=" شماره موبایل خود را وارد کنید"
+                      required
+                    ></b-form-input>
 
-                      <template #modal-footer>
-                        <div class="w-100">
-                          <v-btn
-                            :loading="getCodeLoading"
-                            class="btnsize ml-1"
-                            color="#bea44d"
-                            elevation="5"
-                            rounded
-                            large
-                            type="submit"
-                            variant="primary"
-                            @click="getCode()"
-                          >
-                            درخواست کد تایید
-                          </v-btn>
-                        </div>
-                      </template>
-         
+                    <template #modal-footer>
+                      <div class="w-100">
+                        <v-btn
+                          :loading="getCodeLoading"
+                          class="btnsize ml-1"
+                          color="#bea44d"
+                          elevation="5"
+                          rounded
+                          large
+                          type="submit"
+                          variant="primary"
+                          @click="getCode()"
+                        >
+                          درخواست کد تایید
+                        </v-btn>
+                      </div>
+                    </template>
                   </b-modal>
 
                   <v-snackbar
@@ -179,6 +182,8 @@ export default {
   name: "App",
   data() {
     return {
+      show4: false,
+
       //loading
       getCodeLoading: false,
       signUpLoading: false,

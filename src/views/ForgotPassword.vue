@@ -24,30 +24,39 @@
                     </div>
                   </template>
 
-                  <b-form @submit="onSubmit">
-                    <b-form-input
-                      v-model="form.Mobile"
-                      placeholder="شماره موبایل"
-                      required
-                    ></b-form-input>
-                    <br />
-
-                    <b-form-input
-                      v-model="form.Password"
-                      type="text"
-                      placeholder="رمز عبور جدید "
-                      required
-                    ></b-form-input>
-                    <br />
-
-                    <div>
-                      <b-form-input
-                        v-model="form.VerificationCode"
-                        placeholder="کد تایید"
+                  <b-form @submit="onSubmit"
+                >
+                      <v-text-field
+                        v-model="form.Mobile"
+                        placeholder="شماره موبایل"
                         required
-                      >
-                      </b-form-input>
-                    </div>
+                        outlined
+                        dense
+                      />
+
+
+                    <v-text-field
+                      :append-icon="show4 ? 'mdi-eye' : 'mdi-eye-off'"
+                      v-model="form.Password"
+                      :type="show4 ? 'text' : 'password'"
+                      required
+                      placeholder="رمز عبور جدید"
+                      @click:append="show4 = !show4"
+                      outlined
+                      dense
+                  
+                   />
+                   
+                   
+                     <v-text-field
+                        v-model="form.VerificationCode"
+                        placeholder="کد  تایید"
+                        required
+                        outlined
+                        dense
+                      />
+
+       
 
                     <br />
 
@@ -161,6 +170,9 @@ export default {
   name: "App",
   data() {
     return {
+      
+      show4: false,
+
       //loading
       getCodeLoading: false,
       signUpLoading: false,

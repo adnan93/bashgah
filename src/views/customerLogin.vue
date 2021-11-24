@@ -25,21 +25,29 @@
                   </template>
 
                   <b-form @submit="onSubmit">
-                    <b-form-input
-                      type="tel"
-                      v-model="form.Mobile"
-                      placeholder="شماره موبایل"
-                      required
-                    />
 
-                    <br />
+                  
 
-                    <b-form-input
+                      <v-text-field
+                        v-model="form.Mobile"
+                        placeholder="شماره موبایل"
+                        required
+                        outlined
+                        dense
+                      />
+
+                
+
+                    <v-text-field
+                      :append-icon="show4 ? 'mdi-eye' : 'mdi-eye-off'"
                       v-model="form.Password"
-                      type="text"
+                      :type="show4 ? 'text' : 'password'"
+                      required
                       placeholder="رمز عبور"
-                      success-message="Nice to meet you!"
-                    />
+                      @click:append="show4 = !show4"
+                      outlined
+                      dense
+                    ></v-text-field>
 
                     <br />
 
@@ -54,6 +62,7 @@
                       :loading="loadingbtn"
                       >ورود
                     </v-btn>
+
                     <a href="/ForgotPassword" style="text-decoration: none">
                       <h8> رمز عبور خود را فراموش کردید؟ </h8>
                     </a>
@@ -119,6 +128,7 @@ export default {
         Mobile: "",
         Password: "",
       },
+      show4: false,
     };
   },
 
@@ -126,7 +136,7 @@ export default {
     ...mapActions(["CustomerLogIn"]),
 
     async onSubmit(event) {
-      this.loadingbtn =true;
+      this.loadingbtn = true;
       event.preventDefault();
       await this.CustomerLogIn(this.form);
 
@@ -140,10 +150,8 @@ export default {
         this.snackColor = "red";
       }
       this.snackbarGreen = true;
-      this.loadingbtn =false;
-
+      this.loadingbtn = false;
     },
-
   },
 
   async created() {
