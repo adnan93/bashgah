@@ -74,14 +74,39 @@
                                       hover
                                     >
                                       <template #cell(actions)="row">
-                                        <v-icon
+                                        <div
                                           @click="addNewScoreToCustomer(row)"
-                                          style="
-                                            font-size: 20px;
-                                            color: #bea44d;
-                                          "
-                                          >add_circle
-                                        </v-icon>
+                                        >
+                                          <div
+                                            v-if="
+                                              getenScores.includes(
+                                                row.item.ActivityName
+                                              ) ||
+                                              row.item.ActivityName ==
+                                                selectedName
+                                            "
+                                          >
+                                            <v-icon
+                                              style="
+                                                font-size: 20px;
+                                                color: #bea44d;
+                                              "
+                                            >
+                                              done_all
+                                            </v-icon>
+                                          </div>
+
+                                          <div v-else>
+                                            <v-icon
+                                              style="
+                                                font-size: 20px;
+                                                color: #bea44d;
+                                              "
+                                            >
+                                              add_circle
+                                            </v-icon>
+                                          </div>
+                                        </div>
                                       </template>
                                     </b-table>
                                   </div>
@@ -103,6 +128,26 @@
                                 </v-btn>
                               </div>
                             </template>
+ 
+                            <v-snackbar
+                              v-model="snackbarGreen"
+                              :color="snackColor"
+                              dir="rtl"
+                            >
+                              {{ text }}
+
+                              <template v-slot:action="{ attrs }">
+                                <v-btn
+                                  color="red"
+                                  rounded
+                                  v-bind="attrs"
+                                  text
+                                  @click="snackbarGreen = false"
+                                >
+                                  x
+                                </v-btn>
+                              </template>
+                            </v-snackbar>
                           </b-modal>
                         </div>
                       </b-col>
@@ -176,32 +221,38 @@
                                       hover
                                     >
                                       <template #cell(actions)="row">
-
-                                        <!-- <v-icon
-                                          style="
-                                            font-size: 20px;
-                                            color: #bea44d;
-                                          "
-                                          v-show="showTrueIcon(row)"
-                                        >
-                                          done
-                                        </v-icon>
-                                             -->
-
-
-                                        <v-icon
+                                        <div
                                           @click="addNewProgramToCustomer(row)"
-                                          style="
-                                            font-size: 20px;
-                                            color: #bea44d;
-                                          "
-                                       
                                         >
-                                          add_circle
-                                        </v-icon>
+                                          <div
+                                            v-if="
+                                              getenPrograms.includes(
+                                                row.item.Title
+                                              ) || row.item.Title == Title
+                                            "
+                                          >
+                                            <v-icon
+                                              style="
+                                                font-size: 20px;
+                                                color: #bea44d;
+                                              "
+                                            >
+                                              done_all
+                                            </v-icon>
+                                          </div>
 
+                                          <div v-else>
+                                            <v-icon
+                                              style="
+                                                font-size: 20px;
+                                                color: #bea44d;
+                                              "
+                                            >
+                                              add_circle
+                                            </v-icon>
+                                          </div>
+                                        </div>
                                       </template>
-
                                     </b-table>
                                   </div>
                                 </b-col>
@@ -222,6 +273,26 @@
                                 </v-btn>
                               </div>
                             </template>
+
+                            <v-snackbar
+                              v-model="snackbarGreen"
+                              :color="snackColor"
+                              dir="rtl"
+                            >
+                              {{ text }}
+
+                              <template v-slot:action="{ attrs }">
+                                <v-btn
+                                  color="red"
+                                  rounded
+                                  v-bind="attrs"
+                                  text
+                                  @click="snackbarGreen = false"
+                                >
+                                  x
+                                </v-btn>
+                              </template>
+                            </v-snackbar>
                           </b-modal>
                         </div>
                       </b-col>
@@ -274,7 +345,6 @@
               </v-btn>
             </template>
           </v-snackbar>
-          
         </b-card>
       </b-card-group>
 
@@ -297,16 +367,19 @@ export default {
 
   data() {
     return {
- 
       //snackbar
       snackColor: "",
       snackbarGreen: false,
       text: "",
       token: "",
+      y: "top",
 
       //create
       trueIcon: false,
       addIcon: true,
+      icon: "add_circle",
+      getenPrograms: [],
+      getenScores: [],
 
       createLoading: false,
       AllScores: [],
@@ -386,16 +459,16 @@ export default {
   },
 
   methods: {
-    showTrueIcon(row){
-      console.log(row)
-      this.trueIcon =false;
+    showTrueIcon(row) {
+      console.log(row);
+      this.trueIcon = false;
       return this.trueIcon;
     },
 
-    showAddIcon(row){
-      console.log(row)
-     this.addIcon =true;
-     return this.addIcon;
+    showAddIcon(row) {
+      console.log("showIcon", row);
+      this.addIcon = true;
+      return this.addIcon;
     },
 
     //create
@@ -419,8 +492,6 @@ export default {
     //add new score
 
     async addNewScoreToCustomer(row) {
-
-      let temp = [];
       this.editedRow = row;
       this.selectedName = row.item.ActivityName;
       this.selectedId = row.item.Id;
@@ -432,12 +503,11 @@ export default {
       console.log("selectedId:", this.selectedId);
 
       for (let item of this.CustomerScores) {
-        temp.push(item.ActivityName);
+        this.getenScores.push(item.ActivityName);
       }
-      console.log("temp", temp);
       console.log("selectedName:", this.selectedName);
 
-      if (temp.includes(this.selectedName)) {
+      if (this.getenScores.includes(this.selectedName)) {
         console.log("has been added ! ");
         this.snackColor = "red";
         this.text = "اين فعاليت قبلا اضافه شده !";
@@ -500,19 +570,21 @@ export default {
             this.errors.push(e);
           });
       }
+      this.showTrueIcon(row);
     },
 
     //add new program
     async addNewProgramToCustomer(row) {
+      this.icon = "done";
 
-            this.showTrueIcon=true;
-      this.showPlusIcon= false;
+      console.log(row, "row");
+      this.showTrueIcon = true;
+      this.showPlusIcon = false;
 
-      let temp = [];
+      // let temp = [];
       this.editedRow = row;
       this.Title = row.item.Title;
       this.selectedId = row.item.Id;
-      
 
       // this.openEditModal();
       console.log("CustomerPrograms:", this.CustomerPrograms);
@@ -522,13 +594,14 @@ export default {
       console.log("selectedId:", this.selectedId);
 
       for (let item of this.CustomerPrograms) {
-        temp.push(item.Title);
+        this.getenPrograms.push(item.Title);
       }
-      console.log("temp", temp);
+      console.log("temp", this.getenPrograms);
       console.log("selectedId:", this.selectedName);
 
-      if (temp.includes(this.Title)) {
+      if (this.getenPrograms.includes(this.Title)) {
         console.log("added ");
+
         this.snackColor = "red";
         this.text = "اين برنامه قبلا اضافه شده !";
         this.snackbarGreen = true;
@@ -586,9 +659,6 @@ export default {
           .catch((e) => {
             this.errors.push(e);
           });
-
-       
-           
       }
     },
 
