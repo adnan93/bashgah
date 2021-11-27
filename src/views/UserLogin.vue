@@ -13,8 +13,7 @@
           </template>
 
           <b-row>
-            <b-col cols="3">
-            </b-col>
+            <b-col cols="3"> </b-col>
 
             <b-col cols="6">
               <div dir="rtl">
@@ -52,11 +51,9 @@
                       large
                       type="submit"
                       variant="primary"
-                      :loading= "loadingbtn"
+                      :loading="loadingbtn"
                       >ورود
                     </v-btn>
-
-             
                   </b-form>
                 </b-card>
               </div>
@@ -100,8 +97,6 @@ export default {
   name: "Login",
   computed: mapGetters(["getToken", "getMessage", "getMessageType"]),
 
-  components: {},
-
   data() {
     return {
       loadingbtn: false,
@@ -126,25 +121,20 @@ export default {
     ...mapActions(["logIn"]),
 
     async onSubmit(event) {
-      this.loadingbtn=true;
+      this.loadingbtn = true;
       event.preventDefault();
-     await this.logIn(this.form);
+      await this.logIn(this.form);
       this.text = await this.getMessage;
-     
 
       if ((await this.getMessageType) == 1) {
         this.snackColor = "green";
-       this.$router.push({ path: "/Score" });
-
-
+        this.$router.push({ path: "/Score" });
       } else {
         this.snackColor = "red";
       }
-            this.loadingbtn=false;
+      this.loadingbtn = false;
 
-       this.snackbarGreen = true;
-      
-
+      this.snackbarGreen = true;
     },
   },
 

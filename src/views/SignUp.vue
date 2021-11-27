@@ -230,6 +230,7 @@ export default {
     },
 
     async onSubmit(event) {
+      
       event.preventDefault();
       this.signUpLoading = true;
 
@@ -253,6 +254,7 @@ export default {
         .catch((e) => {
           this.errors.push(e);
         });
+
     },
 
     async getCode() {

@@ -128,7 +128,7 @@
                                 </v-btn>
                               </div>
                             </template>
- 
+
                             <v-snackbar
                               v-model="snackbarGreen"
                               :color="snackColor"
@@ -674,6 +674,9 @@ export default {
     //date
     this.today = new Date().toLocaleDateString("fa-IR");
 
+    this.text = "در حال دریافت اطلاعات ...";
+    this.snackColor = "green";
+
     //Customer Points
     await axios
       .get(`http://localhost:8080/api/Customer/GetCustomerPoints`, {
@@ -731,6 +734,8 @@ export default {
       .catch((e) => {
         this.errors.push(e);
       });
+
+    this.snackbarGreen = true;
 
     //GetCustomerScores
     await axios

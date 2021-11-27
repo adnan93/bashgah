@@ -24,16 +24,18 @@
                     </div>
                   </template>
 
-                  <b-form @submit="onSubmit"
-                >
-                      <v-text-field
-                        v-model="form.Mobile"
-                        placeholder="شماره موبایل"
-                        required
-                        outlined
-                        dense
-                      />
-
+                  <b-form @submit="onSubmit">
+                    <v-text-field
+                      id="phone"
+                      type="tel"
+                      v-model="form.Mobile"
+                      class="no-arrow"
+                      placeholder="شماره موبایل"
+                      required
+                      outlined
+                      dense
+                      :rules= "phoneNumberRules"
+                    />
 
                     <v-text-field
                       :append-icon="show4 ? 'mdi-eye' : 'mdi-eye-off'"
@@ -44,19 +46,16 @@
                       @click:append="show4 = !show4"
                       outlined
                       dense
-                  
-                   />
-                   
-                   
-                     <v-text-field
-                        v-model="form.VerificationCode"
-                        placeholder="کد  تایید"
-                        required
-                        outlined
-                        dense
-                      />
 
-       
+                    />
+
+                    <v-text-field
+                      v-model="form.VerificationCode"
+                      placeholder="کد  تایید"
+                      required
+                      outlined
+                      dense
+                    />
 
                     <br />
 
@@ -170,8 +169,22 @@ export default {
   name: "App",
   data() {
     return {
-      
       show4: false,
+
+    
+
+   phoneNumberRules : [
+    (v) =>  /^[\s۰-۹\s0-9]+$/.test(v) || "شماره معتبر نیست",
+  ],
+
+   emailRules : [
+    (v) =>
+      !v ||
+      /^\w+([.-]?\w+)@\w+([.-]?\w+)(\.\w{2,3})+$/.test(v) ||
+      "ایمیل معتبر نیست",
+  ],
+
+      
 
       //loading
       getCodeLoading: false,
@@ -213,6 +226,10 @@ export default {
   components: {},
   mounted() {},
   methods: {
+    
+
+
+
     async onSubmit(event) {
       event.preventDefault();
       this.signUpLoading = true;
@@ -220,7 +237,7 @@ export default {
       await axios
         .post(`http://localhost:8080/api/Customer/ForgotPassword`, this.form)
         .then((response) => {
-          console.log(response);
+          console.log(response.data);
 
           this.text = response.data.Description;
 
@@ -287,5 +304,17 @@ p {
   padding: 0% !important;
   background-color: #f0f0f5;
   width: 10rem;
+}
+
+.no-arrow {
+  -moz-appearance: textfield;
+}
+.no-arrow::-webkit-inner-spin-button {
+  display: none;
+}
+.no-arrow::-webkit-outer-spin-button,
+.no-arrow::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
 </style>
