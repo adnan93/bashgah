@@ -72,6 +72,7 @@
                                       striped
                                       responsive="sm"
                                       hover
+                                      outlined
                                     >
                                       <template #cell(actions)="row">
                                         <div
@@ -161,8 +162,17 @@
                         striped
                         responsive="sm"
                         hover
+                        :busy="isBusyScore"
+                        outlined
                       >
                         <template #cell(actions)=""> </template>
+
+                        <template #table-busy>
+                          <div class="text-center my-2">
+                            <b-spinner class="align-middle"></b-spinner>
+                            <strong>در حال دریافت اطلاعات...</strong>
+                          </div>
+                        </template>
                       </b-table>
                     </div>
                   </div>
@@ -219,6 +229,7 @@
                                       striped
                                       responsive="sm"
                                       hover
+                                      outlined
                                     >
                                       <template #cell(actions)="row">
                                         <div
@@ -306,6 +317,8 @@
                         striped
                         responsive="sm"
                         hover
+                        :busy="isBusyProgram"
+                        outlined
                       >
                         <template #cell(actions)="row">
                           <v-icon
@@ -319,6 +332,13 @@
                             style="font-size: 20px; color: red"
                             >delete_outline</v-icon
                           >
+                        </template>
+
+                        <template #table-busy>
+                          <div class="text-center my-2">
+                            <b-spinner class="align-middle"></b-spinner>
+                            <strong>در حال دریافت اطلاعات...</strong>
+                          </div>
                         </template>
                       </b-table>
                     </div>
@@ -392,6 +412,9 @@ export default {
         ActivityName: "",
         Description: "",
       },
+      //loading table
+      isBusyScore: false,
+      isBusyProgram: false,
 
       //Add New Score
       editLoading: false,
@@ -676,7 +699,9 @@ export default {
 
     this.text = "در حال دریافت اطلاعات ...";
     this.snackColor = "green";
-
+    this.snackbarGreen = true;
+    this.isBusyScore = true;
+    this.isBusyProgram = true;
     //Customer Points
     await axios
       .get(`http://localhost:8080/api/Customer/GetCustomerPoints`, {
@@ -720,23 +745,6 @@ export default {
         this.errors.push(e);
       });
 
-    //get All programs
-    await axios
-      .get(`http://localhost:8080/api/Program/GetAll`, {
-        headers: {
-          token: localStorage.getItem("token"),
-        },
-      })
-      .then((response) => {
-        this.AllPrograms = response.data;
-        console.log("All programs:", response.data);
-      })
-      .catch((e) => {
-        this.errors.push(e);
-      });
-
-    this.snackbarGreen = true;
-
     //GetCustomerScores
     await axios
       .get(`http://localhost:8080/api/Customer/GetCustomerPrograms`, {
@@ -766,6 +774,24 @@ export default {
       .catch((e) => {
         this.errors.push(e);
       });
+
+    this.isBusyScore = false;
+
+    //get All programs
+    await axios
+      .get(`http://localhost:8080/api/Program/GetAll`, {
+        headers: {
+          token: localStorage.getItem("token"),
+        },
+      })
+      .then((response) => {
+        this.AllPrograms = response.data;
+        console.log("All programs:", response.data);
+      })
+      .catch((e) => {
+        this.errors.push(e);
+      });
+    this.isBusyProgram = false;
   },
 };
 </script>

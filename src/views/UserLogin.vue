@@ -17,7 +17,7 @@
 
             <b-col cols="6">
               <div dir="rtl">
-                <b-card class="mt-3">
+                <b-card class="mt-3" border-variant="dark">
                   <template #header>
                     <div style="text-align: center">
                       <b class="mb-0">ورود USER</b>

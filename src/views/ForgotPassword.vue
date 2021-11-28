@@ -17,7 +17,7 @@
 
             <b-col cols="6">
               <div dir="rtl">
-                <b-card class="mt-3">
+                <b-card class="mt-3" border-variant="dark">
                   <template #header>
                     <div style="text-align: center">
                       <b class="mb-0">بازیابی کلمه عبور</b>
@@ -29,12 +29,11 @@
                       id="phone"
                       type="tel"
                       v-model="form.Mobile"
-                      class="no-arrow"
                       placeholder="شماره موبایل"
                       required
                       outlined
                       dense
-                      :rules= "phoneNumberRules"
+                      :rules="[phoneRules.required, phoneRules.validNum]"
                     />
 
                     <v-text-field
@@ -46,7 +45,7 @@
                       @click:append="show4 = !show4"
                       outlined
                       dense
-
+                      :rules="[phoneRules.required]"
                     />
 
                     <v-text-field
@@ -171,20 +170,14 @@ export default {
     return {
       show4: false,
 
-    
+      phoneNumberRules: [
+        (v) => !v || /^[\s۰-۹\s0-9]+$/.test(v) || "شماره معتبر نیست",
+      ],
 
-   phoneNumberRules : [
-    (v) =>  /^[\s۰-۹\s0-9]+$/.test(v) || "شماره معتبر نیست",
-  ],
-
-   emailRules : [
-    (v) =>
-      !v ||
-      /^\w+([.-]?\w+)@\w+([.-]?\w+)(\.\w{2,3})+$/.test(v) ||
-      "ایمیل معتبر نیست",
-  ],
-
-      
+      phoneRules: {
+        required: (value) => !!value || "این فیلد الزامی است",
+        validNum: (v) => /^[\s۰-۹\s0-9]+$/.test(v) || "شماره معتبر نیست",
+      },
 
       //loading
       getCodeLoading: false,
@@ -226,10 +219,6 @@ export default {
   components: {},
   mounted() {},
   methods: {
-    
-
-
-
     async onSubmit(event) {
       event.preventDefault();
       this.signUpLoading = true;

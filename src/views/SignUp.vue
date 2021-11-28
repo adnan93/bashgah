@@ -17,7 +17,7 @@
 
             <b-col cols="6">
               <div dir="rtl">
-                <b-card class="mt-3">
+                <b-card class="mt-3" border-variant="dark">
                   <template #header>
                     <div style="text-align: center">
                       <b class="mb-0">ثبت نام در باشگاه</b>
@@ -32,6 +32,8 @@
                       required
                       outlined
                       dense
+                      :rules="[phoneRules.required]"
+
                     />
 
                     <v-text-field
@@ -41,6 +43,8 @@
                       required
                       outlined
                       dense
+                     :rules="[phoneRules.required]"
+
                     />
 
                     <v-text-field
@@ -49,6 +53,8 @@
                       required
                       outlined
                       dense
+                      :rules="[phoneRules.required, phoneRules.validNum]"
+
                     />
 
                     <v-text-field
@@ -60,6 +66,7 @@
                       @click:append="show4 = !show4"
                       outlined
                       dense
+                       :rules="[phoneRules.required]"
                     />
 
                     <v-text-field
@@ -68,6 +75,7 @@
                       required
                       outlined
                       dense
+                       :rules="[phoneRules.required]"
                     />
 
                     <br />
@@ -219,6 +227,12 @@ export default {
         Password: "",
         Name: "",
         Family: "",
+      },
+
+      //validation
+      phoneRules: {
+        required: value => !!value || 'این فیلد الزامی است',
+        validNum: v =>  /^[\s۰-۹\s0-9]+$/.test(v)  || 'شماره معتبر نیست',
       },
     };
   },

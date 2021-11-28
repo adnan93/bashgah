@@ -3,7 +3,10 @@
     <b-row dir="rtl">
       <b-col cols="1"> </b-col>
       <b-col cols="10">
-        <b-card>
+        <b-card
+        
+        
+         border-variant="dark">
           <template #header>
             <div style="text-align: center">
               <b class="mb-0">ويرايش اطلاعات مشتری</b>
@@ -12,215 +15,199 @@
 
           <b-form @submit="onSubmit">
             <b-row>
-              <b-col>
-                <v-text-field
-                  type="text"
-                  v-model="form.Name"
-                  label="نام"
-                  required
-                  outlined
-                  dense
-                />
+              <b-row>
+                <b-col>
+                  <v-text-field
+                    type="text"
+                    v-model="form.Name"
+                    label="نام"
+                    required
+                    outlined
+                    dense
+                    :rules="[phoneRules.required]"
+                  />
 
-                <br />
+                  <br />
 
-                <v-text-field
-                  type="text"
-                  v-model="form.Family"
-                  label="نام خانوادگی"
-                  required
-                  outlined
-                  dense
-                />
+                  <v-text-field
+                    type="text"
+                    v-model="form.Family"
+                    label="نام خانوادگی"
+                    required
+                    outlined
+                    dense
+                    :rules="[phoneRules.required]"
+                  />
 
-                <br />
+                  <br />
 
-                <!-- <v-text-field
-                v-model="form.BirthDate"
-                label="تاریخ تولد"
-                required
-                outlined
-              />
+                  <v-select
+                    class="select"
+                    :items="Province"
+                    :item-text="'Name'"
+                    :item-value="'Id'"
+                    type="text"
+                    v-model="form.ProvinceId"
+                    label="استان"
+                    required
+                    outlined
+                    dense
+                    @change="OstanChange()"
+                  >
+                  </v-select>
+                  <br />
 
-              <br /> -->
+                  <v-select
+                    class="select"
+                    :items="cities"
+                    :item-text="'Name'"
+                    :item-value="'Id'"
+                    type="text"
+                    v-model="form.CityId"
+                    label="شهر"
+                    required
+                    outlined
+                    dense
+                  >
+                  </v-select>
 
-                <v-select
-                  class="select"
-                  :items="Province"
-                  :item-text="'Name'"
-                  :item-value="'Id'"
-                  type="text"
-                  v-model="form.ProvinceId"
-                  label="استان"
-                  required
-                  outlined
-                  dense
-                  @change="OstanChange()"
-                >
-                </v-select>
-                <br />
+                  <br />
 
-                <v-select
-                  class="select"
-                  :items="cities"
-                  :item-text="'Name'"
-                  :item-value="'Id'"
-                  type="text"
-                  v-model="form.CityId"
-                  label="شهر"
-                  required
-                  outlined
-                  dense
-                >
-                </v-select>
+                  <v-text-field
+                    v-model="form.Mobile"
+                    label="شماره موبایل"
+                    required
+                    outlined
+                    dense
+                    :rules="[phoneRules.required, phoneRules.validNum]"
+                  />
 
-                <br />
+                  <v-select
+                    :items="Degree"
+                    label="تحصیلات"
+                    :item-text="'Name'"
+                    :item-value="'Value'"
+                    v-model="form.Degree"
+                    outlined
+                    dense
+                  >
+                  </v-select>
 
-                <v-text-field
-                  v-model="form.Mobile"
-                  label="شماره موبایل"
-                  required
-                  outlined
-                  dense
-                />
+                  <br />
 
-                <v-select
-                  :items="Degree"
-                  label="تحصیلات"
-                  :item-text="'Name'"
-                  :item-value="'Value'"
-                  v-model="form.Degree"
-                  outlined
-                  dense
-                >
-                </v-select>
+                  <v-select
+                    :items="JobType"
+                    label="شغل"
+                    :item-text="'Name'"
+                    :item-value="'Value'"
+                    v-model="form.JobType"
+                    outlined
+                    dense
+                  >
+                  </v-select>
 
-                <br />
+                  <br />
+                </b-col>
 
-                <v-select
-                  :items="JobType"
-                  label="شغل"
-                  :item-text="'Name'"
-                  :item-value="'Value'"
-                  v-model="form.JobType"
-                  outlined
-                  dense
-                >
-                </v-select>
+                <b-col>
+                  <v-text-field
+                    :append-icon="show4 ? 'mdi-eye' : 'mdi-eye-off'"
+                    v-model="form.Password"
+                    :type="show4 ? 'text' : 'password'"
+                    required
+                    label="رمز عبور"
+                    @click:append="show4 = !show4"
+                    outlined
+                    dense
+                    :rules="[phoneRules.required]"
+                  ></v-text-field>
 
-                <br />
-              </b-col>
+                  <br />
 
-              <b-col>
-                <v-text-field
-                  :append-icon="show4 ? 'mdi-eye' : 'mdi-eye-off'"
-                  v-model="form.Password"
-                  :type="show4 ? 'text' : 'password'"
-                  required
-                  label="رمز عبور"
-                  @click:append="show4 = !show4"
-                  outlined
-                  dense
-                ></v-text-field>
+                  <v-text-field
+                    v-model="form.Address"
+                    type="text"
+                    label="آدرس"
+                    outlined
+                    required
+                    dense
+                    :rules="[phoneRules.required]"
+                  />
+                  <br />
 
-                <br />
+                  <v-text-field
+                    v-model="form.Email"
+                    style="hight: 150px"
+                    type="Email"
+                    label="ایمیل"
+                    :rules="[emailRules.required]"
+                    outlined
+                    required
+                    dense
+                  />
+                  <br />
 
-                <v-text-field
-                  v-model="form.Address"
-                  type="text"
-                  label="آدرس"
-                  outlined
-                  required
-                  dense
-                />
-                <br />
+                  <v-select
+                    :items="Married"
+                    label="وضعیت تاهل"
+                    :item-text="'Name'"
+                    :item-value="'Value'"
+                    v-model="form.IsMarried"
+                    outlined
+                    dense
+                  >
+                  </v-select>
+                  <br />
 
-                <v-text-field
-                  v-model="form.Email"
-                  style="hight: 150px"
-                  type="Email"
-                  label="ایمیل"
-                  oninvalid="this.setCustomValidity('این فیلد را وارد کنید  !')"
+                  <v-select
+                    class="select"
+                    :items="Gender"
+                    :item-text="'Name'"
+                    :item-value="'Value'"
+                    type="text"
+                    label="جنسیت"
+                    v-model="form.Gender"
+                    required
+                    outlined
+                    dense
+                  >
+                  </v-select>
 
-                  outlined
-                  required
-                  dense
-                />
-                <br />
+                  <div>
+                    <date-picker
+                      v-model="form.BirthDate"
+                      label="تاریخ تولد"
+                    ></date-picker>
+                  </div>
+                  <br />
 
-                <v-select
-                  :items="Married"
-                  label="وضعیت تاهل"
-                  :item-text="'Name'"
-                  :item-value="'Value'"
-                  v-model="form.IsMarried"
-                  outlined
-                  dense
-                >
-                </v-select>
-                <br />
+                  <br />
 
-                <v-select
-                  class="select"
-                  :items="Gender"
-                  :item-text="'Name'"
-                  :item-value="'Value'"
-                  type="text"
-                  label="جنسیت"
-                  v-model="form.Gender"
-                  required
-                  outlined
-                  dense
-                >
-                </v-select>
+                  <v-file-input
+                    label="عکس پروفایل "
+                    outlined
+                    :clearable="true"
+                    append-icon="add_a_photo"
+                    prepend-icon=""
+                    @change="bgBase64"
+                    accept="image/png, image/jpeg, image/bmp"
+                  >
+                  </v-file-input>
 
-                <div>
-                  <date-picker
-                    v-model="form.BirthDate"
-                    label="تاریخ تولد"
-                  ></date-picker>
+                  <br />
+                </b-col>
+              </b-row>
+
+              <b-row>
+                <div class="container" align="left">
+                  <v-img
+                    :src="`http://localhost:8080/api/Customer/GetPictureFile/${imgId}`"
+                    width="20%"
+                    height="100%"
+                    style="border-radius: 10px; position: relative"
+                  ></v-img>
                 </div>
-                <br />
-
-                <!-- <v-file-input
-                v-model="files"
-                accept="image/png, image/jpeg, image/bmp"
-                placeholder=" عکس پروفایل آپلود کنید"
-                prepend-icon=""
-                append-icon="mdi-camera"
-                outlined
-              ></v-file-input> -->
-
-                <!-- <img :src="imageUrl" height="150" v-if="imageUrl" />
-              <v-text-field
-                label=" عکس پروفایل خود را آپلود کنید"
-                @click="pickFile"
-                v-model="imageName"
-                prepend-icon="attach_file"
-              ></v-text-field>
-              <input
-                type="file"
-                style="display: none"
-                ref="image"
-                accept="image/*"
-                @change="onFilePicked"
-              /> -->
-                <br />
-
-                <v-file-input
-                  label="عکس پروفایل "
-                  outlined
-                  :clearable="true"
-                  v-model="images"
-                  append-icon="add_a_photo"
-                  prepend-icon=""
-                  @change="bgBase64"
-                  accept="image/png, image/jpeg, image/bmp"
-                >
-                </v-file-input>
-
-                <br />
-              </b-col>
+              </b-row>
             </b-row>
 
             <v-btn
@@ -228,26 +215,16 @@
               color="#bea44d"
               elevation="5"
               rounded
-              large
+              x-large
               @click="updateCust()"
               type="submit"
               variant="primary"
               :loading="loadingbtn"
               >ثبت
             </v-btn>
-          </b-form>
+            <br>
 
-          <!-- <v-btn
-            :loading="resetLoading"
-            class="select2"
-            color="#bea44d"
-            elevation="3"
-            rounded
-            large
-            outlined
-            @click="signup()"
-            >انصراف</v-btn
-          > -->
+          </b-form>
         </b-card>
       </b-col>
 
@@ -335,6 +312,7 @@ export default {
     this.form.Address = response.data.Address;
 
     this.form.CityId = response.data.CityId;
+    this.imgId = response.data.ProfilePictrue;
 
     let res = await axios.get(
       `http://localhost:8080/api/City/GetByProvinceId/${response.data.ProvinceId}`,
@@ -345,6 +323,7 @@ export default {
         },
       }
     );
+    this.getImg();
     this.cities = res.data;
 
     this.form.ProvinceId = response.data.ProvinceId;
@@ -359,14 +338,17 @@ export default {
     return {
       text: "  در حال دریافت اطلاعات ...",
 
-    emailRules : [
-    (v) =>
-      !v ||
-      /^\w+([.-]?\w+)@\w+([.-]?\w+)(\.\w{2,3})+$/.test(v) ||
-      "ایمیل معتبر نیست",
-  ],
+      //validation
+      phoneRules: {
+        required: (value) => !!value || "این فیلد الزامی است",
+        validNum: (v) => /^[\s۰-۹\s0-9]+$/.test(v) || "شماره معتبر نیست",
+      },
 
-
+      emailRules: {
+        required: (value) => !!value || "این فیلد الزامی است",
+        validEmail: (v) =>
+          /^\w+([.-]?\w+)@\w+([.-]?\w+)(\.\w{2,3})+$/.test(v) || " معتبر نیست",
+      },
 
       loadingbtn: false,
       date: "",
@@ -378,6 +360,7 @@ export default {
       imageFile: {},
 
       bg64: "",
+      imgId: "",
 
       Province: [],
       cities: [],
@@ -400,6 +383,7 @@ export default {
         CityId: "",
         ProfilePictrue: "",
         ProvinceId: "",
+        Base64File:""
       },
 
       mar: null,
@@ -434,14 +418,21 @@ export default {
   watch: {},
 
   methods: {
+    async getImg() {
+      let res = await axios.get(
+        `http://localhost:8080/api/Customer/GetPictureFile/${this.imgId}`,
+        this.imgId,
+        {
+          headers: {
+            token: localStorage.getItem("token"),
+          },
+        }
+      );
+      console.log("img is: ", res.data);
+    },
     async bgSend() {
       console.log("img", this.bg64);
-
-      // await dispatchCreateBg(this.$store, this.bgApi);
-      // this.img_id = this.$store.getters.getBgId.id;
-      this.image_ids.push(this.img_id);
-      this.bg64 = "";
-      this.bgApi = {};
+      this.form.Base64File = this.bg64;
     },
 
     bgBase64(e) {

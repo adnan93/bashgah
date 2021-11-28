@@ -2,7 +2,7 @@
   <div class="home">
     <div id="nav">
       <b-card-group deck class="mr-2">
-        <b-card>
+        <b-card >
           <template #header>
             <div style="text-align: center">
               <b>
@@ -17,7 +17,7 @@
 
             <b-col cols="6">
               <div dir="rtl">
-                <b-card class="mt-3">
+                <b-card class="mt-3"   border-variant="dark">
                   <template #header>
                     <div style="text-align: center">
                       <b class="mb-0">ورود به باشگاه</b>
@@ -25,18 +25,14 @@
                   </template>
 
                   <b-form @submit="onSubmit">
-
-                  
-
-                      <v-text-field
-                        v-model="form.Mobile"
-                        placeholder="شماره موبایل"
-                        required
-                        outlined
-                        dense
-                      />
-
-                
+                    <v-text-field
+                      v-model="form.Mobile"
+                      placeholder="شماره موبایل"
+                      required
+                      outlined
+                      dense
+                      :rules="[phoneRules.required, phoneRules.validNum]"
+                    />
 
                     <v-text-field
                       :append-icon="show4 ? 'mdi-eye' : 'mdi-eye-off'"
@@ -47,6 +43,7 @@
                       @click:append="show4 = !show4"
                       outlined
                       dense
+                      :rules="[phoneRules.required]"
                     ></v-text-field>
 
                     <br />
@@ -129,6 +126,13 @@ export default {
         Password: "",
       },
       show4: false,
+
+      //validation
+
+      phoneRules: {
+        required: (value) => !!value || "این فیلد الزامی است",
+        validNum: (v) => /^[\s۰-۹\s0-9]+$/.test(v) || "شماره معتبر نیست",
+      },
     };
   },
 
