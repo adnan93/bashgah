@@ -33,7 +33,6 @@
                       outlined
                       dense
                       :rules="[phoneRules.required]"
-
                     />
 
                     <v-text-field
@@ -43,8 +42,7 @@
                       required
                       outlined
                       dense
-                     :rules="[phoneRules.required]"
-
+                      :rules="[phoneRules.required]"
                     />
 
                     <v-text-field
@@ -54,7 +52,6 @@
                       outlined
                       dense
                       :rules="[phoneRules.required, phoneRules.validNum]"
-
                     />
 
                     <v-text-field
@@ -66,7 +63,7 @@
                       @click:append="show4 = !show4"
                       outlined
                       dense
-                       :rules="[phoneRules.required]"
+                      :rules="[phoneRules.required]"
                     />
 
                     <v-text-field
@@ -75,7 +72,7 @@
                       required
                       outlined
                       dense
-                       :rules="[phoneRules.required]"
+                      :rules="[phoneRules.required]"
                     />
 
                     <br />
@@ -231,8 +228,8 @@ export default {
 
       //validation
       phoneRules: {
-        required: value => !!value || 'این فیلد الزامی است',
-        validNum: v =>  /^[\s۰-۹\s0-9]+$/.test(v)  || 'شماره معتبر نیست',
+        required: (value) => !!value || "این فیلد الزامی است",
+        validNum: (v) => /^[\s۰-۹\s0-9]+$/.test(v) || "شماره معتبر نیست",
       },
     };
   },
@@ -244,15 +241,12 @@ export default {
     },
 
     async onSubmit(event) {
-      
       event.preventDefault();
       this.signUpLoading = true;
 
       await axios
         .post(`http://localhost:8080/api/Customer/Register`, this.form)
         .then((response) => {
-          console.log(response);
-
           this.text = response.data.Description;
 
           if (response.data.MessageType == 1) {
@@ -268,7 +262,6 @@ export default {
         .catch((e) => {
           this.errors.push(e);
         });
-
     },
 
     async getCode() {

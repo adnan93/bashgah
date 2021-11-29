@@ -3,10 +3,7 @@
     <b-row dir="rtl">
       <b-col cols="1"> </b-col>
       <b-col cols="10">
-        <b-card
-        
-        
-         border-variant="dark">
+        <b-card border-variant="dark">
           <template #header>
             <div style="text-align: center">
               <b class="mb-0">ويرايش اطلاعات مشتری</b>
@@ -191,6 +188,8 @@
                     prepend-icon=""
                     @change="bgBase64"
                     accept="image/png, image/jpeg, image/bmp"
+                    show-size
+                    :rules="imgRules"
                   >
                   </v-file-input>
 
@@ -202,7 +201,7 @@
                 <div class="container" align="left">
                   <v-img
                     :src="`http://localhost:8080/api/Customer/GetPictureFile/${imgId}`"
-                    width="20%"
+                    width="25%"
                     height="100%"
                     style="border-radius: 10px; position: relative"
                   ></v-img>
@@ -222,8 +221,7 @@
               :loading="loadingbtn"
               >ثبت
             </v-btn>
-            <br>
-
+            <br />
           </b-form>
         </b-card>
       </b-col>
@@ -362,6 +360,10 @@ export default {
       bg64: "",
       imgId: "",
 
+      imgRules: [
+        (v) => ( v.size < 500000 || "حجم عكس بايد كمتر از KB 500 می باشد"),
+      ],
+
       Province: [],
       cities: [],
       files: [],
@@ -383,7 +385,7 @@ export default {
         CityId: "",
         ProfilePictrue: "",
         ProvinceId: "",
-        Base64File:""
+        Base64File: "",
       },
 
       mar: null,
@@ -431,7 +433,6 @@ export default {
       console.log("img is: ", res.data);
     },
     async bgSend() {
-      console.log("img", this.bg64);
       this.form.Base64File = this.bg64;
     },
 
