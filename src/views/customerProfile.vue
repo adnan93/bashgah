@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <div id="nav">
-      <b-card-group deck class="mr-2">
+      <b-card-group>
         <b-card>
           <template #header>
             <div style="text-align: center">

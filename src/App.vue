@@ -1,5 +1,5 @@
 <template>
-  <v-app style="font-family: IRYekan">
+  <v-app class="home" style="font-family: IRYekan">
     <b-row dir="rtl">
       <b-navbar toggleable="lg" type="dark" variant="dark">
         <div>
@@ -67,7 +67,7 @@
           :header-bg-variant="headerBgVariant"
           :header-text-variant="headerTextVariant"
         >
-        <h3> آیا از خروج مطمئن هستید ؟</h3>
+          <h3>آیا از خروج مطمئن هستید ؟</h3>
           <template #modal-footer>
             <div class="w-100">
               <v-btn
@@ -82,42 +82,39 @@
               </v-btn>
 
               <v-btn
-                    class="btnsize"
-                    color="#bea44d"
-                    elevation="5"
-                    rounded
-                    large
-                    @click="logout()"
-                  >
-                  بلی
-                  </v-btn>
+                class="btnsize"
+                color="#bea44d"
+                elevation="5"
+                rounded
+                large
+                @click="logout()"
+              >
+                بلی
+              </v-btn>
             </div>
-
-
-              
           </template>
         </b-modal>
       </div>
 
-      
-          <v-snackbar v-model="snackbarGreen" color="green" dir="rtl">
-            {{ text }}
+      <v-snackbar v-model="snackbarGreen" color="green" dir="rtl">
+        {{ text }}
 
-            <template v-slot:action="{ attrs }">
-              <v-btn
-                color="dark"
-                rounded
-                v-bind="attrs"
-                text
-                @click="snackbarGreen = false"
-              >
-                x
-              </v-btn>
-            </template>
-          </v-snackbar>
+        <template v-slot:action="{ attrs }">
+          <v-btn
+            color="dark"
+            rounded
+            v-bind="attrs"
+            text
+            @click="snackbarGreen = false"
+          >
+            x
+          </v-btn>
+        </template>
+      </v-snackbar>
 
+      <router-view class="home" />
     </b-row>
-    <router-view />
+    
   </v-app>
 </template>
  
@@ -136,32 +133,27 @@ export default {
       headerBgVariant: "dark",
       headerTextVariant: "light",
 
-       //snachbar
-       text: "با موفقیت خارج شدید",
-       snackbarGreen: false,
-
+      //snachbar
+      text: "با موفقیت خارج شدید",
+      snackbarGreen: false,
     };
-
-   
-
   },
   created() {
     // console.log("login..", this.token)
   },
   methods: {
-    checkLogout(){
+    checkLogout() {
       this.openCreateModal();
     },
 
     logout() {
-       localStorage.removeItem("token");
+      localStorage.removeItem("token");
       if (this.token) {
         localStorage.removeItem("token");
       }
       this.closeCreateModal();
       this.$router.push({ path: "/" });
-              this.snackbarGreen = true;
-
+      this.snackbarGreen = true;
     },
 
     showBtn() {
@@ -222,5 +214,19 @@ a:link {
 
 a {
   color: white !important;
+}
+
+.home {
+ // background-color: #ffffff80;
+
+  //  background-color:rgb(240, 232, 232);
+        background-color: rgb(223, 221, 221);
+
+}
+
+
+.bg{
+    background-color: rgb(223, 221, 221);
+
 }
 </style>

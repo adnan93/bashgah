@@ -1,12 +1,12 @@
 <template>
-  <div>
+  <div >
     <b-row dir="rtl">
       <b-col cols="1"> </b-col>
       <b-col cols="10">
-        <b-card border-variant="dark">
+        <b-card border-variant="dark"  header-bg-variant="secondary">
           <template #header>
             <div style="text-align: center">
-              <b class="mb-0">ويرايش اطلاعات مشتری</b>
+              <p style="color:white" class="mb-0">ويرايش اطلاعات مشتری</p>
             </div>
           </template>
 
@@ -14,6 +14,7 @@
             <b-row>
               <b-row>
                 <b-col>
+                  
                   <v-text-field
                     type="text"
                     v-model="form.Name"
@@ -229,6 +230,12 @@
       <b-col cols="1"> </b-col>
     </b-row>
 
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+
     <v-snackbar v-model="snackbarGreen" color="green" dir="rtl">
       {{ text }}
 
@@ -361,7 +368,7 @@ export default {
       imgId: "",
 
       imgRules: [
-        (v) => ( v.size < 500000 || "حجم عكس بايد كمتر از KB 500 می باشد"),
+        (v) => v.size < 500000 || "حجم عكس بايد كمتر از KB 500 می باشد",
       ],
 
       Province: [],
@@ -572,4 +579,5 @@ export default {
 </script>
 
 <style>
+
 </style>

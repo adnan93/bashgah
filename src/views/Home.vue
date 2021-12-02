@@ -1,66 +1,91 @@
 <template>
-  <div class="home">
-    <div>
-      <b-card-group deck class="mr-2">
-        <b-card>
-          <template #header>
-            <div style="text-align: center">
-              <b>
-                <b class="mb-0"> امروز </b>
-                {{ today }}
-              </b>
-            </div>
-          </template>
+  <div class="">
+    <b-row>
+      <b-card class="cardSize">
+        
+        <template #header>
+          <div style="text-align: center">
+            <b>
+              <b class="mb-0"> امروز </b>
+              {{ today }}
+            </b>
+          </div>
+        </template>
 
-          <b-row dir="rtl">
-            <b-col cols="3"> </b-col>
+        <b-row dir="rtl">
+          <b-col cols="3"> </b-col>
 
-            <b-col cols="6">
-              <div align="center">
-                <h2>به باشگاه مشتریان طلاگرام خوش آمدید</h2>
-                <br />
+          <b-col cols="6">
+            <div align="center">
+              <h2>به باشگاه مشتریان طلاگرام خوش آمدید</h2>
+              <br />
 
-                <div class="container">
-                  <v-btn
-                    class="btnsize"
-                    color="#bea44d"
-                    elevation="5"
-                    rounded
-                    x-large
-                    @click="UserLogin()"
+              <div class="container">
+                <v-btn
+                  class="btnsize"
+                  color="#bea44d"
+                  elevation="5"
+                  rounded
+                  x-large
+                  @click="UserLogin()"
+                >
+                  <v-icon style="font-size: 20px; color: black"
+                    >portrait</v-icon
                   >
-                    <v-icon style="font-size: 20px; color: black"
-                      >portrait</v-icon
-                    > 
-                    مدیر
-                  </v-btn>
+                  مدیر
+                </v-btn>
 
-                  <v-btn
-                    class="select2"
-                    color="#bea44d"
-                    elevation="3"
-                    rounded
-                    x-large
-                    outlined
-                    @click="GoToCustomer()"
-                  >
-                    <v-icon style="font-size: 20px">people_alt</v-icon> کاربر
-                  </v-btn>
-                </div>
+                <v-btn
+                  class="select2"
+                  color="#bea44d"
+                  elevation="3"
+                  rounded
+                  x-large
+                  outlined
+                  @click="GoToCustomer()"
+                >
+                  <v-icon style="font-size: 20px">people_alt</v-icon> کاربر
+                </v-btn>
               </div>
-            </b-col>
+            </div>
+          </b-col>
 
-            <b-col cols="3"> </b-col>
-          </b-row>
-        </b-card>
-      </b-card-group>
+          <b-col cols="3"> </b-col>
+        </b-row>
+        
+      </b-card>
+    </b-row>
 
-      <br /><br />
+    <div class="row2"></div>
 
-      <br /><br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
 
-      <!-- <div class="chart" ref="chart1"></div> -->
-    </div>
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
   </div>
 </template>
 
@@ -122,5 +147,17 @@ p {
   padding: 0% !important;
   background-color: #f0f0f5;
   width: 10rem;
+}
+
+.backGroundColor {
+  background-color: #f0f0f5;
+}
+
+.row2 {
+  background-color: red;
+}
+
+.cardSize{
+  height: 50% !important;
 }
 </style>

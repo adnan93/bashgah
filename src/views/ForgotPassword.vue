@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <div id="nav">
-      <b-card-group deck class="mr-2">
+      <b-card-group>
         <b-card>
           <template #header>
             <div style="text-align: center">
@@ -17,10 +17,10 @@
 
             <b-col cols="6">
               <div dir="rtl">
-                <b-card class="mt-3" border-variant="dark">
+                <b-card class="mt-3" border-variant="dark" header-bg-variant="secondary" >
                   <template #header>
-                    <div style="text-align: center">
-                      <b class="mb-0">بازیابی کلمه عبور</b>
+                    <div style="text-align: center" >
+                      <p style="color: white" class="mb-0">بازیابی کلمه عبور</p>
                     </div>
                   </template>
 
@@ -149,10 +149,18 @@
       </b-card-group>
 
       <br /><br />
+      <br /><br />
+      <br /><br />
 
       <br /><br />
 
-      <!-- <div class="chart" ref="chart1"></div> -->
+      <br /><br />
+      <br /><br />
+
+      <br /><br />
+      <br /><br />
+
+      <br /><br />
     </div>
   </div>
 </template>
