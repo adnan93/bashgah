@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-card-group deck class="mr-2">
+    <b-card-group >
       <b-card>
         <template #header>
           <div style="text-align: center">
@@ -261,6 +261,7 @@
         </v-snackbar>
       </b-card>
     </b-card-group>
+   
   </div>
 </template>
 

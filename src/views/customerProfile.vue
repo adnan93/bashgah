@@ -366,12 +366,16 @@
             </template>
           </v-snackbar>
         </b-card>
+
       </b-card-group>
 
       <br /><br />
 
-      <br /><br />
+      <br /><br /> <br /><br />
 
+      <br /><br />   <br /><br /> <br /> <br />
+
+  
       <!-- <div class="chart" ref="chart1"></div> -->
     </div>
   </div>
