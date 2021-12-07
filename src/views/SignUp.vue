@@ -1,6 +1,6 @@
 <template >
-  <div class="home">
-    <b-card >
+  <div>
+    <b-card class="home" >
       <template class="cardHeader" #header>
         <div style="text-align: center">
           <b>

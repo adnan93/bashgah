@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <b-card class="bg">
+    <b-card class="home">
       <template #header>
         <div style="text-align: center">
           <b>
@@ -151,5 +151,9 @@ p {
 
 .bg {
   background-color: rgb(255, 255, 255);
+}
+
+.home {
+  background-color: #f0f0f5;
 }
 </style>

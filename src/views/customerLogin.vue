@@ -2,7 +2,7 @@
   <div class="home">
     <div id="nav">
       <b-card-group>
-        <b-card class="bg" >
+        <b-card class="home">
           <template #header>
             <div style="text-align: center">
               <b>
@@ -89,17 +89,7 @@
         </b-card>
       </b-card-group>
 
-      <br /><br />   <br /><br />
-
-      <br /><br />  <br /><br />
-
-      <br /><br />
-
-      <br /><br />  <br /><br />
-
-      <br /><br />   <br /><br />  <br /><br />
-
-      <br />
+     
 
     </div>
   </div>
@@ -183,5 +173,8 @@ p {
   padding: 0% !important;
   background-color: #f0f0f5;
   width: 10rem;
+}
+.home {
+  background-color: #f0f0f5;
 }
 </style>

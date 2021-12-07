@@ -1,8 +1,8 @@
 <template>
-  <div class="home">
+  <div>
     <div id="nav">
       <b-card-group>
-        <b-card>
+        <b-card  class="home">
           <template #header>
             <div style="text-align: center">
               <b>
@@ -301,5 +301,9 @@ p {
 .no-arrow::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
+}
+
+.home {
+  background-color: #f0f0f5;
 }
 </style>
