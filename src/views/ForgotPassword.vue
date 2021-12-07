@@ -148,19 +148,7 @@
         </b-card>
       </b-card-group>
 
-      <br /><br />
-      <br /><br />
-      <br /><br />
-
-      <br /><br />
-
-      <br /><br />
-      <br /><br />
-
-      <br /><br />
-      <br /><br />
-
-      <br /><br />
+     
     </div>
   </div>
 </template>

@@ -50,9 +50,7 @@
 
       </b-row>
     </b-card>
-    <br>   <br>  <br>  <br>  <br>  <br> <br>   <br>  <br>  <br>  <br>  <br>
-    <br>   <br>  <br>  <br>  <br>  <br> <br>   <br>  <br>  <br>  <br>  <br>
-    <br> <br> <br> <br>
+ 
   </div>
 </template>
 

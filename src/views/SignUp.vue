@@ -163,17 +163,7 @@
         <b-col cols="3"> </b-col>
       </b-row>     
     </b-card>
-      <br /><br />
 
-    <br /><br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
     
    
   </div>

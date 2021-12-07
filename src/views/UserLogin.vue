@@ -77,27 +77,6 @@
       </v-snackbar>
     </b-card>
 
-    <br /><br />
-
-    <br /><br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
   </div>
 </template>
 

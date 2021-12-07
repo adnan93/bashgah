@@ -58,36 +58,7 @@
 
     <div class="row2"></div>
 
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-        <br />
-
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
+ 
   </div>
 </template>
 
