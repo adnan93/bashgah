@@ -46,6 +46,12 @@
               <h6><b style="color: #bea44d">خروج </b></h6>
             </b-nav-item>
 
+                <b-nav-item class="ml-2" href="/customerProfile">
+              <h6><b style="color: #bea44d">مشتری </b></h6>
+            </b-nav-item>
+
+            
+
             <!-- <b-nav-item class="ml-2" href="#">
               <h6><b style="color: #bea44d"> اخبار توليد و تجارت </b></h6>
             </b-nav-item>
@@ -220,7 +226,7 @@ a {
  // background-color: #ffffff80;
 
   //  background-color:rgb(240, 232, 232);
-        background-color: rgb(223, 221, 221);
+        background-color: rgb(243, 240, 213);
 
 }
 

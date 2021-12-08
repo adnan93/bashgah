@@ -1,64 +1,91 @@
 <template>
-  <div class="">
-    <b-row>
-      <b-card class="cardSize">
-        
-        <template #header>
+  <div>
+    <br />
+    <div style="text-align: center">
+      <h4>
+        امروز
+        {{ today }}
+      </h4>
+    </div>
+
+    <br />
+    <!-- <b-card class="cardSize"> -->
+
+    <!-- <template #header>
           <div style="text-align: center">
             <b>
               <b class="mb-0"> امروز </b>
               {{ today }}
             </b>
           </div>
-        </template>
+        </template> -->
 
-        <b-row dir="rtl">
-          <b-col cols="3"> </b-col>
+    <b-row dir="rtl">
+      <b-col cols="3"> </b-col>
 
-          <b-col cols="6">
-            <div align="center">
-              <h2>به باشگاه مشتریان طلاگرام خوش آمدید</h2>
-              <br />
+      <b-col cols="6">
+        <div align="center">
+          <h1>به باشگاه مشتریان طلاگرام خوش آمدید</h1>
+          <br />
+          <br />
+          <br />
 
-              <div class="container">
-                <v-btn
-                  class="btnsize"
-                  color="#bea44d"
-                  elevation="5"
-                  rounded
-                  x-large
-                  @click="UserLogin()"
-                >
-                  <v-icon style="font-size: 20px; color: black"
-                    >portrait</v-icon
-                  >
-                  مدیر
-                </v-btn>
+          <div class="container">
+            <v-btn
+              class="btnsize"
+              color="#bea44d"
+              elevation="5"
+              rounded
+              x-large
+              @click="UserLogin()"
+            >
+              <v-icon style="font-size: 20px; color: black">portrait</v-icon>
+              مدیر
+            </v-btn>
 
-                <v-btn
-                  class="select2"
-                  color="#bea44d"
-                  elevation="3"
-                  rounded
-                  x-large
-                  outlined
-                  @click="GoToCustomer()"
-                >
-                  <v-icon style="font-size: 20px">people_alt</v-icon> کاربر
-                </v-btn>
-              </div>
-            </div>
-          </b-col>
+            <v-btn
+              class="select2"
+              color="#bea44d"
+              elevation="3"
+              rounded
+              x-large
+              outlined
+              @click="GoToCustomer()"
+            >
+              <v-icon style="font-size: 20px">people_alt</v-icon> کاربر
+            </v-btn>
+            <hr />
+          </div>
+        </div>
+      </b-col>
 
-          <b-col cols="3"> </b-col>
-        </b-row>
-        
-      </b-card>
+      <b-col cols="3"> </b-col>
     </b-row>
+    <br />
+    <br />
+    <br />
+    <br /><br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
 
-    <div class="row2"></div>
-
- 
+    <!-- </b-card> -->
   </div>
 </template>
 
@@ -91,7 +118,7 @@ export default {
       this.$router.push("customerLogin");
     },
     GoToCustomer() {
-      this.$router.push("Customer");
+      this.$router.push("customerLogin");
     },
     numberWithCommas(x) {
       return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -130,7 +157,7 @@ p {
   background-color: red;
 }
 
-.cardSize{
+.cardSize {
   height: 50% !important;
 }
 </style>

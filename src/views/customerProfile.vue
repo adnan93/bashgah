@@ -1,43 +1,45 @@
 <template>
   <div class="home">
     <div id="nav">
-      <b-card-group>
-        <b-card>
-          <template #header>
+      <br />
+      <!-- <b-card-group>
+        <b-card> -->
+      <!-- <template #header>
             <div style="text-align: center">
               <b>
                 <b class="mb-0"> امروز </b>
                 {{ today }}
               </b>
             </div>
-          </template>
+          </template> -->
 
-          <b-row>
-            <b-col cols="3"> </b-col>
+      <b-row>
+        <b-col cols="3"> </b-col>
 
-            <b-col cols="6">
-              <div dir="rtl">
-                <h3>
-                  مشتری گرامی {{ FullName }} تعداد امتیاز های فعلی
-                  <b> ({{ points }}) </b> امتیاز می باشد
-                </h3>
-              </div>
-            </b-col>
+        <b-col cols="6">
+          <div dir="rtl">
+            <h3>
+              مشتری گرامی {{ FullName }} تعداد امتیاز های فعلی
+              <b> ({{ points }}) </b> امتیاز می باشد
+            </h3>
+          </div>
+        </b-col>
 
-            <b-col cols="3"> </b-col>
-          </b-row>
+        <b-col cols="3"> </b-col>
+      </b-row>
 
-          <hr />
+      <br />
 
-          <b-row>
-            <b-col cols="1"> </b-col>
-            <b-col cols="10">
-              <div dir="rtl" class="container">
+      <b-row>
+        <b-col cols="1"> </b-col>
+        <b-col cols="10">
+          <br />
+          <div dir="rtl" class="container">
+            <b-row dir="rtl">
+              <div>
                 <b-row dir="rtl">
-                  <div>
-                    <b-row dir="rtl">
-                      <b-col class="mb-5">
-                        <v-btn
+                  <b-col class="mb-5">
+                    <!-- <v-btn
                           class="btnsize"
                           color="#bea44d"
                           elevation="3"
@@ -47,10 +49,10 @@
                         >
                           <v-icon style="font-size: 20px">star_outline</v-icon>
                           افزودن فعالیت
-                        </v-btn>
+                        </v-btn>  -->
 
-                        <!-- add new -->
-                        <div>
+                    <!-- add new -->
+                    <!-- <div>
                           <b-modal
                             v-model="showCreateModal"
                             dir="rtl"
@@ -150,50 +152,53 @@
                               </template>
                             </v-snackbar>
                           </b-modal>
-                        </div>
-                      </b-col>
-                      <b-col> </b-col>
-                    </b-row>
-
-                    <div>
-                      <b-table
-                        :items="CustomerScores"
-                        :fields="fields"
-                        striped
-                        responsive="sm"
-                        hover
-                        :busy="isBusyScore"
-                        outlined
-                      >
-                        <template #cell(actions)=""> </template>
-
-                        <template #table-busy>
-                          <div class="text-center my-2">
-                            <b-spinner class="align-middle"></b-spinner>
-                            <strong>در حال دریافت اطلاعات...</strong>
-                          </div>
-                        </template>
-                      </b-table>
-                    </div>
-                  </div>
+                        </div> -->
+                  </b-col>
+                  <b-col> </b-col>
                 </b-row>
+
+                <div>
+                  <b-table
+                    :items="CustomerScores"
+                    :fields="fields"
+                    striped
+                    responsive="sm"
+                    hover
+                    :busy="isBusyScore"
+                    outlined
+                  >
+                    <template #cell(actions)=""> </template>
+
+                    <template #table-busy>
+                      <div class="text-center my-2">
+                        <b-spinner class="align-middle"></b-spinner>
+                        <strong>در حال دریافت اطلاعات...</strong>
+                      </div>
+                    </template>
+                  </b-table>
+                </div>
               </div>
-            </b-col>
+              <hr />
+                <h4> برنامه مد نظر خود را انتخاب کنید: </h4>
+                <br>                 <br>
 
-            <b-col cols="1"> </b-col>
-          </b-row>
+              <Programs :programs="testprograms" />
+            </b-row>
+          </div>
+        </b-col>
 
-          <hr />
+        <b-col cols="1"> </b-col>
+      </b-row>
 
-          <b-row>
-            <b-col cols="1"> </b-col>
-            <b-col cols="10">
-              <div dir="rtl" class="container">
+      <b-row>
+        <b-col cols="1"> </b-col>
+        <b-col cols="10">
+          <div dir="rtl" class="container">
+            <b-row dir="rtl">
+              <div>
                 <b-row dir="rtl">
-                  <div>
-                    <b-row dir="rtl">
-                      <b-col class="mb-5">
-                        <v-btn
+                  <b-col class="mb-5">
+                    <!-- <v-btn
                           class="btnsize"
                           color="#bea44d"
                           elevation="3"
@@ -203,10 +208,11 @@
                         >
                           <v-icon style="font-size: 20px">fact_check</v-icon>
                           افزودن برنامه
-                        </v-btn>
+                        </v-btn>  -->
 
-                        <!-- add new -->
-                        <div>
+                    <!-- add new -->
+
+                    <!-- <div>
                           <b-modal
                             v-model="showCreateProgramModal"
                             dir="rtl"
@@ -305,77 +311,70 @@
                               </template>
                             </v-snackbar>
                           </b-modal>
-                        </div>
-                      </b-col>
-                      <b-col> </b-col>
-                    </b-row>
-
-                    <div>
-                      <b-table
-                        :items="CustomerPrograms"
-                        :fields="program"
-                        striped
-                        responsive="sm"
-                        hover
-                        :busy="isBusyProgram"
-                        outlined
-                      >
-                        <template #cell(actions)="row">
-                          <v-icon
-                            @click="editRow(row)"
-                            style="font-size: 20px; color: blue"
-                            >edit</v-icon
-                          >
-
-                          <v-icon
-                            @click="deletRow(row)"
-                            style="font-size: 20px; color: red"
-                            >delete_outline</v-icon
-                          >
-                        </template>
-
-                        <template #table-busy>
-                          <div class="text-center my-2">
-                            <b-spinner class="align-middle"></b-spinner>
-                            <strong>در حال دریافت اطلاعات...</strong>
-                          </div>
-                        </template>
-                      </b-table>
-                    </div>
-                  </div>
+                        </div>  -->
+                  </b-col>
+                  <b-col> </b-col>
                 </b-row>
+
+                <div>
+                  <b-table
+                    :items="CustomerPrograms"
+                    :fields="program"
+                    striped
+                    responsive="sm"
+                    hover
+                    :busy="isBusyProgram"
+                    outlined
+                  >
+                    <template #cell(actions)="row">
+                      <v-icon
+                        @click="editRow(row)"
+                        style="font-size: 20px; color: blue"
+                        >edit</v-icon
+                      >
+
+                      <v-icon
+                        @click="deletRow(row)"
+                        style="font-size: 20px; color: red"
+                        >delete_outline</v-icon
+                      >
+                    </template>
+
+                    <template #table-busy>
+                      <div class="text-center my-2">
+                        <b-spinner class="align-middle"></b-spinner>
+                        <strong>در حال دریافت اطلاعات...</strong>
+                      </div>
+                    </template>
+                  </b-table>
+                </div>
               </div>
-            </b-col>
+            </b-row>
+          </div>
+        </b-col>
 
-            <b-col cols="1"> </b-col>
-          </b-row>
+        <b-col cols="1"> </b-col>
+      </b-row>
 
-          <v-snackbar v-model="snackbarGreen" :color="snackColor" dir="rtl">
-            {{ text }}
+      <v-snackbar v-model="snackbarGreen" :color="snackColor" dir="rtl">
+        {{ text }}
 
-            <template v-slot:action="{ attrs }">
-              <v-btn
-                color="dark"
-                rounded
-                v-bind="attrs"
-                text
-                @click="snackbarGreen = false"
-              >
-                x
-              </v-btn>
-            </template>
-          </v-snackbar>
-        </b-card>
+        <template v-slot:action="{ attrs }">
+          <v-btn
+            color="dark"
+            rounded
+            v-bind="attrs"
+            text
+            @click="snackbarGreen = false"
+          >
+            x
+          </v-btn>
+        </template>
+      </v-snackbar>
 
-      </b-card-group>
+      <!-- </b-card>
+      </b-card-group> -->
 
-      <br /><br />
-
-      <br /><br /> <br /><br />
-
-      <br /><br />   <br /><br /> <br /> <br />
-
-  
       <!-- <div class="chart" ref="chart1"></div> -->
     </div>
   </div>
@@ -383,14 +382,19 @@
 
 <script>
 import axios from "axios";
+import Programs from "../components/Programs.vue";
 
 export default {
   name: "customerProfile",
 
-  components: {},
+  components: {
+    Programs,
+  },
 
   data() {
     return {
+      testprograms: [],
+
       //snackbar
       snackColor: "",
       snackbarGreen: false,
@@ -796,6 +800,51 @@ export default {
         this.errors.push(e);
       });
     this.isBusyProgram = false;
+  },
+
+  mounted() {
+    this.testprograms = [
+      {
+        id: 1,
+        text: "أموزش خريد",
+        day: "sunday",
+        reminder: true,
+      },
+      {
+        id: 2,
+        text: "دوره فروش  ",
+        day: "satrday",
+        reminder: false,
+      },
+
+      {
+        id: 3,
+        text: "كلاس تكنيكال",
+        day: "wenthday",
+        reminder: true,
+      },
+
+      {
+        id: 4,
+        text: "كلاس خريد",
+        day: "friday",
+        reminder: false,
+      },
+
+      {
+        id: 5,
+        text: "دوره حسابداري",
+        day: "monday",
+        reminder: true,
+      },
+
+      {
+        id: 6,
+        text: "آموزش سهام",
+        day: "sunday",
+        reminder: false,
+      },
+    ];
   },
 };
 </script>
