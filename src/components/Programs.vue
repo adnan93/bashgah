@@ -1,8 +1,9 @@
 <template>
   <div>
     <b-row > 
-     <b-col :key="program.id" v-for="program in programs"> 
+     <b-col  :key="program.id" v-for="program in programs"> 
        <Program :program="program" /> </b-col>
+
     </b-row>
   </div>
 </template>

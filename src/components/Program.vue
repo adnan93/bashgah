@@ -9,11 +9,13 @@
       style="max-width: 10rem"
     >
       <b-card-text>
-        <h3>
-          {{ program.id }}
+        <h5>
+          {{ program.PointsNeeded }}
           امتیاز
-        </h3>
-        <p>{{ program.text }}</p>
+        </h5>
+        <p>{{ program.Title }}</p>
+        <h5>{{ program.Description }}</h5>
+
       </b-card-text>
 
       <v-btn
@@ -25,7 +27,7 @@
         @click="UserLogin()"
         :disabled="program.reminder"
       >
-        افزودن برنامه
+        افزودن 
       </v-btn>
     </b-card>
   </div>

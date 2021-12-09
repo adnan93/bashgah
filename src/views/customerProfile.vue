@@ -2,17 +2,8 @@
   <div class="home">
     <div id="nav">
       <br />
-      <!-- <b-card-group>
-        <b-card> -->
-      <!-- <template #header>
-            <div style="text-align: center">
-              <b>
-                <b class="mb-0"> امروز </b>
-                {{ today }}
-              </b>
-            </div>
-          </template> -->
 
+      <!-- تعداد امتیاز -->
       <b-row>
         <b-col cols="3"> </b-col>
 
@@ -34,25 +25,35 @@
         <b-col cols="1"> </b-col>
         <b-col cols="10">
           <br />
-          <div dir="rtl" class="container">
-            <b-row dir="rtl">
-              <div>
-                <b-row dir="rtl">
-                  <b-col class="mb-5">
-                    <!-- <v-btn
-                          class="btnsize"
-                          color="#bea44d"
-                          elevation="3"
-                          rounded
-                          large
-                          @click="openCreateModal"
-                        >
-                          <v-icon style="font-size: 20px">star_outline</v-icon>
-                          افزودن فعالیت
-                        </v-btn>  -->
+          <div class="container">
+              <v-btn
+                class="btnsize ml-3"
+                color="#bea44d"
+                elevation="3"
+                rounded
+                large
+                @click="openCreateModal"
+              >
+                <v-icon style="font-size: 20px">star_outline</v-icon>
+                مشاهده لیست فعالیت ها
+              </v-btn>
 
-                    <!-- add new -->
-                    <!-- <div>
+            <v-btn
+              class="btnsize"
+              color="#bea44d"
+              elevation="3"
+              rounded
+              large
+              @click="showPrograms"
+            >
+              <v-icon style="font-size: 20px">star_outline</v-icon>
+              مشاهده لیست برنامه ها
+            </v-btn>
+
+            <!-- show score list  -->
+
+            <!-- add new -->
+            <!-- <div>
                           <b-modal
                             v-model="showCreateModal"
                             dir="rtl"
@@ -153,11 +154,8 @@
                             </v-snackbar>
                           </b-modal>
                         </div> -->
-                  </b-col>
-                  <b-col> </b-col>
-                </b-row>
 
-                <div>
+            <!-- <div>
                   <b-table
                     :items="CustomerScores"
                     :fields="fields"
@@ -176,14 +174,100 @@
                       </div>
                     </template>
                   </b-table>
-                </div>
-              </div>
-              <hr />
-                <h4> برنامه مد نظر خود را انتخاب کنید: </h4>
-                <br>                 <br>
+                </div> -->
+            <hr />
+            <h4>برنامه مد نظر خود را انتخاب کنید:</h4>
+            <br />
+            <br />
 
-              <Programs :programs="testprograms" />
-            </b-row>
+            <Programs :programs="CustomerPrograms" />
+          </div>
+
+          <div>
+            <b-modal
+              v-model="showCreateModal"
+              dir="rtl"
+              id="modal-center"
+              title=" لیست فعالیت ها"
+              :header-bg-variant="headerBgVariant"
+              :header-text-variant="headerTextVariant"
+            >
+              <b-container fluid>
+                <b-row>
+                  <b-col>
+                    <div>
+                      <b-table
+                        :items="CustomerScores"
+                        :fields="scorefields"
+                        striped
+                        responsive="sm"
+                        hover
+                        outlined
+                      >
+                        <template #cell(actions)="row">
+                          <div @click="addNewScoreToCustomer(row)">
+                            <div
+                              v-if="
+                                getenScores.includes(row.item.ActivityName) ||
+                                row.item.ActivityName == selectedName
+                              "
+                            >
+                              <v-icon style="font-size: 20px; color: #bea44d">
+                                done_all
+                              </v-icon>
+                            </div>
+
+                            <div v-else>
+                              <v-icon style="font-size: 20px; color: #bea44d">
+                                add_circle
+                              </v-icon>
+                            </div>
+                          </div>
+                        </template>
+
+                        <template #table-busy>
+                          <div class="text-center my-2">
+                            <b-spinner class="align-middle"></b-spinner>
+                            <strong>در حال دریافت اطلاعات...</strong>
+                          </div>
+                        </template>
+                      </b-table>
+                    </div>
+                  </b-col>
+                </b-row>
+              </b-container>
+
+              <template #modal-footer>
+                <div class="w-100">
+                  <v-btn
+                    class="select2"
+                    color="#bea44d"
+                    elevation="3"
+                    rounded
+                    larg
+                    outlined
+                    @click="closeCreateModal"
+                    >انصراف
+                  </v-btn>
+                </div>
+              </template>
+
+              <v-snackbar v-model="snackbarGreen" :color="snackColor" dir="rtl">
+                {{ text }}
+
+                <template v-slot:action="{ attrs }">
+                  <v-btn
+                    color="red"
+                    rounded
+                    v-bind="attrs"
+                    text
+                    @click="snackbarGreen = false"
+                  >
+                    x
+                  </v-btn>
+                </template>
+              </v-snackbar>
+            </b-modal>
           </div>
         </b-col>
 
@@ -316,7 +400,7 @@
                   <b-col> </b-col>
                 </b-row>
 
-                <div>
+                <div v-show="showlistPrograms">
                   <b-table
                     :items="CustomerPrograms"
                     :fields="program"
@@ -403,6 +487,8 @@ export default {
       y: "top",
 
       //create
+      showlistPrograms: false,
+
       trueIcon: false,
       addIcon: true,
       icon: "add_circle",
@@ -474,7 +560,6 @@ export default {
         { ActivityName: "نام فعالیت" },
         { Points: "تعداد امتیاز" },
         { Description: "توضیحات" },
-        { actions: "عمليات" },
       ],
 
       programsFields: [
@@ -490,6 +575,10 @@ export default {
   },
 
   methods: {
+    showPrograms() {
+      this.showlistPrograms = !this.showlistPrograms;
+    },
+
     showTrueIcon(row) {
       console.log(row);
       this.trueIcon = false;
@@ -753,7 +842,7 @@ export default {
         this.errors.push(e);
       });
 
-    //GetCustomerScores
+    //GetCustomerProgram
     await axios
       .get(`http://localhost:8080/api/Customer/GetCustomerPrograms`, {
         headers: {

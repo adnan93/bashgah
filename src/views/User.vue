@@ -1,178 +1,241 @@
 <template>
   <div>
-
     <b-tabs content-class="mt-3" align="center">
-
-      <b-tab title="ثبت نام مشتری " active>
+      <b-tab title=" مشتریان " active>
         <div>
           <b-row>
-            <b-col cols="3"> </b-col>
+            <b-col cols="1"> </b-col>
 
-            <b-col cols="6">
-              <div dir="rtl">
-                <b-card class="mt-3" border-variant="dark">
-                  <template style="background-color: red" #header>
-                    <div style="text-align: center">
-                      <p style="color: black">ثبت نام در باشگاه</p>
+            <b-col cols="10">
+              <v-btn
+                class="btnsize"
+                color="#bea44d"
+                elevation="3"
+                rounded
+                large
+                @click="openCreateCustomerModal"
+                >افزودن مشتری
+              </v-btn>
+
+              <br />
+              <br />
+
+              <!-- create Customer -->
+              <div>
+                <b-modal
+                  v-model="showCreateCustomerModal"
+                  dir="rtl"
+                  id="modal-center"
+                  title=" ثبت نام در باشگاه"
+                  :header-bg-variant="headerBgVariant"
+                  :header-text-variant="headerTextVariant"
+                >
+                  <div dir="rtl">
+                    <b-form @submit="onSubmit">
+                      <br />
+
+                      <v-text-field
+                        v-model="form.Name"
+                        type="text"
+                        placeholder="نام "
+                        required
+                        outlined
+                        dense
+                        :rules="[phoneRules.required]"
+                      />
+
+                      <v-text-field
+                        v-model="form.Family"
+                        type="text"
+                        placeholder="نام خانوادگی"
+                        required
+                        outlined
+                        dense
+                        :rules="[phoneRules.required]"
+                      />
+
+                      <v-text-field
+                        v-model="form.Mobile"
+                        placeholder="شماره موبایل"
+                        required
+                        outlined
+                        dense
+                        :rules="[phoneRules.required, phoneRules.validNum]"
+                      />
+
+                      <v-text-field
+                        :append-icon="show4 ? 'mdi-eye' : 'mdi-eye-off'"
+                        v-model="form.Password"
+                        :type="show4 ? 'text' : 'password'"
+                        required
+                        placeholder="رمز عبور "
+                        @click:append="show4 = !show4"
+                        outlined
+                        dense
+                        :rules="[phoneRules.required]"
+                      />
+
+                      <v-text-field
+                        v-model="form.VerificationCode"
+                        placeholder="کد تایید"
+                        required
+                        outlined
+                        dense
+                        :rules="[phoneRules.required]"
+                      />
+                    </b-form>
+
+                    <b-modal
+                      dir="rtl"
+                      v-model="show"
+                      title="دریافت کد تایید"
+                      :header-bg-variant="headerBgVariant"
+                      :header-text-variant="headerTextVariant"
+                      :body-bg-variant="bodyBgVariant"
+                      :body-text-variant="bodyTextVariant"
+                      :footer-bg-variant="bodyBgVariant"
+                      :footer-text-variant="footerTextVariant"
+                    >
+                      <b-form-input
+                        v-model="PhoneNumber"
+                        placeholder=" شماره موبایل خود را وارد کنید"
+                        required
+                      ></b-form-input>
+
+                      <template #modal-footer>
+                        <div class="w-100">
+                          <v-btn
+                            :loading="getCodeLoading"
+                            class="btnsize ml-1"
+                            color="#bea44d"
+                            elevation="5"
+                            rounded
+                            large
+                            type="submit"
+                            variant="primary"
+                            @click="getCode()"
+                          >
+                            درخواست کد تایید
+                          </v-btn>
+                        </div>
+                      </template>
+                    </b-modal>
+
+                    <v-snackbar
+                      v-model="snackbarGreen"
+                      :color="snackColor"
+                      dir="rtl"
+                    >
+                      {{ text }}
+
+                      <template v-slot:action="{ attrs }">
+                        <v-btn
+                          color="dark"
+                          rounded
+                          v-bind="attrs"
+                          text
+                          @click="snackbarGreen = false"
+                        >
+                          x
+                        </v-btn>
+                      </template>
+                    </v-snackbar>
+                  </div>
+
+                  <template #modal-footer>
+                    <div class="w-100">
+                      <v-btn
+                        :loading="signUpLoading"
+                        class="btnsize ml-1"
+                        color="#bea44d"
+                        elevation="5"
+                        rounded
+                        large
+                        type="submit"
+                        variant="primary"
+                        >ثبت
+                      </v-btn>
+
+                      <v-btn
+                        :loading="getCodeLoading"
+                        class="select2"
+                        color="#bea44d"
+                        elevation="3"
+                        rounded
+                        large
+                        outlined
+                        @click="show = true"
+                      >
+                        دریافت کد
+                      </v-btn>
+
+                      <v-btn
+                        class="select2"
+                        color="#bea44d"
+                        elevation="5"
+                        rounded
+                        larg
+                        outlined
+                        @click="closeCreateCustomerModal"
+                        >انصراف
+                      </v-btn>
                     </div>
                   </template>
+                </b-modal>
+              </div>
 
-                  <b-form @submit="onSubmit">
-                    <br />
-
-                    <v-text-field
-                      v-model="form.Name"
-                      type="text"
-                      placeholder="نام "
-                      required
-                      outlined
-                      dense
-                      :rules="[phoneRules.required]"
-                    />
-
-                    <v-text-field
-                      v-model="form.Family"
-                      type="text"
-                      placeholder="نام خانوادگی"
-                      required
-                      outlined
-                      dense
-                      :rules="[phoneRules.required]"
-                    />
-
-                    <v-text-field
-                      v-model="form.Mobile"
-                      placeholder="شماره موبایل"
-                      required
-                      outlined
-                      dense
-                      :rules="[phoneRules.required, phoneRules.validNum]"
-                    />
-
-                    <v-text-field
-                      :append-icon="show4 ? 'mdi-eye' : 'mdi-eye-off'"
-                      v-model="form.Password"
-                      :type="show4 ? 'text' : 'password'"
-                      required
-                      placeholder="رمز عبور "
-                      @click:append="show4 = !show4"
-                      outlined
-                      dense
-                      :rules="[phoneRules.required]"
-                    />
-
-                    <v-text-field
-                      v-model="form.VerificationCode"
-                      placeholder="کد تایید"
-                      required
-                      outlined
-                      dense
-                      :rules="[phoneRules.required]"
-                    />
-
-                    <br />
-
-                    <v-btn
-                      :loading="signUpLoading"
-                      class="btnsize ml-1"
-                      color="#bea44d"
-                      elevation="5"
-                      rounded
-                      large
-                      type="submit"
-                      variant="primary"
-                      >ثبت
-                    </v-btn>
-
-                    <v-btn
-                      :loading="getCodeLoading"
-                      class="select2"
-                      color="#bea44d"
-                      elevation="3"
-                      rounded
-                      large
-                      outlined
-                      @click="show = true"
+              <div>
+                <b-table
+                  :items="Customeritems"
+                  :fields="Customerfields"
+                  striped
+                  responsive="sm"
+                  hover
+                >
+                  <template #cell(details)="row">
+                    <v-icon
+                      @click="editScoreRow(row)"
+                      style="font-size: 20px; color: blue"
+                      >edit</v-icon
                     >
-                      دریافت کد
-                    </v-btn>
+                  </template>
 
-                    <br />
-                  </b-form>
+                  <template #cell(CustomerScores)="row">
+                    <v-icon
+                      @click="editScoreRow(row)"
+                      style="font-size: 20px; color: blue"
+                      >edit</v-icon
+                    >
+                  </template>
 
-                  <b-modal
-                    dir="rtl"
-                    v-model="show"
-                    title="دریافت کد تایید"
-                    :header-bg-variant="headerBgVariant"
-                    :header-text-variant="headerTextVariant"
-                    :body-bg-variant="bodyBgVariant"
-                    :body-text-variant="bodyTextVariant"
-                    :footer-bg-variant="bodyBgVariant"
-                    :footer-text-variant="footerTextVariant"
-                  >
-                    <b-form-input
-                      v-model="PhoneNumber"
-                      placeholder=" شماره موبایل خود را وارد کنید"
-                      required
-                    ></b-form-input>
-
-                    <template #modal-footer>
-                      <div class="w-100">
-                        <v-btn
-                          :loading="getCodeLoading"
-                          class="btnsize ml-1"
-                          color="#bea44d"
-                          elevation="5"
-                          rounded
-                          large
-                          type="submit"
-                          variant="primary"
-                          @click="getCode()"
-                        >
-                          درخواست کد تایید
-                        </v-btn>
-                      </div>
-                    </template>
-                  </b-modal>
-
-                  <v-snackbar
-                    v-model="snackbarGreen"
-                    :color="snackColor"
-                    dir="rtl"
-                  >
-                    {{ text }}
-
-                    <template v-slot:action="{ attrs }">
-                      <v-btn
-                        color="dark"
-                        rounded
-                        v-bind="attrs"
-                        text
-                        @click="snackbarGreen = false"
-                      >
-                        x
-                      </v-btn>
-                    </template>
-                  </v-snackbar>
-                </b-card>
+                  <template #cell(CustomerPrograms)="row">
+                    <v-icon
+                      @click="editScoreRow(row)"
+                      style="font-size: 20px; color: blue"
+                      >edit</v-icon
+                    >
+                  </template>
+                </b-table>
               </div>
             </b-col>
 
-            <b-col cols="3"> </b-col>
+            <b-col cols="1"> </b-col>
           </b-row>
-          <br> <br><br><br> 
-          <br> <br><br><br>
-          <br> <br><br><br> 
-
-
+          <br />
+          <br /><br /><br />
+          <br />
+          <br /><br /><br />
+          <br />
+          <br /><br /><br />
         </div>
       </b-tab>
 
-      <b-tab title=" افزودن فعالیت ها ">
+      <b-tab title=" فعالیت ها ">
         <div>
           <b-row dir="rtl">
-            <b-col cols="12">
+            <b-col cols="1"> </b-col>
+
+            <b-col cols="10">
               <div>
                 <b-row dir="rtl">
                   <b-col class="mb-5">
@@ -182,16 +245,16 @@
                       elevation="3"
                       rounded
                       large
-                      @click="openCreateModal"
+                      @click="openCreateScoreModal"
                       >افزودن فعالیت
                     </v-btn>
 
                     <div>
                       <b-modal
-                        v-model="showCreateModal"
+                        v-model="showCreateScoreModal"
                         dir="rtl"
                         id="modal-center"
-                        title=" افزودن امتیاز"
+                        title=" افزودن فعالیت"
                         :header-bg-variant="headerBgVariant"
                         :header-text-variant="headerTextVariant"
                       >
@@ -261,10 +324,10 @@
                     <!-- Edit Modal -->
                     <div>
                       <b-modal
-                        v-model="showEditModal"
+                        v-model="showEditScoreModal"
                         dir="rtl"
                         id="modal-center"
-                        title=" ویرایش امتیاز"
+                        title=" ویرایش فعالیت"
                         :header-bg-variant="headerBgVariant"
                         :header-text-variant="headerTextVariant"
                       >
@@ -334,17 +397,17 @@
                     <!-- Delete Modal -->
                     <div>
                       <b-modal
-                        v-model="showDeleteModal"
+                        v-model="showDeleteScoreModal"
                         dir="rtl"
                         id="modal-center"
-                        title=" حذف امتیاز"
+                        title=" حذف فعالیت"
                         :header-bg-variant="headerBgVariant"
                         :header-text-variant="headerTextVariant"
                       >
                         <b-container fluid>
                           <b-row>
                             <b-col>
-                              <h4>امتیاز مورد نظر حذف شود؟</h4>
+                              <h4>فعالیت مورد نظر حذف شود؟</h4>
                             </b-col>
                           </b-row>
                         </b-container>
@@ -390,13 +453,13 @@
                   >
                     <template #cell(actions)="row">
                       <v-icon
-                        @click="editRow(row)"
+                        @click="editScoreRow(row)"
                         style="font-size: 20px; color: blue"
                         >edit</v-icon
                       >
 
                       <v-icon
-                        @click="deletRow(row)"
+                        @click="deletScoreRow(row)"
                         style="font-size: 20px; color: red"
                         >delete_outline</v-icon
                       >
@@ -405,6 +468,8 @@
                 </div>
               </div>
             </b-col>
+
+            <b-col cols="1"> </b-col>
           </b-row>
 
           <v-snackbar v-model="snackbarGreen" :color="snackColor" dir="rtl">
@@ -425,9 +490,10 @@
         </div>
       </b-tab>
 
-      <b-tab title="افزودن برنامه ها">
+      <b-tab title=" برنامه ها">
         <b-row dir="rtl">
-          <b-col cols="12">
+          <b-col cols="1"> </b-col>
+          <b-col cols="10">
             <div>
               <b-row dir="rtl">
                 <b-col class="mb-5">
@@ -516,7 +582,7 @@
                   <!-- Edit Modal -->
                   <div>
                     <b-modal
-                      v-model="showEditModal"
+                      v-model="showEditProgramModal"
                       dir="rtl"
                       id="modal-center"
                       title=" ویرایش برنامه"
@@ -529,7 +595,7 @@
                             <b-form-input
                               type="text"
                               v-model="editProgramForm.Title"
-                              placeholder="نام فعالیت "
+                              placeholder="نام برنامه "
                               required
                               outlined
                             />
@@ -538,7 +604,7 @@
 
                             <b-form-input
                               v-model="editProgramForm.PointsNeeded"
-                              placeholder="تعداد برنامه"
+                              placeholder="تعداد امتیاز لازم"
                               type="number"
                               required
                               outlined
@@ -578,7 +644,7 @@
                             rounded
                             larg
                             outlined
-                            @click="closeEditModal"
+                            @click="closeEditProgramModal"
                             >انصراف
                           </v-btn>
                         </div>
@@ -660,11 +726,9 @@
               </div>
             </div>
           </b-col>
+          <b-col cols="1"> </b-col>
         </b-row>
       </b-tab>
-
-      <b-tab title="افزودن فعالیت به مشتری"><p>I'm a disabled tab!</p></b-tab>
-
 
     </b-tabs>
   </div>
@@ -694,6 +758,20 @@ export default {
   name: "App",
   data() {
     return {
+      //Customer
+      //create
+
+      Customeritems: [],
+
+      Customerfields: [
+        { Title: "نام مشتری" },
+        { details: "اطلاعلات مشتری" },
+
+        { CustomerScores: " فعالیت ها" },
+        { CustomerPrograms: " برنامه ها" },
+        { addingScores: " افزودن فعالیت " },
+      ],
+
       //program
       //create
       createLoading: false,
@@ -747,9 +825,16 @@ export default {
       row: "",
 
       //modal
+      showCreateScoreModal: false,
       showCreateModal: false,
-      showEditModal: false,
+      showCreateCustomerModal: false,
+
+      showEditScoreModal: false,
+      showEditProgramModal: false,
+
+      showDeleteScoreModal: false,
       showDeleteModal: false,
+
       headerBgVariant: "dark",
       headerTextVariant: "light",
 
@@ -829,19 +914,37 @@ export default {
     //create
     openCreateModal() {
       this.showCreateModal = true;
-      // console.log("getToken", this.getToken);
-      // console.log("getMessage", this.getMessage);
     },
     closeCreateModal() {
       this.showCreateModal = false;
+            this.showCreateScoreModal = false;
+
+    },
+
+    //create score
+    openCreateScoreModal() {
+      this.showCreateScoreModal = true;
+      // console.log("getToken", this.getToken);
+      // console.log("getMessage", this.getMessage);
+    },
+    closeCreateScoreModal() {
+      this.showCreateScoreModal = false;
+    },
+
+    //create customer
+    openCreateCustomerModal() {
+      this.showCreateCustomerModal = true;
+    },
+    closeCreateCustomerModal() {
+      this.showCreateCustomerModal = false;
     },
 
     async addNewProgram() {
       this.createLoading = true;
-      await this.setNewprogram(this.form);
+      await this.setNewprogram(this.programform);
 
       await this.getUserprograms();
-      this.items = this.getprograms;
+      this.programitems = this.getprograms;
 
       this.text = await this.getMessage;
 
@@ -876,7 +979,7 @@ export default {
 
       this.createLoading = false;
 
-      this.showCreateModal = false;
+      this.showCreateScoreModal = false;
     },
 
     //Edit Program
@@ -884,22 +987,29 @@ export default {
     async editProgramRow(row) {
       this.editedRow = row;
       this.editProgramForm.Id = row.item.Id;
-      this.openEditModal();
+      this.openEditProgramModal();
       await this.getprogramById(this.editedRow.item.Id);
 
       console.log("this.getTitle", await this.getTitle);
 
       this.editProgramForm.Title = await this.getTitle;
       this.editProgramForm.PointsNeeded = await this.getPointsNeeded;
-      //  this.editProgramForm.Description = await this.getDescription;
+      this.editProgramForm.Description = await this.getDescription;
+    },
+
+    openEditProgramModal() {
+      this.showEditProgramModal = true;
+    },
+    closeEditProgramModal() {
+      this.showEditProgramModal = false;
     },
 
     async updateProgrambtn() {
       this.editLoading = true;
-      await this.updateprogram(this.editForm);
+      await this.updateprogram(this.editProgramForm);
 
       await this.getUserprograms();
-      this.items = this.getprograms;
+      this.programitems = this.getprograms;
 
       this.text = await this.getMessage;
 
@@ -913,12 +1023,12 @@ export default {
 
       this.editLoading = false;
 
-      this.showEditModal = false;
+      this.showEditProgramModal = false;
     },
 
     //Edit Score
 
-    async editRow(row) {
+    async editScoreRow(row) {
       this.editedRow = row;
       this.editForm.Id = row.item.Id;
       this.openEditModal();
@@ -932,10 +1042,10 @@ export default {
     },
 
     openEditModal() {
-      this.showEditModal = true;
+      this.showEditScoreModal = true;
     },
     closeEditModal() {
-      this.showEditModal = false;
+      this.showEditScoreModal = false;
     },
 
     async updateScorebtn() {
@@ -957,10 +1067,24 @@ export default {
 
       this.editLoading = false;
 
-      this.showEditModal = false;
+      this.showEditScoreModal = false;
     },
 
-    //delete
+    //delete Score
+    deletScoreRow(row) {
+      this.row = row;
+      this.openDeleteScoreModal();
+    },
+
+    openDeleteScoreModal() {
+      this.showDeleteScoreModal = true;
+    },
+
+    closeDeletScoreModal() {
+      this.showDeleteScoreModal = false;
+    },
+
+    //delete program
     deletRow(row) {
       this.row = row;
       this.openDeleteModal();
@@ -993,7 +1117,7 @@ export default {
       this.snackbarGreen = true;
 
       await this.getUserprograms();
-      this.items = this.getprograms;
+      this.programitems = this.getprograms;
 
       this.deleteLoading = false;
 
@@ -1023,7 +1147,7 @@ export default {
 
       this.deleteLoading = false;
 
-      this.showDeleteModal = false;
+      this.showDeleteScoreModal = false;
     },
 
     async onSubmit(event) {

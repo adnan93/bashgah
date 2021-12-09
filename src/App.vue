@@ -30,27 +30,19 @@
               </h6>
             </b-nav-item>
 
+              <b-nav-item class="ml-2" href="/customerProfile">
+              <h6><b style="color: #bea44d"> صفحه اصلى </b></h6>
+            </b-nav-item>
+
             <b-nav-item class="ml-2" href="/Update">
               <h6><b style="color: #bea44d">ویرایش پروفایل </b></h6>
             </b-nav-item>
 
-            <b-nav-item class="ml-2" href="/Score">
-              <h6><b style="color: #bea44d">امتیاز کاربران </b></h6>
-            </b-nav-item>
-
-            <b-nav-item class="ml-2" href="/Programs">
-              <h6><b style="color: #bea44d">برنامه های کاربران </b></h6>
-            </b-nav-item>
+          
 
             <b-nav-item class="ml-2" @click="checkLogout()">
               <h6><b style="color: #bea44d">خروج </b></h6>
             </b-nav-item>
-
-                <b-nav-item class="ml-2" href="/customerProfile">
-              <h6><b style="color: #bea44d">مشتری </b></h6>
-            </b-nav-item>
-
-            
 
             <!-- <b-nav-item class="ml-2" href="#">
               <h6><b style="color: #bea44d"> اخبار توليد و تجارت </b></h6>
@@ -120,7 +112,6 @@
 
       <router-view class="home" />
     </b-row>
-    
   </v-app>
 </template>
  
@@ -223,16 +214,13 @@ a {
 }
 
 .home {
- // background-color: #ffffff80;
+  // background-color: #ffffff80;
 
   //  background-color:rgb(240, 232, 232);
-        background-color: rgb(243, 240, 213);
-
+  background-color: rgb(243, 240, 213);
 }
 
-
-.bg{
-    background-color: rgb(223, 221, 221);
-
+.bg {
+  background-color: rgb(223, 221, 221);
 }
 </style>
