@@ -26,17 +26,18 @@
         <b-col cols="10">
           <br />
           <div class="container">
-              <v-btn
-                class="btnsize ml-3"
-                color="#bea44d"
-                elevation="3"
-                rounded
-                large
-                @click="openCreateModal"
-              >
-                <v-icon style="font-size: 20px">star_outline</v-icon>
-                مشاهده لیست فعالیت ها
-              </v-btn>
+            <v-btn
+              class="btnsize ml-3"
+              color="#bea44d"
+              elevation="3"
+              rounded
+              large
+              @click="openCreateScoreModal"
+              :loading="loadingbtn"
+            >
+              <v-icon style="font-size: 20px">star_outline</v-icon>
+              مشاهده لیست فعالیت ها
+            </v-btn>
 
             <v-btn
               class="btnsize"
@@ -44,7 +45,8 @@
               elevation="3"
               rounded
               large
-              @click="showPrograms"
+              @click="openCreateProgramModal"
+              :loading="loadingbtn"
             >
               <v-icon style="font-size: 20px">star_outline</v-icon>
               مشاهده لیست برنامه ها
@@ -180,7 +182,7 @@
             <br />
             <br />
 
-            <Programs :programs="CustomerPrograms" />
+            <Programs :programs="AllPrograms" />
           </div>
 
           <div>
@@ -231,6 +233,7 @@
                             <strong>در حال دریافت اطلاعات...</strong>
                           </div>
                         </template>
+                        
                       </b-table>
                     </div>
                   </b-col>
@@ -293,6 +296,50 @@
                           <v-icon style="font-size: 20px">fact_check</v-icon>
                           افزودن برنامه
                         </v-btn>  -->
+
+                    <div>
+                      <b-modal
+                        v-model="showCreateProgramModal"
+                        dir="rtl"
+                        id="modal-center"
+                        title=" لیست برنامه ها"
+                        :header-bg-variant="headerBgVariant"
+                        :header-text-variant="headerTextVariant"
+                      >
+                        <b-container fluid>
+                          <b-row>
+                            <b-col>
+                              <div>
+                                <b-table
+                                  :items="CustomerPrograms"
+                                  :fields="programsFields"
+                                  striped
+                                  responsive="sm"
+                                  hover
+                                  outlined
+                                >
+                                </b-table>
+                              </div>
+                            </b-col>
+                          </b-row>
+                        </b-container>
+
+                        <template #modal-footer>
+                          <div class="w-100">
+                            <v-btn
+                              class="select2"
+                              color="#bea44d"
+                              elevation="3"
+                              rounded
+                              larg
+                              outlined
+                              @click="closeCreateProgramModal"
+                              >انصراف
+                            </v-btn>
+                          </div>
+                        </template>
+                      </b-modal>
+                    </div>
 
                     <!-- add new -->
 
@@ -478,6 +525,7 @@ export default {
   data() {
     return {
       testprograms: [],
+      loadingbtn: false,
 
       //snackbar
       snackColor: "",
@@ -566,7 +614,8 @@ export default {
         { Title: "نام برنامه" },
         { PointsNeeded: "تعداد امتیاز لازم" },
         { Description: "توضیحات" },
-        { actions: "عمليات" },
+        { status: "وضعیت" },
+
       ],
       Title: "",
 
@@ -592,7 +641,7 @@ export default {
     },
 
     //create
-    openCreateModal() {
+    openCreateScoreModal() {
       this.showCreateModal = true;
       // console.log("getToken", this.getToken);
       // console.log("getMessage", this.getMessage);
@@ -793,6 +842,7 @@ export default {
   async created() {
     //date
     this.today = new Date().toLocaleDateString("fa-IR");
+    this.loadingbtn = true;
 
     this.text = "در حال دریافت اطلاعات ...";
     this.snackColor = "green";
@@ -828,19 +878,19 @@ export default {
       });
 
     //get All scores
-    await axios
-      .get(`http://localhost:8080/api/Score/GetAll`, {
-        headers: {
-          token: localStorage.getItem("token"),
-        },
-      })
-      .then((response) => {
-        this.AllScores = response.data;
-        //   console.log("All scores:", response.data);
-      })
-      .catch((e) => {
-        this.errors.push(e);
-      });
+    // await axios
+    //   .get(`http://localhost:8080/api/Score/GetAll`, {
+    //     headers: {
+    //       token: localStorage.getItem("token"),
+    //     },
+    //   })
+    //   .then((response) => {
+    //     this.AllScores = response.data;
+    //     //   console.log("All scores:", response.data);
+    //   })
+    //   .catch((e) => {
+    //     this.errors.push(e);
+    //   });
 
     //GetCustomerProgram
     await axios
@@ -889,6 +939,7 @@ export default {
         this.errors.push(e);
       });
     this.isBusyProgram = false;
+    this.loadingbtn = false;
   },
 
   mounted() {

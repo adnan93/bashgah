@@ -1,12 +1,12 @@
 <template>
-  <div >
+  <div>
     <b-row dir="rtl">
       <b-col cols="1"> </b-col>
       <b-col cols="10">
-        <b-card border-variant="dark"  header-bg-variant="secondary">
+        <b-card border-variant="dark" header-bg-variant="secondary">
           <template #header>
             <div style="text-align: center">
-              <p style="color:white" class="mb-0">ويرايش اطلاعات مشتری</p>
+              <p style="color: white" class="mb-0">ويرايش اطلاعات مشتری</p>
             </div>
           </template>
 
@@ -14,7 +14,6 @@
             <b-row>
               <b-row>
                 <b-col>
-                  
                   <v-text-field
                     type="text"
                     v-model="form.Name"
@@ -93,7 +92,7 @@
 
                   <br />
 
-                  <v-select
+                  <v-text-field
                     :items="JobType"
                     label="شغل"
                     :item-text="'Name'"
@@ -102,8 +101,7 @@
                     outlined
                     dense
                   >
-                  </v-select>
-
+                  </v-text-field>
                   <br />
                 </b-col>
 
@@ -261,6 +259,10 @@ import axios from "axios";
 export default {
   name: "Update",
   async created() {
+    this.snackbarGreen = true;
+
+    this.loadingbtn = true;
+
     let rest = await axios.get(`http://localhost:8080/api/Province/GetAll`, {
       headers: {
         token: localStorage.getItem("token"),
@@ -334,6 +336,7 @@ export default {
     this.form.ProvinceId = response.data.ProvinceId;
 
     this.form.ProfilePictrue = response.data.ProfilePictrue;
+    this.loadingbtn = false;
   },
   mounted() {
     // window.location.reload(true);
@@ -498,10 +501,6 @@ export default {
     //   }
     // },
 
-    numberWithCommas(x) {
-      return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-    },
-
     async onSubmit(event) {
       event.preventDefault();
 
@@ -579,5 +578,4 @@ export default {
 </script>
 
 <style>
-
 </style>

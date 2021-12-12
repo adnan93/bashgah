@@ -31,7 +31,7 @@
                   :header-text-variant="headerTextVariant"
                 >
                   <div dir="rtl">
-                    <b-form @submit="onSubmit">
+                    <b-form>
                       <br />
 
                       <v-text-field
@@ -74,72 +74,7 @@
                         dense
                         :rules="[phoneRules.required]"
                       />
-
-                      <v-text-field
-                        v-model="form.VerificationCode"
-                        placeholder="کد تایید"
-                        required
-                        outlined
-                        dense
-                        :rules="[phoneRules.required]"
-                      />
                     </b-form>
-
-                    <b-modal
-                      dir="rtl"
-                      v-model="show"
-                      title="دریافت کد تایید"
-                      :header-bg-variant="headerBgVariant"
-                      :header-text-variant="headerTextVariant"
-                      :body-bg-variant="bodyBgVariant"
-                      :body-text-variant="bodyTextVariant"
-                      :footer-bg-variant="bodyBgVariant"
-                      :footer-text-variant="footerTextVariant"
-                    >
-                      <b-form-input
-                        v-model="PhoneNumber"
-                        placeholder=" شماره موبایل خود را وارد کنید"
-                        required
-                      ></b-form-input>
-
-                      <template #modal-footer>
-                        <div class="w-100">
-                          <v-btn
-                            :loading="getCodeLoading"
-                            class="btnsize ml-1"
-                            color="#bea44d"
-                            elevation="5"
-                            rounded
-                            large
-                            type="submit"
-                            variant="primary"
-                            @click="getCode()"
-                          >
-                            درخواست کد تایید
-                          </v-btn>
-                        </div>
-                      </template>
-                    </b-modal>
-
-                    <v-snackbar
-                      v-model="snackbarGreen"
-                      :color="snackColor"
-                      dir="rtl"
-                    >
-                      {{ text }}
-
-                      <template v-slot:action="{ attrs }">
-                        <v-btn
-                          color="dark"
-                          rounded
-                          v-bind="attrs"
-                          text
-                          @click="snackbarGreen = false"
-                        >
-                          x
-                        </v-btn>
-                      </template>
-                    </v-snackbar>
                   </div>
 
                   <template #modal-footer>
@@ -151,22 +86,9 @@
                         elevation="5"
                         rounded
                         large
-                        type="submit"
+                        @click="createUser"
                         variant="primary"
                         >ثبت
-                      </v-btn>
-
-                      <v-btn
-                        :loading="getCodeLoading"
-                        class="select2"
-                        color="#bea44d"
-                        elevation="3"
-                        rounded
-                        large
-                        outlined
-                        @click="show = true"
-                      >
-                        دریافت کد
                       </v-btn>
 
                       <v-btn
@@ -184,38 +106,131 @@
                 </b-modal>
               </div>
 
+              <!-- table customer  -->
               <div>
                 <b-table
-                  :items="Customeritems"
+                  :items="AllUsers"
                   :fields="Customerfields"
                   striped
                   responsive="sm"
                   hover
                 >
+                  <template #table-busy>
+                    <div class="text-center my-2">
+                      <b-spinner class="align-middle"></b-spinner>
+                      <strong>در حال دریافت اطلاعات...</strong>
+                    </div>
+                  </template>
+
                   <template #cell(details)="row">
                     <v-icon
-                      @click="editScoreRow(row)"
+                      @click="showDetails(row)"
                       style="font-size: 20px; color: blue"
-                      >edit</v-icon
+                      >account_box</v-icon
                     >
                   </template>
 
                   <template #cell(CustomerScores)="row">
                     <v-icon
-                      @click="editScoreRow(row)"
+                      @click="showScores(row)"
                       style="font-size: 20px; color: blue"
-                      >edit</v-icon
+                      >view_list</v-icon
                     >
                   </template>
 
                   <template #cell(CustomerPrograms)="row">
                     <v-icon
-                      @click="editScoreRow(row)"
+                      @click="showPrograms(row)"
+                      style="font-size: 20px; color: blue"
+                      >poll</v-icon
+                    >
+                  </template>
+
+                  <template #cell(addingScores)="row">
+                    <v-icon
+                      @click="showPrograms(row)"
+                      style="font-size: 20px; color: blue"
+                      >add_circle</v-icon
+                    >
+                  </template>
+
+                  <template #cell(actions)="row">
+                    <v-icon
+                      @click="editCustRow(row)"
                       style="font-size: 20px; color: blue"
                       >edit</v-icon
                     >
+
+                    <v-icon
+                      @click="deleteCustRow(row)"
+                      style="font-size: 20px; color: red"
+                      >delete_outline</v-icon
+                    >
                   </template>
                 </b-table>
+              </div>
+
+              <!-- customer info -->
+              <div>
+                <b-modal
+                  v-model="showDetailsModal"
+                  dir="rtl"
+                  id="modal-center"
+                  title=" اطلاعات مشتری"
+                  :header-bg-variant="headerBgVariant"
+                  :header-text-variant="headerTextVariant"
+                >
+                  <div dir="rtl">
+                    <b-row>
+                      <b-col>
+                        <b> نام و نام خانوادگی: </b>
+                        {{ personal.FullName }}
+                      </b-col>
+                      <b-col>
+                        <b> شماره موبایل: </b> {{ personal.Mobile }}
+                      </b-col>
+                    </b-row>
+                    <br />
+
+                    <b-row>
+                      <b-col>
+                        <b> آدرس: </b>
+                        {{ personal.Address }}
+                      </b-col>
+                      <b-col>
+                        <b> تاریخ تولد: </b>
+                        {{ personal.BirthDate }}
+                      </b-col>
+                    </b-row>
+                    <br />
+
+                    <b-row>
+                      <b-col>
+                        <b> ایمیل: </b>
+                        {{ personal.Email }}
+                      </b-col>
+                      <b-col>
+                        <b> شهر: </b>
+                        {{ personal.CityId }}
+                      </b-col>
+                    </b-row>
+                  </div>
+
+                  <template #modal-footer>
+                    <div class="w-100">
+                      <v-btn
+                        class="select2"
+                        color="#bea44d"
+                        elevation="5"
+                        rounded
+                        larg
+                        outlined
+                        @click="closeCreateCustomerModal"
+                        >انصراف
+                      </v-btn>
+                    </div>
+                  </template>
+                </b-modal>
               </div>
             </b-col>
 
@@ -507,6 +522,7 @@
                     >افزودن برنامه
                   </v-btn>
 
+                  <!-- افزودن برنامه -->
                   <div>
                     <b-modal
                       v-model="showCreateModal"
@@ -729,8 +745,23 @@
           <b-col cols="1"> </b-col>
         </b-row>
       </b-tab>
-
     </b-tabs>
+
+    <v-snackbar v-model="snackbarGreen" :color="snackColor" dir="rtl">
+      {{ text }}
+
+      <template v-slot:action="{ attrs }">
+        <v-btn
+          color="dark"
+          rounded
+          v-bind="attrs"
+          text
+          @click="snackbarGreen = false"
+        >
+          x
+        </v-btn>
+      </template>
+    </v-snackbar>
   </div>
 </template>
 
@@ -758,18 +789,36 @@ export default {
   name: "App",
   data() {
     return {
+      showDetailsModal: false,
+
+      personal: {
+        Address: "",
+        BirthDate: "",
+        CityId: "",
+        Email: "",
+        FullName: "",
+        Gender: "",
+        IsMarried: "",
+        JobType: "",
+        Mobile: "",
+      },
+
+      //Users
+      AllUsers: [],
+
       //Customer
       //create
 
       Customeritems: [],
 
       Customerfields: [
-        { Title: "نام مشتری" },
+        { FullName: "نام مشتری" },
         { details: "اطلاعلات مشتری" },
 
         { CustomerScores: " فعالیت ها" },
         { CustomerPrograms: " برنامه ها" },
         { addingScores: " افزودن فعالیت " },
+        { actions: " عمليات" },
       ],
 
       //program
@@ -897,6 +946,42 @@ export default {
   components: {},
   mounted() {},
   methods: {
+    async deleteCustRow(row) {
+      console.log("rownn :", row.index);
+      this.deletedRow = row.index;
+
+      await axios
+        .post(
+          `http://localhost:8080/api/User/DeleteCustomer/${this.deletedRow}`,
+          this.deletedRow,
+          {
+            headers: {
+              token: localStorage.getItem("token"),
+            },
+          }
+        )
+        .then((response) => {
+          this.text = response.data.Description;
+          this.MessageType = response.data.MessageType;
+
+          if (response.data.MessageType == 1) {
+            this.snackbarGreen = true;
+
+            this.snackColor = "green";
+            // this.$router.push({ path: "/customerLogin" });
+          } else {
+            this.snackbarGreen = true;
+
+            this.snackColor = "red";
+          }
+
+          this.signUpLoading = false;
+        })
+        .catch((e) => {
+          this.errors.push(e);
+        });
+    },
+
     //score
     ...mapActions([
       "getUserScores",
@@ -911,14 +996,34 @@ export default {
       "updateprogram",
     ]),
 
+    showDetails(row) {
+      this.showDetailsModal = true;
+      this.personal.FullName = row.item.FullName;
+      this.personal.Gender = row.item.Gender;
+      this.personal.Gender = row.item.Gender;
+
+      this.personal.Mobile = row.item.Mobile;
+
+      this.personal.IsMarried = row.item.IsMarried;
+
+      this.personal.BirthDate = row.item.BirthDate;
+
+      this.personal.JobType = row.item.JobType;
+
+      this.personal.Email = row.item.Email;
+      this.personal.Address = row.item.Address;
+
+      this.personal.CityId = row.item.CityId;
+      console.log("personal: ", this.personal);
+    },
+
     //create
     openCreateModal() {
       this.showCreateModal = true;
     },
     closeCreateModal() {
       this.showCreateModal = false;
-            this.showCreateScoreModal = false;
-
+      this.showCreateScoreModal = false;
     },
 
     //create score
@@ -937,6 +1042,7 @@ export default {
     },
     closeCreateCustomerModal() {
       this.showCreateCustomerModal = false;
+      this.showDetailsModal = false;
     },
 
     async addNewProgram() {
@@ -1096,6 +1202,7 @@ export default {
 
     closeDeletModal() {
       this.showDeleteModal = false;
+      this.showDeleteScoreModal = false;
     },
 
     async deleteProgrambtn() {
@@ -1150,61 +1257,112 @@ export default {
       this.showDeleteScoreModal = false;
     },
 
-    async onSubmit(event) {
-      event.preventDefault();
+    async createUser() {
       this.signUpLoading = true;
 
       await axios
-        .post(`http://localhost:8080/api/Customer/Register`, this.form)
+        .post(`http://localhost:8080/api/User/RegisterNewCustomer`, this.form, {
+          headers: {
+            token: localStorage.getItem("token"),
+          },
+        })
         .then((response) => {
           this.text = response.data.Description;
+          this.MessageType = response.data.MessageType;
 
           if (response.data.MessageType == 1) {
+            this.snackbarGreen = true;
+
             this.snackColor = "green";
             // this.$router.push({ path: "/customerLogin" });
           } else {
+            this.snackbarGreen = true;
+
             this.snackColor = "red";
           }
 
           this.signUpLoading = false;
-          this.snackbarGreen = true;
         })
         .catch((e) => {
           this.errors.push(e);
         });
-    },
-
-    async getCode() {
-      this.show = false;
-      this.getCodeLoading = true;
 
       await axios
-
-        .post(
-          `http://localhost:8080/api/Customer/SendVerificationCode?PhoneNumber=${this.PhoneNumber}`
-        )
+        .get(`http://localhost:8080/api/User/GetAllCustomers`, {
+          headers: {
+            token: localStorage.getItem("token"),
+          },
+        })
 
         .then((response) => {
-          console.log(response);
+          this.AllUsers = response.data;
+          // this.snackColor = "green";
 
-          this.text = response.data.Description;
+          // this.snackbarGreen = true;
 
-          if (response.data.MessageType == 1) {
-            this.snackColor = "black";
-          } else {
-            this.snackColor = "black";
-          }
+          console.log("AllUsers: ", this.AllUsers);
 
-          this.snackbarGreen = true;
-          this.getCodeLoading = false;
+          // if (response.data.MessageType == 1) {
+          //   this.snackbarGreen = true;
+
+          //   this.snackColor = "green";
+          //   // this.$router.push({ path: "/customerLogin" });
+          // } else {
+          //   this.snackbarGreen = true;
+
+          //   this.snackColor = "red";
+          // }
+
+          this.signUpLoading = false;
         })
         .catch((e) => {
           this.errors.push(e);
         });
+
+      this.showCreateCustomerModal = false;
+      this.form.Name = "";
+      this.form.Mobile = "";
+
+      this.form.Password = "";
+
+      this.form.Family = "";
     },
   },
 
   async created() {
+    await axios
+      .get(`http://localhost:8080/api/User/GetAllCustomers`, {
+        headers: {
+          token: localStorage.getItem("token"),
+        },
+      })
+
+      .then((response) => {
+        this.AllUsers = response.data;
+        this.text = "در حال دریافت اطلاعات ...";
+        this.snackbarGreen = true;
+
+        this.snackColor = "green";
+
+        console.log("AllUsers: ", this.AllUsers);
+
+        // if (response.data.MessageType == 1) {
+        //   this.snackbarGreen = true;
+
+        //   this.snackColor = "green";
+        //   // this.$router.push({ path: "/customerLogin" });
+        // } else {
+        //   this.snackbarGreen = true;
+
+        //   this.snackColor = "red";
+        // }
+
+        this.signUpLoading = false;
+      })
+      .catch((e) => {
+        this.errors.push(e);
+      });
+
     await this.getUserScores();
     this.items = this.getScores;
 
