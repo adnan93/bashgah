@@ -214,6 +214,26 @@
                         {{ personal.CityId }}
                       </b-col>
                     </b-row>
+                    <br />
+
+                    <b-row>
+                      <b-col>
+                        <b> وضعیت تاهل: </b>
+                        {{ personal.IsMarried }}
+                      </b-col>
+                      <b-col>
+                        <b> جنسیت: </b>
+                        {{ personal.Gender }}
+                      </b-col>
+                    </b-row>
+                    <br />
+
+                    <b-row>
+                      <b-col>
+                        <b> شغل: </b>
+                        {{ personal.JobType }}
+                      </b-col>
+                    </b-row>
                   </div>
 
                   <template #modal-footer>
@@ -226,6 +246,137 @@
                         larg
                         outlined
                         @click="closeCreateCustomerModal"
+                        >انصراف
+                      </v-btn>
+                    </div>
+                  </template>
+                </b-modal>
+              </div>
+
+              <!--customer Delete Modal -->
+              <div>
+                <b-modal
+                  v-model="showDeleteCustomerModal"
+                  dir="rtl"
+                  id="modal-center"
+                  title=" حذف مشتری"
+                  :header-bg-variant="headerBgVariant"
+                  :header-text-variant="headerTextVariant"
+                >
+                  <b-container fluid>
+                    <b-row>
+                      <b-col>
+                        <h4>مشتری مورد نظر حذف شود؟</h4>
+                      </b-col>
+                    </b-row>
+                  </b-container>
+
+                  <template #modal-footer>
+                    <div class="w-100">
+                      <v-btn
+                        :loading="deleteCustomerLoading"
+                        class="btnsize"
+                        color="#bea44d"
+                        elevation="5"
+                        rounded
+                        larg
+                        @click="deleteCustomerbtn"
+                        >بلی
+                      </v-btn>
+
+                      <v-btn
+                        class="select2"
+                        color="#bea44d"
+                        elevation="3"
+                        rounded
+                        larg
+                        outlined
+                        @click="closeDeletCustomerModal"
+                        >انصراف
+                      </v-btn>
+                    </div>
+                  </template>
+                </b-modal>
+              </div>
+
+              <!--customer edit Modal -->
+              <div>
+                <b-modal
+                  v-model="showEditCustomerModal"
+                  dir="rtl"
+                  id="modal-center"
+                  title=" ویرایش اطلاعات مشتری"
+                  :header-bg-variant="headerBgVariant"
+                  :header-text-variant="headerTextVariant"
+                >
+                  <div dir="rtl">
+                    <b-form>
+                      <br />
+
+                      <v-text-field
+                        v-model="editCustomer.Name"
+                        type="text"
+                        placeholder="نام "
+                        required
+                        outlined
+                        dense
+                        :rules="[phoneRules.required]"
+                      />
+
+                      <v-text-field
+                        v-model="editCustomer.Family"
+                        type="text"
+                        placeholder="نام خانوادگی"
+                        required
+                        outlined
+                        dense
+                        :rules="[phoneRules.required]"
+                      />
+
+                      <v-text-field
+                        v-model="editCustomer.Mobile"
+                        placeholder="شماره موبایل"
+                        required
+                        outlined
+                        dense
+                        :rules="[phoneRules.required, phoneRules.validNum]"
+                      />
+
+                      <v-text-field
+                        :append-icon="show4 ? 'mdi-eye' : 'mdi-eye-off'"
+                        v-model="editCustomer.Password"
+                        :type="show4 ? 'text' : 'password'"
+                        required
+                        placeholder="رمز عبور "
+                        @click:append="show4 = !show4"
+                        outlined
+                        dense
+                        :rules="[phoneRules.required]"
+                      />
+                    </b-form>
+                  </div>
+
+                  <template #modal-footer>
+                    <div class="w-100">
+                      <v-btn
+                        :loading="editCustomerLoading"
+                        class="btnsize"
+                        color="#bea44d"
+                        elevation="5"
+                        rounded
+                        larg
+                        @click="editCustomerbtn"
+                        >ویرایش
+                      </v-btn>
+
+                      <v-btn
+                        class="select2"
+                        color="#bea44d"
+                        elevation="3"
+                        rounded
+                        larg
+                        outlined
+                        @click="closeeditCustomerModal"
                         >انصراف
                       </v-btn>
                     </div>
@@ -808,7 +959,6 @@ export default {
 
       //Customer
       //create
-
       Customeritems: [],
 
       Customerfields: [
@@ -820,6 +970,23 @@ export default {
         { addingScores: " افزودن فعالیت " },
         { actions: " عمليات" },
       ],
+
+      //customer delete
+      showDeleteCustomerModal: false,
+      deletedRow: "",
+      deleteCustomerLoading: false,
+
+      //customer edit
+      showEditCustomerModal: false,
+      editdRow: "",
+      editCustomerLoading: false,
+
+      editCustomer: {
+        Name: "",
+        Family: "",
+        Password: "",
+        Mobile: "",
+      },
 
       //program
       //create
@@ -945,15 +1112,31 @@ export default {
   },
   components: {},
   mounted() {},
+
   methods: {
-    async deleteCustRow(row) {
-      console.log("rownn :", row.index);
-      this.deletedRow = row.index;
+    editCustRow(row) {
+      console.log("edit row", row);
+      this.showEditCustomerModal = true;
+      this.editdRow = row;
+      this.editCustomer.Name = row.item.Name;
+      this.editCustomer.Family = row.item.Family;
+      this.editCustomer.Password = row.item.Password;
+      this.editCustomer.Mobile = row.item.Mobile;
+    },
+
+    closeeditCustomerModal() {
+      this.showEditCustomerModal = false;
+    },
+
+    async editCustomerbtn() {
+      this.editCustomerLoading = true;
+      let index = this.editdRow.index;
 
       await axios
         .post(
-          `http://localhost:8080/api/User/DeleteCustomer/${this.deletedRow}`,
-          this.deletedRow,
+          `http://localhost:8080/api/User/UpdateCustomer/${index}`,
+          index,
+          this.editCustomer,
           {
             headers: {
               token: localStorage.getItem("token"),
@@ -980,6 +1163,51 @@ export default {
         .catch((e) => {
           this.errors.push(e);
         });
+      this.showEditCustomerModal = false;
+      this.editCustomerLoading = false;
+    },
+
+    async deleteCustomerbtn() {
+      this.deleteCustomerLoading = true;
+      let index = this.deletedRow.index;
+
+      await axios
+        .post(`http://localhost:8080/api/User/DeleteCustomer/${index}`, index, {
+          headers: {
+            token: localStorage.getItem("token"),
+          },
+        })
+        .then((response) => {
+          this.text = response.data.Description;
+          this.MessageType = response.data.MessageType;
+
+          if (response.data.MessageType == 1) {
+            this.snackbarGreen = true;
+
+            this.snackColor = "green";
+            // this.$router.push({ path: "/customerLogin" });
+          } else {
+            this.snackbarGreen = true;
+
+            this.snackColor = "red";
+          }
+
+          this.signUpLoading = false;
+        })
+        .catch((e) => {
+          this.errors.push(e);
+        });
+      this.showDeleteCustomerModal = false;
+      this.deleteCustomerLoading = false;
+    },
+
+    closeDeletCustomerModal() {
+      this.showDeleteCustomerModal = false;
+    },
+
+    async deleteCustRow(row) {
+      this.showDeleteCustomerModal = true;
+      this.deletedRow = row;
     },
 
     //score
@@ -998,22 +1226,39 @@ export default {
 
     showDetails(row) {
       this.showDetailsModal = true;
+
+    
+
       this.personal.FullName = row.item.FullName;
-      this.personal.Gender = row.item.Gender;
-      this.personal.Gender = row.item.Gender;
+
+       if (row.item.Gender) {
+        this.personal.Gender = "مرد";
+      } else {
+       this.personal.Gender = "زن";
+      }
 
       this.personal.Mobile = row.item.Mobile;
 
-      this.personal.IsMarried = row.item.IsMarried;
+      if (row.item.IsMarried) {
+        this.personal.IsMarried = "متاهل";
+      } else {
+        this.personal.IsMarried = "مجرد";
+      }
 
-      this.personal.BirthDate = row.item.BirthDate;
+      
 
+
+  
       this.personal.JobType = row.item.JobType;
 
       this.personal.Email = row.item.Email;
       this.personal.Address = row.item.Address;
 
       this.personal.CityId = row.item.CityId;
+
+        let bDate  = row.item.BirthDate;
+
+      this.personal.BirthDate = bDate;
       console.log("personal: ", this.personal);
     },
 
