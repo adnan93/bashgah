@@ -53,7 +53,7 @@
                 <v-btn
                   :loading="signUpLoading"
                   class="btnsize ml-1"
-                  color="#bea44d"
+                  color="#90c445"
                   elevation="5"
                   rounded
                   large
@@ -65,7 +65,7 @@
                 <v-btn
                   :loading="getCodeLoading"
                   class="select2"
-                  color="#bea44d"
+                  color="#90c445"
                   elevation="3"
                   rounded
                   large
@@ -98,7 +98,7 @@
                     <v-btn
                       :loading="getCodeLoading"
                       class="btnsize ml-1"
-                      color="#bea44d"
+                      color="#90c445"
                       elevation="5"
                       rounded
                       large

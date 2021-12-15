@@ -15,7 +15,7 @@
                 <b-col class="mb-5">
                   <v-btn
                     class="btnsize"
-                    color="#bea44d"
+                    color="#90c445"
                     elevation="3"
                     rounded
                     large
@@ -72,7 +72,7 @@
                           <v-btn
                             :loading="createLoading"
                             class="btnsize"
-                            color="#bea44d"
+                            color="#90c445"
                             elevation="5"
                             rounded
                             larg
@@ -82,7 +82,7 @@
 
                           <v-btn
                             class="select2"
-                            color="#bea44d"
+                            color="#f7b73a"
                             elevation="3"
                             rounded
                             larg
@@ -145,7 +145,7 @@
                           <v-btn
                             :loading="editLoading"
                             class="btnsize"
-                            color="#bea44d"
+                            color="#90c445"
                             elevation="5"
                             rounded
                             larg
@@ -155,7 +155,7 @@
 
                           <v-btn
                             class="select2"
-                            color="#bea44d"
+                            color="#f7b73a"
                             elevation="3"
                             rounded
                             larg
@@ -191,7 +191,7 @@
                           <v-btn
                             :loading="deleteLoading"
                             class="btnsize"
-                            color="#bea44d"
+                            color="#90c445"
                             elevation="5"
                             rounded
                             larg
@@ -201,7 +201,7 @@
 
                           <v-btn
                             class="select2"
-                            color="#bea44d"
+                            color="#f7b73a"
                             elevation="3"
                             rounded
                             larg

@@ -11,7 +11,7 @@
           <div dir="rtl">
             <h3>
               مشتری گرامی {{ FullName }} تعداد امتیاز های فعلی
-              <b> ({{ points }}) </b> امتیاز می باشد
+             امتیاز می باشد
             </h3>
           </div>
         </b-col>
@@ -28,7 +28,7 @@
           <div class="container">
             <v-btn
               class="btnsize ml-3"
-              color="#bea44d"
+              color="#90c445"
               elevation="3"
               rounded
               large
@@ -41,7 +41,7 @@
 
             <v-btn
               class="btnsize"
-              color="#bea44d"
+              color="#90c445"
               elevation="3"
               rounded
               large
@@ -95,7 +95,7 @@
                                             <v-icon
                                               style="
                                                 font-size: 20px;
-                                                color: #bea44d;
+                                                color: #90c445;
                                               "
                                             >
                                               done_all
@@ -106,7 +106,7 @@
                                             <v-icon
                                               style="
                                                 font-size: 20px;
-                                                color: #bea44d;
+                                                color: #90c445;
                                               "
                                             >
                                               add_circle
@@ -124,7 +124,7 @@
                               <div class="w-100">
                                 <v-btn
                                   class="select2"
-                                  color="#bea44d"
+                                  color="#90c445"
                                   elevation="3"
                                   rounded
                                   larg
@@ -214,13 +214,13 @@
                                 row.item.ActivityName == selectedName
                               "
                             >
-                              <v-icon style="font-size: 20px; color: #bea44d">
+                              <v-icon style="font-size: 20px; color: #90c445">
                                 done_all
                               </v-icon>
                             </div>
 
                             <div v-else>
-                              <v-icon style="font-size: 20px; color: #bea44d">
+                              <v-icon style="font-size: 20px; color: #90c445">
                                 add_circle
                               </v-icon>
                             </div>
@@ -244,7 +244,7 @@
                 <div class="w-100">
                   <v-btn
                     class="select2"
-                    color="#bea44d"
+                    color="#f7b73a"
                     elevation="3"
                     rounded
                     larg
@@ -287,7 +287,7 @@
                   <b-col class="mb-5">
                     <!-- <v-btn
                           class="btnsize"
-                          color="#bea44d"
+                          color="#90c445"
                           elevation="3"
                           rounded
                           large
@@ -328,7 +328,7 @@
                           <div class="w-100">
                             <v-btn
                               class="select2"
-                              color="#bea44d"
+                              color="#f7b73a"
                               elevation="3"
                               rounded
                               larg
@@ -382,7 +382,7 @@
                                             <v-icon
                                               style="
                                                 font-size: 20px;
-                                                color: #bea44d;
+                                                color: #90c445;
                                               "
                                             >
                                               done_all
@@ -393,7 +393,7 @@
                                             <v-icon
                                               style="
                                                 font-size: 20px;
-                                                color: #bea44d;
+                                                color: #90c445;
                                               "
                                             >
                                               add_circle
@@ -411,7 +411,7 @@
                               <div class="w-100">
                                 <v-btn
                                   class="select2"
-                                  color="#bea44d"
+                                  color="#90c445"
                                   elevation="3"
                                   rounded
                                   larg

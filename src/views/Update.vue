@@ -3,7 +3,7 @@
     <b-row dir="rtl">
       <b-col cols="1"> </b-col>
       <b-col cols="10">
-        <b-card border-variant="dark" header-bg-variant="secondary">
+        <b-card class="mt-5" border-variant="dark" header-bg-variant="dark">
           <template #header>
             <div style="text-align: center">
               <p style="color: white" class="mb-0">ويرايش اطلاعات مشتری</p>
@@ -171,8 +171,10 @@
 
                   <div>
                     <date-picker
+                    class="datePicker"
                       v-model="form.BirthDate"
                       label="تاریخ تولد"
+                      color='#10503B'
                     ></date-picker>
                   </div>
                   <br />
@@ -210,7 +212,7 @@
 
             <v-btn
               class="btnsize ml-1"
-              color="#bea44d"
+              color="#90c445"
               elevation="5"
               rounded
               x-large
@@ -578,4 +580,13 @@ export default {
 </script>
 
 <style>
+.datePicker{
+  background-color: red;
+}
+
+.ui-datepicker {
+   background: #333;
+   border: 1px solid #555;
+   color: #EEE;
+}
 </style>

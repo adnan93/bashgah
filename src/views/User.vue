@@ -1,15 +1,15 @@
 <template>
   <div>
     <b-tabs content-class="mt-3" align="center">
-      <b-tab title=" مشتریان " active>
+      <b-tab title=" مشتریان " :title-link-class="'tab-title-class'">
         <div>
           <b-row>
             <b-col cols="1"> </b-col>
 
             <b-col cols="10">
               <v-btn
-                class="btnsize"
-                color="#bea44d"
+                style="color: white"
+                color="#10503B"
                 elevation="3"
                 rounded
                 large
@@ -21,8 +21,10 @@
               <br />
 
               <!-- create Customer -->
-              <div>
+              <div >
                 <b-modal
+                  :body-bg-variant="bodyBgVariant"
+                     :footer-bg-variant="bodyBgVariant"
                   v-model="showCreateCustomerModal"
                   dir="rtl"
                   id="modal-center"
@@ -30,6 +32,7 @@
                   :header-bg-variant="headerBgVariant"
                   :header-text-variant="headerTextVariant"
                 >
+                
                   <div dir="rtl">
                     <b-form>
                       <br />
@@ -82,18 +85,19 @@
                       <v-btn
                         :loading="signUpLoading"
                         class="btnsize ml-1"
-                        color="#bea44d"
+                        color="#90c445"
                         elevation="5"
                         rounded
                         large
                         @click="createUser"
                         variant="primary"
-                        >ثبت
+                      >
+                        ثبت
                       </v-btn>
 
                       <v-btn
                         class="select2"
-                        color="#bea44d"
+                        color="#f7b73a"
                         elevation="5"
                         rounded
                         larg
@@ -125,15 +129,15 @@
                   <template #cell(details)="row">
                     <v-icon
                       @click="showDetails(row)"
-                      style="font-size: 20px; color: blue"
+                      style="font-size: 20px; color: #0f6b4d"
                       >account_box</v-icon
                     >
                   </template>
 
                   <template #cell(CustomerScores)="row">
                     <v-icon
-                      @click="showScores(row)"
-                      style="font-size: 20px; color: blue"
+                      @click="showCustomerScores(row)"
+                      style="font-size: 20px; color: #0f6b4d"
                       >view_list</v-icon
                     >
                   </template>
@@ -141,15 +145,15 @@
                   <template #cell(CustomerPrograms)="row">
                     <v-icon
                       @click="showPrograms(row)"
-                      style="font-size: 20px; color: blue"
+                      style="font-size: 20px; color: #0f6b4d"
                       >poll</v-icon
                     >
                   </template>
 
                   <template #cell(addingScores)="row">
                     <v-icon
-                      @click="showPrograms(row)"
-                      style="font-size: 20px; color: blue"
+                      @click="addScoreToCustomer(row)"
+                      style="font-size: 20px; color: #0f6b4d"
                       >add_circle</v-icon
                     >
                   </template>
@@ -157,17 +161,109 @@
                   <template #cell(actions)="row">
                     <v-icon
                       @click="editCustRow(row)"
-                      style="font-size: 20px; color: blue"
+                      style="font-size: 20px; color: #0f6b4d"
                       >edit</v-icon
                     >
 
                     <v-icon
                       @click="deleteCustRow(row)"
-                      style="font-size: 20px; color: red"
+                      style="font-size: 20px; color: #f7b73a"
                       >delete_outline</v-icon
                     >
                   </template>
                 </b-table>
+              </div>
+
+              <!-- create New Score -->
+              <div>
+                <b-modal
+                  v-model="addScoreToCustomerModal"
+                  dir="rtl"
+                  id="modal-center"
+                  title=" افزودن فعالیت"
+                  :header-bg-variant="headerBgVariant"
+                  :header-text-variant="headerTextVariant"
+                >
+                  <b-container fluid>
+                    <b-row>
+                      <b-col>
+                        <h3>فعالیت مد نظر را اضافه کنید:</h3>
+
+                        <div>
+                          <b-table
+                            :items="AllScores"
+                            :fields="scoreFields"
+                            striped
+                            responsive="sm"
+                            hover
+                            outlined
+                          >
+                            <template #cell(Actions)="row">
+                              <div @click="addNewScoreToCustomer(row)">
+                                <div
+                                  v-if="
+                                    getenScores.includes(
+                                      row.item.ActivityName
+                                    ) || row.item.ActivityName == selectedName
+                                  "
+                                >
+                                  <v-icon
+                                    style="font-size: 20px; color: #90c445"
+                                  >
+                                    done_all
+                                  </v-icon>
+                                </div>
+
+                                <div v-else>
+                                  <v-icon
+                                    style="font-size: 20px; color: #90c445"
+                                  >
+                                    add_circle
+                                  </v-icon>
+                                </div>
+                              </div>
+                            </template>
+                          </b-table>
+                        </div>
+                      </b-col>
+                    </b-row>
+                  </b-container>
+
+                  <template #modal-footer>
+                    <div class="w-100">
+                      <v-btn
+                        class="select2"
+                        color="#f7b73a"
+                        elevation="3"
+                        rounded
+                        larg
+                        outlined
+                        @click="closeeditCustomerModal"
+                        >انصراف
+                      </v-btn>
+                    </div>
+                  </template>
+
+                  <v-snackbar
+                    v-model="snackbarGreen"
+                    :color="snackColor"
+                    dir="rtl"
+                  >
+                    {{ text }}
+
+                    <template v-slot:action="{ attrs }">
+                      <v-btn
+                        color="red"
+                        rounded
+                        v-bind="attrs"
+                        text
+                        @click="snackbarGreen = false"
+                      >
+                        x
+                      </v-btn>
+                    </template>
+                  </v-snackbar>
+                </b-modal>
               </div>
 
               <!-- customer info -->
@@ -240,7 +336,7 @@
                     <div class="w-100">
                       <v-btn
                         class="select2"
-                        color="#bea44d"
+                        color="#f7b73a"
                         elevation="5"
                         rounded
                         larg
@@ -250,6 +346,77 @@
                       </v-btn>
                     </div>
                   </template>
+                </b-modal>
+              </div>
+
+              <!-- show customer scores -->
+              <div>
+                <b-modal
+                  v-model="showCustomerScoresModal"
+                  dir="rtl"
+                  id="modal-center"
+                  title=" لیست فعالیت ها"
+                  :header-bg-variant="headerBgVariant"
+                  :header-text-variant="headerTextVariant"
+                >
+                  <b-container fluid>
+                    <b-row>
+                      <b-col>
+                        <div>
+                          <b-table
+                            :items="CustomerScores"
+                            :fields="fields"
+                            striped
+                            responsive="sm"
+                            hover
+                            outlined
+                          >
+                            <template #table-busy>
+                              <div class="text-center my-2">
+                                <b-spinner class="align-middle"></b-spinner>
+                                <strong>در حال دریافت اطلاعات...</strong>
+                              </div>
+                            </template>
+                          </b-table>
+                        </div>
+                      </b-col>
+                    </b-row>
+                  </b-container>
+
+                  <template #modal-footer>
+                    <div class="w-100">
+                      <v-btn
+                        class="select2"
+                        color="#f7b73a"
+                        elevation="3"
+                        rounded
+                        larg
+                        outlined
+                        @click="closeCreateModal"
+                        >انصراف
+                      </v-btn>
+                    </div>
+                  </template>
+
+                  <v-snackbar
+                    v-model="snackbarGreen"
+                    :color="snackColor"
+                    dir="rtl"
+                  >
+                    {{ text }}
+
+                    <template v-slot:action="{ attrs }">
+                      <v-btn
+                        color="red"
+                        rounded
+                        v-bind="attrs"
+                        text
+                        @click="snackbarGreen = false"
+                      >
+                        x
+                      </v-btn>
+                    </template>
+                  </v-snackbar>
                 </b-modal>
               </div>
 
@@ -276,7 +443,7 @@
                       <v-btn
                         :loading="deleteCustomerLoading"
                         class="btnsize"
-                        color="#bea44d"
+                        color="#90c445"
                         elevation="5"
                         rounded
                         larg
@@ -286,7 +453,7 @@
 
                       <v-btn
                         class="select2"
-                        color="#bea44d"
+                        color="#f7b73a"
                         elevation="3"
                         rounded
                         larg
@@ -361,7 +528,7 @@
                       <v-btn
                         :loading="editCustomerLoading"
                         class="btnsize"
-                        color="#bea44d"
+                        color="#90c445"
                         elevation="5"
                         rounded
                         larg
@@ -371,7 +538,7 @@
 
                       <v-btn
                         class="select2"
-                        color="#bea44d"
+                        color="#f7b73a"
                         elevation="3"
                         rounded
                         larg
@@ -396,7 +563,12 @@
         </div>
       </b-tab>
 
-      <b-tab title=" فعالیت ها ">
+      <b-tab
+        class="mytabs"
+        title=" فعالیت ها "
+        :title-link-class="'tab-title-class'"
+      >
+        <!-- add score -->
         <div>
           <b-row dir="rtl">
             <b-col cols="1"> </b-col>
@@ -406,8 +578,8 @@
                 <b-row dir="rtl">
                   <b-col class="mb-5">
                     <v-btn
-                      class="btnsize"
-                      color="#bea44d"
+                      style="color: white"
+                      color="#10503B"
                       elevation="3"
                       rounded
                       large
@@ -464,7 +636,7 @@
                             <v-btn
                               :loading="createLoading"
                               class="btnsize"
-                              color="#bea44d"
+                              color="#90c445"
                               elevation="5"
                               rounded
                               larg
@@ -474,7 +646,7 @@
 
                             <v-btn
                               class="select2"
-                              color="#bea44d"
+                              color="#f7b73a"
                               elevation="3"
                               rounded
                               larg
@@ -537,7 +709,7 @@
                             <v-btn
                               :loading="editLoading"
                               class="btnsize"
-                              color="#bea44d"
+                              color="#90c445"
                               elevation="5"
                               rounded
                               larg
@@ -547,7 +719,7 @@
 
                             <v-btn
                               class="select2"
-                              color="#bea44d"
+                              color="#f7b73a"
                               elevation="3"
                               rounded
                               larg
@@ -583,7 +755,7 @@
                             <v-btn
                               :loading="deleteLoading"
                               class="btnsize"
-                              color="#bea44d"
+                              color="#90c445"
                               elevation="5"
                               rounded
                               larg
@@ -593,7 +765,7 @@
 
                             <v-btn
                               class="select2"
-                              color="#bea44d"
+                              color="#f7b73a"
                               elevation="3"
                               rounded
                               larg
@@ -611,7 +783,7 @@
 
                 <div>
                   <b-table
-                    :items="items"
+                    :items="AllScores"
                     :fields="fields"
                     striped
                     responsive="sm"
@@ -620,13 +792,13 @@
                     <template #cell(actions)="row">
                       <v-icon
                         @click="editScoreRow(row)"
-                        style="font-size: 20px; color: blue"
+                        style="font-size: 20px; color:#10503B"
                         >edit</v-icon
                       >
 
                       <v-icon
                         @click="deletScoreRow(row)"
-                        style="font-size: 20px; color: red"
+                        style="font-size: 20px; color: #f7b73a"
                         >delete_outline</v-icon
                       >
                     </template>
@@ -656,7 +828,7 @@
         </div>
       </b-tab>
 
-      <b-tab title=" برنامه ها">
+      <b-tab title=" برنامه ها" :title-link-class="'tab-title-class'">
         <b-row dir="rtl">
           <b-col cols="1"> </b-col>
           <b-col cols="10">
@@ -664,8 +836,8 @@
               <b-row dir="rtl">
                 <b-col class="mb-5">
                   <v-btn
-                    class="btnsize"
-                    color="#bea44d"
+                     style="color: white"
+                      color="#10503B"
                     elevation="3"
                     rounded
                     large
@@ -714,6 +886,19 @@
                             />
 
                             <br />
+
+                            <v-file-input
+                              label="عکس برنامه "
+                              outlined
+                              :clearable="true"
+                              append-icon="add_a_photo"
+                              prepend-icon=""
+                              @change="bgBase64"
+                              accept="image/png, image/jpeg, image/bmp"
+                              show-size
+                              :rules="imgRules"
+                            >
+                            </v-file-input>
                           </b-col>
                         </b-row>
                       </b-container>
@@ -723,7 +908,7 @@
                           <v-btn
                             :loading="createLoading"
                             class="btnsize"
-                            color="#bea44d"
+                            color="#90c445"
                             elevation="5"
                             rounded
                             larg
@@ -733,7 +918,7 @@
 
                           <v-btn
                             class="select2"
-                            color="#bea44d"
+                            color="#f7b73a"
                             elevation="3"
                             rounded
                             larg
@@ -796,7 +981,7 @@
                           <v-btn
                             :loading="editLoading"
                             class="btnsize"
-                            color="#bea44d"
+                            color="#90c445"
                             elevation="5"
                             rounded
                             larg
@@ -806,7 +991,7 @@
 
                           <v-btn
                             class="select2"
-                            color="#bea44d"
+                            color="#f7b73a"
                             elevation="3"
                             rounded
                             larg
@@ -842,7 +1027,7 @@
                           <v-btn
                             :loading="deleteLoading"
                             class="btnsize"
-                            color="#bea44d"
+                            color="#90c445"
                             elevation="5"
                             rounded
                             larg
@@ -852,7 +1037,7 @@
 
                           <v-btn
                             class="select2"
-                            color="#bea44d"
+                            color="#f7b73a"
                             elevation="3"
                             rounded
                             larg
@@ -885,7 +1070,7 @@
 
                     <v-icon
                       @click="deletRow(row)"
-                      style="font-size: 20px; color: red"
+                      style="font-size: 20px; color: #f7b73a"
                       >delete_outline</v-icon
                     >
                   </template>
@@ -940,7 +1125,13 @@ export default {
   name: "App",
   data() {
     return {
+      
       showDetailsModal: false,
+      addScoreToCustomerModal: false,
+      bg64: "",
+
+      getenPrograms: [],
+      getenScores: [],
 
       personal: {
         Address: "",
@@ -975,6 +1166,8 @@ export default {
       showDeleteCustomerModal: false,
       deletedRow: "",
       deleteCustomerLoading: false,
+      deleteID: "",
+      editId: "",
 
       //customer edit
       showEditCustomerModal: false,
@@ -988,13 +1181,23 @@ export default {
         Mobile: "",
       },
 
+      // CreateNewScoreModal
+      CreateNewScoreModal: false,
+      selectedName: "",
+      scoreId: "",
+      customerId: "",
+      CustomerScores: "",
+
       //program
       //create
       createLoading: false,
+
       programform: {
         PointsNeeded: "",
         Title: "",
         Description: "",
+        Picture: "",
+        Base64File: "",
       },
 
       //Edit
@@ -1024,6 +1227,8 @@ export default {
         Points: "",
         ActivityName: "",
         Description: "",
+        Picture: "",
+        Base64File: "",
       },
 
       //Edit
@@ -1044,6 +1249,7 @@ export default {
       showCreateScoreModal: false,
       showCreateModal: false,
       showCreateCustomerModal: false,
+      showCustomerScoresModal: false,
 
       showEditScoreModal: false,
       showEditProgramModal: false,
@@ -1060,6 +1266,13 @@ export default {
         { Points: "تعداد امتیاز" },
         { Description: "توضیحات" },
         { actions: "عملیات" },
+      ],
+
+      scoreFields: [
+        { ActivityName: "نام فعالیت" },
+        { Points: "تعداد امتیاز" },
+        { Description: "توضیحات" },
+        { Actions: "عملیات" },
       ],
 
       items: [],
@@ -1114,6 +1327,145 @@ export default {
   mounted() {},
 
   methods: {
+    bgBase64(e) {
+      new Promise((res) => {
+        const fileReader = new FileReader();
+        fileReader.onload = function (FileLoadEvent) {
+          const image64 = FileLoadEvent.target?.result;
+          res(image64);
+        };
+        fileReader.readAsDataURL(e);
+      }).then((img) => {
+        this.bg64 = img;
+        this.bgSend();
+      });
+
+      // this.images.push(e.name);
+    },
+
+    async bgSend() {
+      this.form.Base64File = this.bg64;
+    },
+    async showCustomerScores(row) {
+      this.showCustomerScoresModal = true;
+      let IdOfCustomer = row.item.Id;
+
+      console.log("IdOfCustomer :", IdOfCustomer);
+
+      await axios
+        .get(
+          `http://localhost:8080/api/User/GetCustomerScores/${IdOfCustomer}`,
+          {
+            headers: {
+              token: localStorage.getItem("token"),
+            },
+          }
+        )
+        .then((response) => {
+          this.CustomerScores = response.data;
+          console.log("Customer scores:", response.data);
+        })
+        .catch((e) => {
+          this.errors.push(e);
+        });
+    },
+
+    async addNewScoreToCustomer(row) {
+      console.log("row:", row);
+
+      this.editedRow = row;
+      this.selectedName = row.item.ActivityName;
+      this.scoreId = row.item.Id;
+
+      // this.openEditModal();
+      console.log("scoreId:", this.scoreId);
+
+      await axios
+        .get(
+          `http://localhost:8080/api/User/GetCustomerScores/${this.customerId}`,
+          {
+            headers: {
+              token: localStorage.getItem("token"),
+            },
+          }
+        )
+        .then((response) => {
+          this.CustomerScores = response.data;
+          console.log("Customer scores:", response.data);
+        })
+        .catch((e) => {
+          this.errors.push(e);
+        });
+
+      for (let item of this.CustomerScores) {
+        this.getenScores.push(item.ActivityName);
+      }
+      console.log("selectedName:", this.selectedName);
+
+      if (this.getenScores.includes(this.selectedName)) {
+        console.log("has been added ! ");
+        this.snackColor = "red";
+        this.text = "اين فعاليت قبلا اضافه شده !";
+        this.snackbarGreen = true;
+      } else {
+        console.log("noot");
+        // this.snackColor = "green";
+
+        // this.text = "فعالیت با موفقیت اضافه شده";
+
+        await axios
+          .post(
+            `http://localhost:8080/api/User/AddScoreToCustomer/${this.customerId}?scoreid=${this.scoreId}`,
+            this.customerId,
+            {
+              headers: {
+                token: localStorage.getItem("token"),
+              },
+            }
+          )
+          .then((response) => {
+            // this.CustomerScores = response.data;
+
+            this.text = response.data.Description;
+
+            if (response.data.MessageType == 0) {
+              this.snackColor = "red";
+            } else {
+              this.snackColor = "green";
+            }
+            this.snackbarGreen = true;
+            console.log("add new score:", response.data);
+          });
+
+        await axios
+          .get(
+            `http://localhost:8080/api/User/GetCustomerScores/${this.customerId}`,
+            this.customerId,
+            {
+              headers: {
+                token: localStorage.getItem("token"),
+              },
+            }
+          )
+          .then((response) => {
+            this.CustomerScores = response.data;
+            console.log("Customer scores:", response.data);
+          })
+          .catch((e) => {
+            this.errors.push(e);
+          });
+      }
+      this.selectedName = "";
+      this.showTrueIcon(row);
+    },
+
+    addScoreToCustomer(row) {
+      console.log("addScoreToCustomer row", row);
+      this.customerId = row.item.Id;
+      this.addScoreToCustomerModal = true;
+      this.selectedName = "";
+    },
+
     editCustRow(row) {
       console.log("edit row", row);
       this.showEditCustomerModal = true;
@@ -1122,20 +1474,20 @@ export default {
       this.editCustomer.Family = row.item.Family;
       this.editCustomer.Password = row.item.Password;
       this.editCustomer.Mobile = row.item.Mobile;
+      this.editId = row.item.Id;
     },
 
     closeeditCustomerModal() {
       this.showEditCustomerModal = false;
+      this.addScoreToCustomerModal = false;
     },
 
     async editCustomerbtn() {
       this.editCustomerLoading = true;
-      let index = this.editdRow.index;
 
       await axios
         .post(
-          `http://localhost:8080/api/User/UpdateCustomer/${index}`,
-          index,
+          `http://localhost:8080/api/User/UpdateCustomer/${this.editId}`,
           this.editCustomer,
           {
             headers: {
@@ -1165,18 +1517,43 @@ export default {
         });
       this.showEditCustomerModal = false;
       this.editCustomerLoading = false;
-    },
-
-    async deleteCustomerbtn() {
-      this.deleteCustomerLoading = true;
-      let index = this.deletedRow.index;
 
       await axios
-        .post(`http://localhost:8080/api/User/DeleteCustomer/${index}`, index, {
+        .get(`http://localhost:8080/api/User/GetAllCustomers`, {
           headers: {
             token: localStorage.getItem("token"),
           },
         })
+
+        .then((response) => {
+          this.AllUsers = response.data;
+          // this.text = "در حال دریافت اطلاعات ...";
+          // this.snackbarGreen = true;
+
+          // this.snackColor = "green";
+
+          console.log("AllUsers: ", this.AllUsers);
+
+          this.signUpLoading = false;
+        })
+        .catch((e) => {
+          this.errors.push(e);
+        });
+    },
+
+    async deleteCustomerbtn() {
+      this.deleteCustomerLoading = true;
+
+      await axios
+        .post(
+          `http://localhost:8080/api/User/DeleteCustomer?id=${this.deleteID}`,
+          this.deleteID,
+          {
+            headers: {
+              token: localStorage.getItem("token"),
+            },
+          }
+        )
         .then((response) => {
           this.text = response.data.Description;
           this.MessageType = response.data.MessageType;
@@ -1197,6 +1574,38 @@ export default {
         .catch((e) => {
           this.errors.push(e);
         });
+
+      await axios
+        .get(`http://localhost:8080/api/User/GetAllCustomers`, {
+          headers: {
+            token: localStorage.getItem("token"),
+          },
+        })
+
+        .then((response) => {
+          this.AllUsers = response.data;
+          // this.snackColor = "green";
+
+          // this.snackbarGreen = true;
+
+          console.log("AllUsers: ", this.AllUsers);
+
+          // if (response.data.MessageType == 1) {
+          //   this.snackbarGreen = true;
+
+          //   this.snackColor = "green";
+          //   // this.$router.push({ path: "/customerLogin" });
+          // } else {
+          //   this.snackbarGreen = true;
+
+          //   this.snackColor = "red";
+          // }
+
+          this.signUpLoading = false;
+        })
+        .catch((e) => {
+          this.errors.push(e);
+        });
       this.showDeleteCustomerModal = false;
       this.deleteCustomerLoading = false;
     },
@@ -1206,8 +1615,11 @@ export default {
     },
 
     async deleteCustRow(row) {
+      console.log("delete..", row);
       this.showDeleteCustomerModal = true;
       this.deletedRow = row;
+      this.deleteID = row.item.Id;
+      console.log(" deleteID ..", this.deleteID);
     },
 
     //score
@@ -1227,14 +1639,12 @@ export default {
     showDetails(row) {
       this.showDetailsModal = true;
 
-    
-
       this.personal.FullName = row.item.FullName;
 
-       if (row.item.Gender) {
+      if (row.item.Gender) {
         this.personal.Gender = "مرد";
       } else {
-       this.personal.Gender = "زن";
+        this.personal.Gender = "زن";
       }
 
       this.personal.Mobile = row.item.Mobile;
@@ -1245,10 +1655,6 @@ export default {
         this.personal.IsMarried = "مجرد";
       }
 
-      
-
-
-  
       this.personal.JobType = row.item.JobType;
 
       this.personal.Email = row.item.Email;
@@ -1256,7 +1662,7 @@ export default {
 
       this.personal.CityId = row.item.CityId;
 
-        let bDate  = row.item.BirthDate;
+      let bDate = row.item.BirthDate;
 
       this.personal.BirthDate = bDate;
       console.log("personal: ", this.personal);
@@ -1269,6 +1675,7 @@ export default {
     closeCreateModal() {
       this.showCreateModal = false;
       this.showCreateScoreModal = false;
+      this.showCustomerScoresModal = false;
     },
 
     //create score
@@ -1288,6 +1695,7 @@ export default {
     closeCreateCustomerModal() {
       this.showCreateCustomerModal = false;
       this.showDetailsModal = false;
+      this.showCreateScoreModal = false;
     },
 
     async addNewProgram() {
@@ -1316,7 +1724,7 @@ export default {
       this.createLoading = true;
       await this.setNewScore(this.scoreform);
       await this.getUserScores();
-      this.items = this.getScores;
+      this.AllScores = this.getScores;
 
       this.text = await this.getMessage;
 
@@ -1404,7 +1812,7 @@ export default {
       await this.updateScore(this.editForm);
 
       await this.getUserScores();
-      this.items = this.getScores;
+      this.AllScores = this.getScores;
 
       this.text = await this.getMessage;
 
@@ -1495,7 +1903,7 @@ export default {
       this.snackbarGreen = true;
 
       await this.getUserScores();
-      this.items = this.getScores;
+      this.AllScores = this.getScores;
 
       this.deleteLoading = false;
 
@@ -1609,15 +2017,21 @@ export default {
       });
 
     await this.getUserScores();
-    this.items = this.getScores;
+    this.AllScores = this.getScores;
+    console.log("allScores", this.AllScores);
 
     await this.getUserprograms();
     this.programitems = this.getprograms;
+    console.log("allPrograms :", this.programitems);
   },
 };
 </script>
 
-<style scope>
+<style >
+ .my-class {
+  background: black;
+  color: white;
+}
 p {
   padding: 0%;
   margin: 0%;
@@ -1631,5 +2045,18 @@ p {
 }
 .home {
   background-color: #f0f0f5;
+}
+.tab-title-class {
+  color: #6667ab !important;
+}
+
+.tab {
+  color: red;
+}
+
+.modalbg{
+    color: red !important;
+
+
 }
 </style>

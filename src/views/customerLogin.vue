@@ -44,7 +44,7 @@
 
                 <v-btn
                   class="btnsize ml-1"
-                  color="#bea44d"
+                  color="#90c445"
                   elevation="5"
                   rounded
                   large
@@ -54,7 +54,7 @@
                   >ورود
                 </v-btn>
 
-                <a href="/ForgotPassword" style="text-decoration: none">
+                <a href="/ForgotPassword" style="text-decoration: none; color: #6667ab">
                   <h8> رمز عبور خود را فراموش کردید؟ </h8>
                 </a>
               </b-form>

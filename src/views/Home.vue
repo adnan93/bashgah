@@ -32,27 +32,27 @@
 
           <div class="container">
             <v-btn
+              class="select2"
+              color="#90c445"
+              elevation="3"
+              rounded
+              x-large
+              @click="GoToCustomer()"
+            >
+              <v-icon style="font-size: 20px">people_alt</v-icon> کاربر
+            </v-btn>
+
+            <v-btn
               class="btnsize"
-              color="#bea44d"
+              color="#6667ab"
               elevation="5"
               rounded
               x-large
+              outlined
               @click="UserLogin()"
             >
               <v-icon style="font-size: 20px; color: black">portrait</v-icon>
               مدیر
-            </v-btn>
-
-            <v-btn
-              class="select2"
-              color="#bea44d"
-              elevation="3"
-              rounded
-              x-large
-              outlined
-              @click="GoToCustomer()"
-            >
-              <v-icon style="font-size: 20px">people_alt</v-icon> کاربر
             </v-btn>
             <hr />
           </div>

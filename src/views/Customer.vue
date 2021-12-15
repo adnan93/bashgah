@@ -22,7 +22,7 @@
             <div class="container">
               <v-btn
                 class="btnsize"
-                color="#bea44d"
+                color="#90c445"
                 elevation="5"
                 rounded
                 x-large
@@ -32,7 +32,7 @@
 
               <v-btn
                 class="select2"
-                color="#bea44d"
+                color="#90c445"
                 elevation="3"
                 rounded
                 x-large

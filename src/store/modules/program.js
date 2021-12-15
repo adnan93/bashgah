@@ -20,7 +20,7 @@ const actions = {
                     token: localStorage.getItem("token"),
                 },
             });
-        // console.log('programs',response.data)
+       // console.log('programssssss',response.data)
         commit('setprograms', response.data)
     },
 

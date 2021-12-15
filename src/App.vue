@@ -1,18 +1,18 @@
 <template>
   <v-app class="home" style="font-family: IRYekan">
     <b-row dir="rtl">
-      <b-navbar toggleable="lg" type="dark" variant="dark">
+      <b-navbar toggleable="lg" type="dark" variant="dark" style="background-color: #f0f0f5;">
         <div>
           <!-- Just an image -->
-          <b-navbar variant="faded" type="light">
+          <b-navbar variant="faded" type="light"  >
             <b-navbar-brand class="mr-15" href="/">
-              <img
+              <!-- <img
                 class="mt-0 mb-0 pt-0 pb-0"
                 width="55px"
                 height="55px"
                 src="@/assets/talagram.png"
                 alt="طلاگرام"
-              />
+              /> -->
             </b-navbar-brand>
           </b-navbar>
         </div>
@@ -26,30 +26,30 @@
           <b-navbar-nav>
             <b-nav-item class="ml-2" href="#">
               <h6>
-                <b style="color: #bea44d"> </b>
+                <b style="color: #90c445"> </b>
               </h6>
             </b-nav-item>
 
               <b-nav-item class="ml-2" href="/customerProfile">
-              <h6><b style="color: #bea44d"> صفحه اصلى </b></h6>
+              <h6><b style="color: #90c445"> صفحه اصلى </b></h6>
             </b-nav-item>
 
             <b-nav-item class="ml-2" href="/Update">
-              <h6><b style="color: #bea44d">ویرایش پروفایل </b></h6>
+              <h6><b style="color: #90c445">ویرایش پروفایل </b></h6>
             </b-nav-item>
 
           
 
             <b-nav-item class="ml-2" @click="checkLogout()">
-              <h6><b style="color: #bea44d">خروج </b></h6>
+              <h6><b style="color: #90c445">خروج </b></h6>
             </b-nav-item>
 
             <!-- <b-nav-item class="ml-2" href="#">
-              <h6><b style="color: #bea44d"> اخبار توليد و تجارت </b></h6>
+              <h6><b style="color: #90c445"> اخبار توليد و تجارت </b></h6>
             </b-nav-item>
 
             <b-nav-item class="ml-2" href="#">
-              <h6><b style="color: #bea44d"> اخبار اقتصادی </b></h6>
+              <h6><b style="color: #90c445"> اخبار اقتصادی </b></h6>
             </b-nav-item> -->
           </b-navbar-nav>
         </b-collapse>
@@ -70,7 +70,7 @@
             <div class="w-100">
               <v-btn
                 class="select2"
-                color="#bea44d"
+                color="#f7b73a"
                 elevation="3"
                 rounded
                 larg
@@ -81,7 +81,7 @@
 
               <v-btn
                 class="btnsize"
-                color="#bea44d"
+                color="#90c445"
                 elevation="5"
                 rounded
                 large
@@ -217,10 +217,15 @@ a {
   // background-color: #ffffff80;
 
   //  background-color:rgb(240, 232, 232);
-  background-color: rgb(243, 240, 213);
+  background-color: #e8ede7;
 }
 
 .bg {
-  background-color: rgb(223, 221, 221);
+  background-color: #e8ede7;
 }
+
+.navbar.navbar-dark.bg-dark{
+    background-color: #10503B!important;
+}
+
 </style>

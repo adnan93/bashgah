@@ -37,15 +37,10 @@ const actions = {
                         token: localStorage.getItem("token"),
                     },
                 }
-
-
             );
         commit('setScores', response.data)
         commit('setMessage', response.data.Description)
-
         commit('setMessageType', response.data.MessageType)
-
-
     },
 
 
