@@ -1,10 +1,15 @@
 <template>
   <v-app class="home" style="font-family: IRYekan">
-    <b-row dir="rtl">
-      <b-navbar toggleable="lg" type="dark" variant="dark" style="background-color: #f0f0f5;">
+    <b-row dir="">
+      <b-navbar
+        toggleable="lg"
+        type="dark"
+        variant="dark"
+        style="background-color: #f0f0f5"
+      >
         <div>
           <!-- Just an image -->
-          <b-navbar variant="faded" type="light"  >
+          <b-navbar variant="faded" type="light">
             <b-navbar-brand class="mr-15" href="/">
               <!-- <img
                 class="mt-0 mb-0 pt-0 pb-0"
@@ -16,9 +21,9 @@
             </b-navbar-brand>
           </b-navbar>
         </div>
-        <b-navbar-brand>
-          <router-link to="/">باشگاه مشتریان</router-link>
-        </b-navbar-brand>
+        <!-- <b-navbar-brand>
+          <router-link to="/">صفحه اصلی</router-link>
+        </b-navbar-brand> -->
 
         <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
@@ -29,18 +34,16 @@
                 <b style="color: #90c445"> </b>
               </h6>
             </b-nav-item>
-
-              <b-nav-item class="ml-2" href="/customerProfile">
+<!-- 
+            <b-nav-item class="ml-2" href="/customerProfile">
               <h6><b style="color: #90c445"> صفحه اصلى </b></h6>
-            </b-nav-item>
+            </b-nav-item> -->
 
-            <b-nav-item class="ml-2" href="/Update">
+            <!-- <b-nav-item class="ml-2" href="/Update">
               <h6><b style="color: #90c445">ویرایش پروفایل </b></h6>
-            </b-nav-item>
+            </b-nav-item> -->
 
-          
-
-            <b-nav-item class="ml-2" @click="checkLogout()">
+            <b-nav-item class="ml-2" @click="checkLogout()" v-show="showBtn()">
               <h6><b style="color: #90c445">خروج </b></h6>
             </b-nav-item>
 
@@ -86,6 +89,7 @@
                 rounded
                 large
                 @click="logout()"
+                href="/"
               >
                 بلی
               </v-btn>
@@ -137,6 +141,7 @@ export default {
   },
   created() {
     // console.log("login..", this.token)
+    this.showBtn();
   },
   methods: {
     checkLogout() {
@@ -148,15 +153,23 @@ export default {
       if (this.token) {
         localStorage.removeItem("token");
       }
-      this.closeCreateModal();
-      this.$router.push({ path: "/" });
+      this.showCreateModal = false;
+
+     // this.$router.push({ path: "/" });
+
       this.snackbarGreen = true;
     },
 
     showBtn() {
-      if (this.token) {
+      //  console.log("token: ", this.token);
+      if (this.token == null) {
+        console.log("no token ");
+
+        return false;
+      } else {
+        console.log("token is: ", this.token);
         return true;
-      } else return false;
+      }
     },
 
     openCreateModal() {
@@ -224,8 +237,7 @@ a {
   background-color: #e8ede7;
 }
 
-.navbar.navbar-dark.bg-dark{
-    background-color: #10503B!important;
+.navbar.navbar-dark.bg-dark {
+  background-color: #10503b !important;
 }
-
 </style>

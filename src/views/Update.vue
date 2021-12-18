@@ -261,6 +261,10 @@ import axios from "axios";
 export default {
   name: "Update",
   async created() {
+    if(!window.location.hash) {
+        window.location = window.location + '#loaded';
+        window.location.reload();
+    }
     this.snackbarGreen = true;
 
     this.loadingbtn = true;
