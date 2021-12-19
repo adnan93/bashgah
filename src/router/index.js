@@ -63,6 +63,12 @@ const routes = [
     name: 'Customer',
     component: () => import('../views/Customer.vue')
   }, 
+
+  {
+    path: '/Completed',
+    name: 'Completed',
+    component: () => import('../views/Completed.vue')
+  }, 
   
 
   {

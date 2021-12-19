@@ -1,108 +1,162 @@
 <template>
   <div>
     <b-row dir="rtl">
-      <b-col cols="2"> </b-col>
-      <b-col cols="8">
+      <b-col cols="1"> </b-col>
+      <b-col cols="10">
         <b-card class="mt-5" border-variant="dark" header-bg-variant="dark">
           <template #header>
             <div style="text-align: center">
-              <p style="color: white" class="mb-0">اطلاعات پایه</p>
+              <p style="color: white" class="mb-0">اطلاعات تکمیلی</p>
             </div>
           </template>
 
           <b-form @submit="onSubmit">
             <b-row>
-              <b-row>
-                <b-col>
-                  <v-text-field
-                    type="text"
-                    v-model="form.Name"
-                    label="نام"
-                    required
-                    outlined
-                    dense
-                    :rules="[phoneRules.required]"
-                  />
-
-                  <br />
-
-                  <v-text-field
-                    type="text"
-                    v-model="form.Family"
-                    label="نام خانوادگی"
-                    required
-                    outlined
-                    dense
-                    :rules="[phoneRules.required]"
-                  />
-
-                  <br />
-
-                  <v-text-field
-                    :append-icon="show4 ? 'mdi-eye' : 'mdi-eye-off'"
-                    v-model="form.Password"
-                    :type="show4 ? 'text' : 'password'"
-                    required
-                    label="رمز عبور"
-                    @click:append="show4 = !show4"
-                    outlined
-                    dense
-                    :rules="[phoneRules.required]"
-                  ></v-text-field>
-
-                  <br />
-                </b-col>
-                <b-col>
-                  <v-text-field
-                    type="text"
-                    v-model="form.Name"
-                    label="کد ملی"
-                    required
-                    outlined
-                    dense
-                    :rules="[phoneRules.required]"
-                  />
-
-                  <br />
-
-                  <v-select
-                    class="select"
-                    :items="cities"
-                    :item-text="'Name'"
-                    :item-value="'Id'"
-                    type="text"
-                    v-model="form.CityId"
-                    label="کارگزار ناظر"
-                    required
-                    outlined
-                    dense
-                  >
-                  </v-select>
-
-                  <br />
-
-                  <v-text-field
-                    v-model="form.Mobile"
-                    label="شماره موبایل"
-                    required
-                    outlined
-                    dense
-                    :rules="[phoneRules.required, phoneRules.validNum]"
-                  />
-                </b-col>
+              <b-col>
+                <v-select
+                  class="select"
+                  :items="Province"
+                  :item-text="'Name'"
+                  :item-value="'Id'"
+                  type="text"
+                  v-model="form.ProvinceId"
+                  label="استان"
+                  required
+                  outlined
+                  dense
+                  @change="OstanChange()"
+                >
+                </v-select>
                 <br />
-              </b-row>
 
-              <b-row>
-                <div class="container" align="left">
-                  <v-img
-                    :src="`http://localhost:8080/api/Customer/GetPictureFile/${imgId}`"
-                    width="25%"
-                    height="100%"
-                    style="border-radius: 10px; position: relative"
-                  ></v-img>
+                <v-select
+                  class="select"
+                  :items="cities"
+                  :item-text="'Name'"
+                  :item-value="'Id'"
+                  type="text"
+                  v-model="form.CityId"
+                  label="شهر"
+                  required
+                  outlined
+                  dense
+                >
+                </v-select>
+
+                <v-select
+                  :items="Degree"
+                  label="تحصیلات"
+                  :item-text="'Name'"
+                  :item-value="'Value'"
+                  v-model="form.Degree"
+                  outlined
+                  dense
+                >
+                </v-select>
+
+                <br />
+
+                <v-text-field
+                  :items="JobType"
+                  label="شغل"
+                  :item-text="'Name'"
+                  :item-value="'Value'"
+                  v-model="form.JobType"
+                  outlined
+                  dense
+                >
+                </v-text-field>
+                <br />
+              </b-col>
+
+              <b-col>
+                <br />
+
+                <v-text-field
+                  v-model="form.Address"
+                  type="text"
+                  label="آدرس"
+                  outlined
+                  required
+                  dense
+                  :rules="[phoneRules.required]"
+                />
+                <br />
+
+                <v-text-field
+                  v-model="form.Email"
+                  style="hight: 150px"
+                  type="Email"
+                  label="ایمیل"
+                  :rules="[emailRules.required]"
+                  outlined
+                  required
+                  dense
+                />
+                <br />
+
+                <v-select
+                  :items="Married"
+                  label="وضعیت تاهل"
+                  :item-text="'Name'"
+                  :item-value="'Value'"
+                  v-model="form.IsMarried"
+                  outlined
+                  dense
+                >
+                </v-select>
+                <br />
+
+                <v-select
+                  class="select"
+                  :items="Gender"
+                  :item-text="'Name'"
+                  :item-value="'Value'"
+                  type="text"
+                  label="جنسیت"
+                  v-model="form.Gender"
+                  required
+                  outlined
+                  dense
+                >
+                </v-select>
+
+                <div>
+                  <date-picker
+                    class="datePicker"
+                    v-model="form.BirthDate"
+                    label="تاریخ تولد"
+                    color="#10503B"
+                  ></date-picker>
                 </div>
-              </b-row>
+                <br />
+
+                <br />
+
+                <v-file-input
+                  label="عکس پروفایل "
+                  outlined
+                  :clearable="true"
+                  append-icon="add_a_photo"
+                  prepend-icon=""
+                  @change="bgBase64"
+                  accept="image/png, image/jpeg, image/bmp"
+                  show-size
+                  :rules="imgRules"
+                >
+                </v-file-input>
+              </b-col>
+            </b-row>
+
+            <b-row>
+              <div class="container" align="left">
+                <v-img
+                  :src="`http://localhost:8080/api/Customer/GetPictureFile/${imgId}`"
+                  width="25%"
+                  height="100%"
+                  style="border-radius: 10px; position: relative"
+                ></v-img>
+              </div>
             </b-row>
 
             <v-btn
@@ -118,46 +172,15 @@
               >ثبت
             </v-btn>
 
-            <v-btn
-              class="btnsize ml-1"
-              color="#90c445"
-              elevation="5"
-              x-large
-              @click="GoToCompleteProfile()"
-              variant="primary"
-              :loading="loadingbtn"
-              >اطلاعات تکمیلی
-            </v-btn>
-
             <br />
           </b-form>
         </b-card>
       </b-col>
 
-      <b-col cols="2"> </b-col>
+      <b-col cols="1"> </b-col>
     </b-row>
-    <br>
-    <br>
-
- 
 
     <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-
-
-    
     <br />
     <br />
     <br />
@@ -186,12 +209,8 @@ import axios from "axios";
 // import config from "@/config";
 
 export default {
-  name: "Update",
+     name: "Update",
   async created() {
-    if (!window.location.hash) {
-      window.location = window.location + "#loaded";
-      window.location.reload();
-    }
     this.snackbarGreen = true;
 
     this.loadingbtn = true;
@@ -205,18 +224,6 @@ export default {
     this.Province = rest.data;
 
     console.log("Province: ", rest.data);
-
-    //  console.log('Province', this.Province);
-
-    //    let rest1 = await axios.get(`http://localhost:8080/api/City/GetAll`, {
-    //   headers: {
-    //     token: localStorage.getItem("token"),
-    //   },
-    // });
-
-    // this.cities = rest1.data;
-
-    //  console.log('cities', this.cities);
 
     let response = await axios.get(
       `http://localhost:8080/api/Customer/GetMyUser`,
@@ -271,9 +278,7 @@ export default {
     this.form.ProfilePictrue = response.data.ProfilePictrue;
     this.loadingbtn = false;
   },
-  mounted() {
-    // window.location.reload(true);
-  },
+  mounted() {},
 
   data() {
     return {
@@ -363,9 +368,31 @@ export default {
   watch: {},
 
   methods: {
-    GoToCompleteProfile() {
-      this.$router.push({ path: "/Completed" });
+       async onSubmit(event) {
+      event.preventDefault();
+
+      console.log("form: ", this.form);
+
+      this.loadingbtn = true;
+      await axios
+        .post(`http://localhost:8080/api/Customer/Update`, this.form, {
+          headers: {
+            token: localStorage.getItem("token"),
+          },
+        })
+        .then((response) => {
+          console.log("updated customer: ", response);
+
+               this.$router.push({ path: "/customerProfile" });
+        })
+        .catch((e) => {
+          this.errors.push(e);
+        });
+      this.loadingbtn = false;
     },
+    // goBack() {
+    //   this.$router.push({ path:"/Update"});
+    // },
 
     async getImg() {
       let res = await axios.get(
@@ -379,6 +406,7 @@ export default {
       );
       console.log("img is: ", res.data);
     },
+
     async bgSend() {
       this.form.Base64File = this.bg64;
     },
@@ -413,76 +441,7 @@ export default {
       console.log("cities", this.cities);
     },
 
-    // pickFile() {
-    //   this.$refs.image.click();
-    // },
-
-    // onFilePicked(e) {
-    //   const files = e.target.files;
-    //   if (files[0] !== undefined) {
-    //     this.imageName = files[0].name;
-    //     if (this.imageName.lastIndexOf(".") <= 0) {
-    //       return;
-    //     }
-    //     const fr = new FileReader();
-    //     fr.readAsDataURL(files[0]);
-    //     fr.addEventListener("load", () => {
-    //       this.imageUrl = fr.result;
-    //       this.imageFile = files[0]; // this is an image file that can be sent to server...
-    //       this.sendImg();
-    //     });
-    //   } else {
-    //     this.imageName = "";
-    //     this.imageFile = "";
-    //     this.imageUrl = "";
-    //   }
-    // },
-
-    async onSubmit(event) {
-      event.preventDefault();
-
-      console.log("form: ", this.form);
-
-      this.loadingbtn = true;
-      await axios
-        .post(`http://localhost:8080/api/Customer/Update`, this.form, {
-          headers: {
-            token: localStorage.getItem("token"),
-          },
-        })
-        .then((response) => {
-          console.log("updated customer: ", response);
-
-          this.$router.push({ path: "/customerProfile" });
-        })
-        .catch((e) => {
-          this.errors.push(e);
-        });
-      this.loadingbtn = false;
-    },
-
-    //   async submitUpdateUserImage() {
-
-    //   let vm = this._updateUserImageVue;
-    //   var formData = new FormData();
-    //   var fileUpload = vm.$refs.fileUpload;
-
-    //   if (fileUpload && fileUpload["files"].length > 0) {
-    //     formData.append(fileUpload["name"], fileUpload["files"][0]);
-    //   }
-    //   else
-    //   {
-    //     await this.notify({vm , data : {Message : "فایل باید وارد شود." , MessageType : MessageType.Error ,Obj : null }})
-    //     return ;
-    //   }
-    //   return axios({
-    //     method: "post",
-    //     url: `${baseUrl}/UpdateUserImage`,
-    //     data: formData,
-    //     headers: { "Content-Type": "multipart/form-data" }
-    //   })
-
-    // },
+   
 
     async sendImg() {
       console.log(this.imageFile);

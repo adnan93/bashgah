@@ -1,6 +1,6 @@
 <template>
   <v-app class="home" style="font-family: IRYekan">
-    <b-row dir="">
+    <b-row dir="rtl">
       <b-navbar
         toggleable="lg"
         type="dark"
@@ -39,9 +39,9 @@
               <h6><b style="color: #90c445"> صفحه اصلى </b></h6>
             </b-nav-item> -->
 
-            <!-- <b-nav-item class="ml-2" href="/Update">
+            <b-nav-item class="ml-2" href="/Update"  v-show="showBtn()" >
               <h6><b style="color: #90c445">ویرایش پروفایل </b></h6>
-            </b-nav-item> -->
+            </b-nav-item>
 
             <b-nav-item class="ml-2" @click="checkLogout()" v-show="showBtn()">
               <h6><b style="color: #90c445">خروج </b></h6>

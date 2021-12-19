@@ -21,7 +21,7 @@
 
       <br />
 
-      <b-row>
+      <b-row dir="rtl">
         <b-col cols="1"> </b-col>
         <b-col cols="10">
           <br />

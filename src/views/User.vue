@@ -1,7 +1,6 @@
 <template>
   <div>
     <b-tabs content-class="mt-3" align="center">
-
       <b-tab title=" برنامه ها" :title-link-class="'tab-title-class'">
         <b-row dir="rtl">
           <b-col cols="1"> </b-col>
@@ -274,6 +273,8 @@
                   striped
                   hover
                   responsive="sm"
+                  :loading="loadingTable"
+                  loading-text="در حال بارگیری اطلاعات ..."
                 >
                   <template #cell(actions)="row">
                     <v-icon
@@ -306,8 +307,6 @@
         </b-row>
       </b-tab>
 
-
-      
       <b-tab
         class="mytabs"
         title=" فعالیت ها "
@@ -522,6 +521,52 @@
                         </template>
                       </b-modal>
                     </div>
+
+                    <!-- delete score from customer -->
+                    <div>
+                      <b-modal
+                        v-model="removeScoreFromCustomerModal"
+                        dir="rtl"
+                        id="modal-center"
+                        title=" حذف فعالیت"
+                        :header-bg-variant="headerBgVariant"
+                        :header-text-variant="headerTextVariant"
+                      >
+                        <b-container fluid>
+                          <b-row>
+                            <b-col>
+                              <h4>فعالیت مورد نظر حذف شود؟</h4>
+                            </b-col>
+                          </b-row>
+                        </b-container>
+
+                        <template #modal-footer>
+                          <div class="w-100">
+                            <v-btn
+                              :loading="deleteCustomerScoreLoading"
+                              class="btnsize"
+                              color="#90c445"
+                              elevation="5"
+                              rounded
+                              larg
+                              @click="deleteScoreOfCustomerbtn"
+                              >بلی
+                            </v-btn>
+
+                            <v-btn
+                              class="select2"
+                              color="#f7b73a"
+                              elevation="3"
+                              rounded
+                              larg
+                              outlined
+                              @click="closeDeletModal"
+                              >انصراف
+                            </v-btn>
+                          </div>
+                        </template>
+                      </b-modal>
+                    </div>
                   </b-col>
                   <b-col> </b-col>
                 </b-row>
@@ -573,22 +618,75 @@
         </div>
       </b-tab>
 
-
       <b-tab title=" مشتریان " :title-link-class="'tab-title-class'">
         <div>
           <b-row dir="rtl">
             <b-col cols="1"> </b-col>
 
             <b-col cols="10">
-              <v-btn
-                style="color: white"
-                color="#10503B"
-                elevation="3"
-                rounded
-                large
-                @click="openCreateCustomerModal"
-                >افزودن مشتری
-              </v-btn>
+              <b-row
+                class="mt-4 d-flex justify-content-end"
+                style="padding-left: 5%; padding-right: 3%"
+              >
+                <b-col cols="12" md="12" class="d-flex justify-content-end">
+                  <v-btn
+                    style="color: white"
+                    color="#10503B"
+                    elevation="3"
+                    rounded
+                    large
+                    @click="openCreateCustomerModal"
+                    >افزودن مشتری
+                  </v-btn>
+                </b-col>
+              </b-row>
+
+              <b-container style="padding-left: 5%" fluid>
+                <b-row>
+                  <b-col cols="12" md="4" class="d-flex">
+                    <div dir="rtl" class="container">
+                      <v-text-field
+                        color="#10503B"
+                        v-model="searchName"
+                        label=" نام مشتری"
+                        dense
+                        dir="rtl"
+                      ></v-text-field>
+
+                      <!-- <v-text-field
+                        color="#10503B"
+                        v-model="searchFamily"
+                        label=" نام خانوادگی"
+                        dense
+                      ></v-text-field> -->
+                    </div>
+
+                    <v-btn
+                      elevation="3"
+                      dark
+                      rounded
+                      color="#10503B"
+                      @click="doSearch"
+                      style="margin-right: 0.3125em"
+                    >
+                      <v-icon> search </v-icon>
+                    </v-btn>
+                  </b-col>
+
+                  <b-col cols="12" md="3" class="text-right test pr-0">
+                    <v-btn
+                      elevation="3"
+                      dark
+                      rounded
+                        color="#10503B"
+                      @click="showAll"
+                      :disabled="!showSearch"
+                    >
+                      مشاهده همه
+                    </v-btn>
+                  </b-col>
+                </b-row>
+              </b-container>
 
               <br />
               <br />
@@ -1002,6 +1100,14 @@
                             hover
                             outlined
                           >
+                            <template #cell(actions)="row">
+                              <v-icon
+                                @click="RemoveScoreFromCustomer(row)"
+                                style="font-size: 20px; color: #f7b73a"
+                                >delete_outline</v-icon
+                              >
+                            </template>
+
                             <template #table-busy>
                               <div class="text-center my-2">
                                 <b-spinner class="align-middle"></b-spinner>
@@ -1193,10 +1299,6 @@
           <br /><br /><br />
         </div>
       </b-tab>
-
-
-      
-
     </b-tabs>
 
     <v-snackbar v-model="snackbarGreen" :color="snackColor" dir="rtl">
@@ -1241,8 +1343,14 @@ export default {
   name: "App",
   data() {
     return {
+      //search
+      searchName: "",
+      searchFamily: "",
+      showSearch: false,
+
       showDetailsModal: false,
       addScoreToCustomerModal: false,
+      deleteCustomerScoreLoading: false,
 
       // program image
       bg64: "",
@@ -1268,7 +1376,9 @@ export default {
 
       //Customer
       //create
+      IdOfCustomer: "",
       Customeritems: [],
+      scoreOfCustomer: "",
 
       Customerfields: [
         { FullName: "نام مشتری" },
@@ -1309,6 +1419,7 @@ export default {
       //program
       //create
       createLoading: false,
+      loadingTable: false,
 
       programform: {
         PointsNeeded: "",
@@ -1372,6 +1483,7 @@ export default {
       showCreateCustomerModal: false,
       showCustomerScoresModal: false,
       showApplyModal: false,
+      removeScoreFromCustomerModal: false,
 
       showEditScoreModal: false,
       showEditProgramModal: false,
@@ -1449,6 +1561,132 @@ export default {
   mounted() {},
 
   methods: {
+    async showAll() {
+      this.showSearch = false;
+
+      this.loadingTable = true;
+      await axios
+        .get(`http://localhost:8080/api/User/GetAllCustomers`, {
+          headers: {
+            token: localStorage.getItem("token"),
+          },
+        })
+
+        .then((response) => {
+          this.AllUsers = response.data;
+          this.text = "در حال دریافت اطلاعات ...";
+          this.snackbarGreen = true;
+
+          this.snackColor = "green";
+
+          console.log("AllUsers: ", this.AllUsers);
+
+          // if (response.data.MessageType == 1) {
+          //   this.snackbarGreen = true;
+
+          //   this.snackColor = "green";
+          //   // this.$router.push({ path: "/customerLogin" });
+          // } else {
+          //   this.snackbarGreen = true;
+
+          //   this.snackColor = "red";
+          // }
+
+          this.signUpLoading = false;
+        })
+        .catch((e) => {
+          this.errors.push(e);
+        });
+
+      // await this.getUserScores();
+      // this.AllScores = this.getScores;
+      // console.log("allScores", this.AllScores);
+
+      // await this.getUserprograms();
+      // this.programitems = this.getprograms;
+      // console.log("allPrograms :", this.programitems);
+      this.loadingTable = false;
+    },
+
+    RemoveScoreFromCustomer(row) {
+      console.log("row score of customer", row);
+      this.scoreOfCustomer = row.item.Id;
+      this.removeScoreFromCustomerModal = true;
+    },
+
+    async deleteScoreOfCustomerbtn() {
+      this.deleteCustomerScoreLoading = true;
+      let response = await axios.post(
+        `http://localhost:8080/api/User/RemoveScoreFromCustomer/${this.scoreOfCustomer}`,
+        this.scoreOfCustomer,
+        {
+          headers: {
+            token: localStorage.getItem("token"),
+          },
+        }
+      );
+
+      await axios
+        .get(
+          `http://localhost:8080/api/User/GetCustomerScores/${this.IdOfCustomer}`,
+          {
+            headers: {
+              token: localStorage.getItem("token"),
+            },
+          }
+        )
+        .then((response) => {
+          this.CustomerScores = response.data;
+          console.log("Customer scores:", response.data);
+        })
+        .catch((e) => {
+          this.errors.push(e);
+        });
+      this.deleteCustomerScoreLoading = false;
+
+      this.snackbarGreen = true;
+      this.text = response.data.Description;
+      this.removeScoreFromCustomerModal = false;
+    },
+
+    async doSearch() {
+      this.showSearch = true;
+      let res = await axios.get(
+        `http://localhost:8080/api/User/GetByName?fullname=${this.searchName}`,
+
+        {
+          headers: {
+            token: localStorage.getItem("token"),
+          },
+        }
+      );
+
+      console.log("res : ", res);
+
+      this.AllUsers = res.data;
+
+      //   await axios
+      // .get(`http://localhost:8080/api/User/GetAllCustomers`, {
+      //   headers: {
+      //     token: localStorage.getItem("token"),
+      //   },
+      // })
+
+      // .then((response) => {
+      //   this.AllUsers = response.data;
+      //   // this.text = "در حال دریافت اطلاعات ...";
+      //   // this.snackbarGreen = true;
+
+      //   // this.snackColor = "green";
+
+      //   console.log("AllUsers: ", this.AllUsers);
+
+      //   this.signUpLoading = false;
+      // })
+      // .catch((e) => {
+      //   this.errors.push(e);
+      // });
+    },
     async getImg() {
       let res = await axios.get(
         `http://localhost:8080/api/Customer/GetPictureFile/${this.imgId}`,
@@ -1486,13 +1724,11 @@ export default {
     },
     async showCustomerScores(row) {
       this.showCustomerScoresModal = true;
-      let IdOfCustomer = row.item.Id;
-
-      console.log("IdOfCustomer :", IdOfCustomer);
+      this.IdOfCustomer = row.item.Id;
 
       await axios
         .get(
-          `http://localhost:8080/api/User/GetCustomerScores/${IdOfCustomer}`,
+          `http://localhost:8080/api/User/GetCustomerScores/${this.IdOfCustomer}`,
           {
             headers: {
               token: localStorage.getItem("token"),
@@ -1521,9 +1757,8 @@ export default {
     },
 
     async addNewScoreToCustomer() {
-          //  this.addScoreToCustomerModal = false;
-                  this.showApplyModal = false;
-
+      //  this.addScoreToCustomerModal = false;
+      this.showApplyModal = false;
 
       await axios
         .get(
@@ -1847,7 +2082,6 @@ export default {
 
     async addNewProgram() {
       this.createLoading = true;
-  
 
       await this.setNewprogram(this.programform);
 
@@ -1867,9 +2101,9 @@ export default {
       this.createLoading = false;
 
       this.showCreateModal = false;
-          this.programform.Title ="";
-      this.programform.Description ="";
-      this.programform.PointsNeeded ="";
+      this.programform.Title = "";
+      this.programform.Description = "";
+      this.programform.PointsNeeded = "";
     },
 
     async addNewScore() {
@@ -1892,13 +2126,9 @@ export default {
 
       this.showCreateScoreModal = false;
 
-      this.scoreform.ActivityName ="";
+      this.scoreform.ActivityName = "";
       this.scoreform.Points = "";
       this.scoreform.Description = "";
-      
-
-
-
     },
 
     //Edit Program
@@ -1907,7 +2137,7 @@ export default {
       this.editedRow = row;
       this.editProgramForm.Id = row.item.Id;
       this.imgId = row.item.Picture;
-      this.editForm.Picture = row.item.Picture;
+      this.editProgramForm.Picture = row.item.Picture;
 
       console.log("imggg", this.imgId);
 
@@ -1955,19 +2185,16 @@ export default {
     async editScoreRow(row) {
       this.editedRow = row;
       this.editForm.Id = row.item.Id;
-      this.openEditModal();
+      this.showEditScoreModal = true;
       // await this.getScoreById(this.editedRow.item.Id);
 
-      console.log("this.getActivityName", await this.getActivityName);
+      console.log("score row: ", row);
 
-      this.editForm.ActivityName = await this.getActivityName;
-      this.editForm.Points = await this.getPoints;
-      this.editForm.Description = await this.getDescription;
+      this.editForm.ActivityName = row.item.ActivityName;
+      this.editForm.Points = row.item.Points;
+      this.editForm.Description = row.item.Description;
     },
 
-    openEditModal() {
-      this.showEditScoreModal = true;
-    },
     closeEditModal() {
       this.showEditScoreModal = false;
     },
@@ -2021,6 +2248,7 @@ export default {
     closeDeletModal() {
       this.showDeleteModal = false;
       this.showDeleteScoreModal = false;
+      this.removeScoreFromCustomerModal = false;
     },
 
     async deleteProgrambtn() {
@@ -2152,7 +2380,7 @@ export default {
       window.location = window.location + "#loaded";
       window.location.reload();
     }
-
+    this.loadingTable = true;
     await axios
       .get(`http://localhost:8080/api/User/GetAllCustomers`, {
         headers: {
@@ -2193,6 +2421,7 @@ export default {
     await this.getUserprograms();
     this.programitems = this.getprograms;
     console.log("allPrograms :", this.programitems);
+    this.loadingTable = false;
   },
 };
 </script>
