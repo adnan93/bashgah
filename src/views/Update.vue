@@ -55,26 +55,27 @@
                 <b-col>
                   <v-text-field
                     type="text"
-                    v-model="form.Name"
+                    v-model="form.NationalCode"
                     label="کد ملی"
                     required
                     outlined
                     dense
-                    :rules="[phoneRules.required]"
+                    :rules="[phoneRules.required, phoneRules.validNum]"
                   />
 
                   <br />
 
                   <v-select
                     class="select"
-                    :items="cities"
+                    :items="kargozarList"
                     :item-text="'Name'"
                     :item-value="'Id'"
                     type="text"
-                    v-model="form.CityId"
+                    v-model="form.Kargozar"
                     label="کارگزار ناظر"
                     required
                     outlined
+                    :rules="[phoneRules.required]"
                     dense
                   >
                   </v-select>
@@ -93,7 +94,7 @@
                 <br />
               </b-row>
 
-              <b-row>
+              <!-- <b-row>
                 <div class="container" align="left">
                   <v-img
                     :src="`http://localhost:8080/api/Customer/GetPictureFile/${imgId}`"
@@ -102,7 +103,7 @@
                     style="border-radius: 10px; position: relative"
                   ></v-img>
                 </div>
-              </b-row>
+              </b-row> -->
             </b-row>
 
             <v-btn
@@ -122,11 +123,12 @@
               class="btnsize ml-1"
               color="#90c445"
               elevation="5"
-              x-large
+              large
               @click="GoToCompleteProfile()"
               variant="primary"
               :loading="loadingbtn"
-              >اطلاعات تکمیلی
+            >
+              اطلاعات تکمیلی
             </v-btn>
 
             <br />
@@ -136,10 +138,8 @@
 
       <b-col cols="2"> </b-col>
     </b-row>
-    <br>
-    <br>
-
- 
+    <br />
+    <br />
 
     <br />
     <br />
@@ -156,8 +156,6 @@
     <br />
     <br />
 
-
-    
     <br />
     <br />
     <br />
@@ -188,6 +186,7 @@ import axios from "axios";
 export default {
   name: "Update",
   async created() {
+    
     if (!window.location.hash) {
       window.location = window.location + "#loaded";
       window.location.reload();
@@ -253,6 +252,8 @@ export default {
 
     this.form.CityId = response.data.CityId;
     this.imgId = response.data.ProfilePictrue;
+    this.form.NationalCode = response.data.NationalCode;
+    this.form.Kargozar = response.data.Kargozar;
 
     let res = await axios.get(
       `http://localhost:8080/api/City/GetByProvinceId/${response.data.ProvinceId}`,
@@ -329,6 +330,8 @@ export default {
         ProfilePictrue: "",
         ProvinceId: "",
         Base64File: "",
+        NationalCode: "",
+        Kargozar: "",
       },
 
       mar: null,
@@ -343,12 +346,10 @@ export default {
         { Name: "مجرد", Value: "false" },
       ],
 
-      Degree: [
-        { Name: "دیپلم", Value: 0 },
-        { Name: "کاردانی", Value: 1 },
-        { Name: "لیسانس", Value: 2 },
-        { Name: "فوق لیسانس", Value: 3 },
-        { Name: "دکترا", Value: 4 },
+      kargozarList: [
+        { Name: "سهم آشنا", Value: 0 },
+        { Name: "اقتصاد بیدار", Value: 1 },
+        { Name: "سایر", Value: 2 },
       ],
 
       JobType: [
@@ -368,7 +369,7 @@ export default {
     },
 
     async getImg() {
-      let res = await axios.get(
+    await axios.get(
         `http://localhost:8080/api/Customer/GetPictureFile/${this.imgId}`,
         this.imgId,
         {
@@ -377,8 +378,8 @@ export default {
           },
         }
       );
-      console.log("img is: ", res.data);
-    },
+
+},
     async bgSend() {
       this.form.Base64File = this.bg64;
     },
@@ -485,7 +486,6 @@ export default {
     // },
 
     async sendImg() {
-      console.log(this.imageFile);
 
       await axios.post(`http://localhost:8080/api/Customer/UpdateUserImage`, {
         headers: {

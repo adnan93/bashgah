@@ -10,8 +10,7 @@
         <b-col cols="6">
           <div dir="rtl">
             <h3>
-              مشتری گرامی {{ FullName }} تعداد امتیاز های فعلی
-             امتیاز می باشد
+              مشتری گرامی {{ FullName }} تعداد امتیاز های فعلی امتیاز می باشد
             </h3>
           </div>
         </b-col>
@@ -233,7 +232,6 @@
                             <strong>در حال دریافت اطلاعات...</strong>
                           </div>
                         </template>
-                        
                       </b-table>
                     </div>
                   </b-col>
@@ -615,7 +613,6 @@ export default {
         { PointsNeeded: "تعداد امتیاز لازم" },
         { Description: "توضیحات" },
         { status: "وضعیت" },
-
       ],
       Title: "",
 
@@ -840,6 +837,11 @@ export default {
   },
 
   async created() {
+    if (!window.location.hash) {
+      window.location = window.location + "#loaded";
+      window.location.reload();
+    }
+
     //date
     this.today = new Date().toLocaleDateString("fa-IR");
     this.loadingbtn = true;

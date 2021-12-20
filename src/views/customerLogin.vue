@@ -54,7 +54,10 @@
                   >ورود
                 </v-btn>
 
-                <a href="/ForgotPassword" style="text-decoration: none; color: #6667ab">
+                <a
+                  href="/ForgotPassword"
+                  style="text-decoration: none; color: #6667ab"
+                >
                   <h8> رمز عبور خود را فراموش کردید؟ </h8>
                 </a>
               </b-form>
@@ -108,7 +111,7 @@
 </template>
 
 <script>
-// import axios from "axios";
+import axios from "axios";
 import { mapGetters, mapActions } from "vuex";
 
 export default {
@@ -153,12 +156,29 @@ export default {
       event.preventDefault();
       await this.CustomerLogIn(this.form);
 
+      let response = await axios.get(
+        `http://localhost:8080/api/Customer/GetMyUser`,
+        {
+          headers: {
+            token: localStorage.getItem("token"),
+          },
+        }
+      );
+      if (response.data.JobType) {
+        console.log("user is : ", response.data);
+        this.snackbarGreen = true;
+
+        this.$router.push({ path: "/customerProfile" });
+      } else {
+        this.$router.push({ path: "/Update" });
+      }
+
       this.text = await this.getMessage;
 
       if ((await this.getMessageType) == 1) {
         this.snackColor = "green";
 
-        this.$router.push({ path: "/Update" });
+     //   this.$router.push({ path: "/Update" });
       } else {
         this.snackColor = "red";
       }

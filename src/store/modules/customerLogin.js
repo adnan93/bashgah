@@ -18,7 +18,7 @@ const actions = {
         commit('setMessageType', response.data.MessageType)
 
         localStorage.setItem('token', response.data.Token)
-        console.log(response.data.Token)
+        console.log(response.data)
     }
     
 };

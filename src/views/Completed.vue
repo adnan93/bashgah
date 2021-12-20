@@ -25,6 +25,7 @@
                   outlined
                   dense
                   @change="OstanChange()"
+                  :rules="[emailRules.required]"
                 >
                 </v-select>
                 <br />
@@ -40,8 +41,10 @@
                   required
                   outlined
                   dense
+                  :rules="[emailRules.required]"
                 >
                 </v-select>
+                <br />
 
                 <v-select
                   :items="Degree"
@@ -51,27 +54,42 @@
                   v-model="form.Degree"
                   outlined
                   dense
+                  :rules="[emailRules.required]"
+                  required
                 >
                 </v-select>
 
                 <br />
 
                 <v-text-field
-                  :items="JobType"
                   label="شغل"
                   :item-text="'Name'"
                   :item-value="'Value'"
                   v-model="form.JobType"
                   outlined
                   dense
+                  required
+                  :rules="[emailRules.required]"
                 >
                 </v-text-field>
+                <div>
+                  <date-picker
+                    class="datePicker"
+                    v-model="form.BirthDate"
+                    label="تاریخ تولد"
+                    color="#10503B"
+                    format="jYYYY-jMM-jDD"
+                    inputFormat="YYYY-MM-DD"
+                    type="date"
+                    required
+                    :rules="[emailRules.required]"
+                  ></date-picker>
+                </div>
+
                 <br />
               </b-col>
 
               <b-col>
-                <br />
-
                 <v-text-field
                   v-model="form.Address"
                   type="text"
@@ -103,6 +121,8 @@
                   v-model="form.IsMarried"
                   outlined
                   dense
+                  required
+                  :rules="[emailRules.required]"
                 >
                 </v-select>
                 <br />
@@ -118,23 +138,12 @@
                   required
                   outlined
                   dense
+                  :rules="[emailRules.required]"
                 >
                 </v-select>
 
-                <div>
-                  <date-picker
-                    class="datePicker"
-                    v-model="form.BirthDate"
-                    label="تاریخ تولد"
-                    color="#10503B"
-                  ></date-picker>
-                </div>
-                <br />
-
-                <br />
-
                 <v-file-input
-                  label="عکس پروفایل "
+                  label="  250*250 عکس پروفایل "
                   outlined
                   :clearable="true"
                   append-icon="add_a_photo"
@@ -142,21 +151,22 @@
                   @change="bgBase64"
                   accept="image/png, image/jpeg, image/bmp"
                   show-size
-                  :rules="imgRules"
+                  :rules="[imgRules]"
+                  
                 >
                 </v-file-input>
-              </b-col>
-            </b-row>
 
-            <b-row>
-              <div class="container" align="left">
-                <v-img
-                  :src="`http://localhost:8080/api/Customer/GetPictureFile/${imgId}`"
-                  width="25%"
-                  height="100%"
-                  style="border-radius: 10px; position: relative"
-                ></v-img>
-              </div>
+                <b-row>
+                  <div class="container" align="left">
+                    <v-img
+                      :src="`http://localhost:8080/api/Customer/GetPictureFile/${imgId}`"
+                      width="25%"
+                      height="100%"
+                      style="border-radius: 10px; position: relative"
+                    ></v-img>
+                  </div>
+                </b-row>
+              </b-col>
             </b-row>
 
             <v-btn
@@ -209,12 +219,10 @@ import axios from "axios";
 // import config from "@/config";
 
 export default {
-     name: "Update",
+  name: "Update",
   async created() {
     this.snackbarGreen = true;
-
     this.loadingbtn = true;
-
     let rest = await axios.get(`http://localhost:8080/api/Province/GetAll`, {
       headers: {
         token: localStorage.getItem("token"),
@@ -260,6 +268,9 @@ export default {
 
     this.form.CityId = response.data.CityId;
     this.imgId = response.data.ProfilePictrue;
+
+    this.form.NationalCode = response.data.NationalCode;
+    this.form.Kargozar = response.data.Kargozar;
 
     let res = await axios.get(
       `http://localhost:8080/api/City/GetByProvinceId/${response.data.ProvinceId}`,
@@ -334,6 +345,8 @@ export default {
         ProfilePictrue: "",
         ProvinceId: "",
         Base64File: "",
+        Kargozar: "",
+        NationalCode: "",
       },
 
       mar: null,
@@ -349,18 +362,14 @@ export default {
       ],
 
       Degree: [
-        { Name: "دیپلم", Value: 0 },
+        { Name: "دیپلم", Value: 5 },
         { Name: "کاردانی", Value: 1 },
         { Name: "لیسانس", Value: 2 },
         { Name: "فوق لیسانس", Value: 3 },
         { Name: "دکترا", Value: 4 },
       ],
 
-      JobType: [
-        { Name: "کارمند", Value: 0 },
-        { Name: "شغل آزاد", Value: 1 },
-      ],
-
+   
       show4: false,
     };
   },
@@ -368,7 +377,7 @@ export default {
   watch: {},
 
   methods: {
-       async onSubmit(event) {
+    async onSubmit(event) {
       event.preventDefault();
 
       console.log("form: ", this.form);
@@ -383,7 +392,7 @@ export default {
         .then((response) => {
           console.log("updated customer: ", response);
 
-               this.$router.push({ path: "/customerProfile" });
+          this.$router.push({ path: "/customerProfile" });
         })
         .catch((e) => {
           this.errors.push(e);
@@ -395,7 +404,7 @@ export default {
     // },
 
     async getImg() {
-      let res = await axios.get(
+      await axios.get(
         `http://localhost:8080/api/Customer/GetPictureFile/${this.imgId}`,
         this.imgId,
         {
@@ -404,7 +413,6 @@ export default {
           },
         }
       );
-      console.log("img is: ", res.data);
     },
 
     async bgSend() {
@@ -440,8 +448,6 @@ export default {
       this.cities = res.data;
       console.log("cities", this.cities);
     },
-
-   
 
     async sendImg() {
       console.log(this.imageFile);

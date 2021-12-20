@@ -1,623 +1,6 @@
 <template>
   <div>
     <b-tabs content-class="mt-3" align="center">
-      <b-tab title=" برنامه ها" :title-link-class="'tab-title-class'">
-        <b-row dir="rtl">
-          <b-col cols="1"> </b-col>
-          <b-col cols="10">
-            <div>
-              <b-row dir="rtl">
-                <b-col class="mb-5">
-                  <v-btn
-                    style="color: white"
-                    color="#10503B"
-                    elevation="3"
-                    rounded
-                    large
-                    @click="openCreateModal"
-                    >افزودن برنامه
-                  </v-btn>
-
-                  <!-- افزودن برنامه -->
-                  <div>
-                    <b-modal
-                      v-model="showCreateModal"
-                      dir="rtl"
-                      id="modal-center"
-                      title=" افزودن برنامه "
-                      :header-bg-variant="headerBgVariant"
-                      :header-text-variant="headerTextVariant"
-                    >
-                      <b-container fluid>
-                        <b-row>
-                          <b-col>
-                            <b-form-input
-                              type="text"
-                              v-model="programform.Title"
-                              placeholder="نام برنامه "
-                              required
-                              outlined
-                            />
-
-                            <br />
-
-                            <b-form-input
-                              v-model="programform.PointsNeeded"
-                              type="number"
-                              placeholder="تعداد امتیاز مورد نیاز"
-                              required
-                              outlined
-                            />
-
-                            <br />
-
-                            <b-form-input
-                              v-model="programform.Description"
-                              placeholder="توضیحات"
-                              required
-                              outlined
-                            />
-
-                            <br />
-
-                            <v-file-input
-                              label="عکس برنامه "
-                              outlined
-                              :clearable="true"
-                              append-icon="add_a_photo"
-                              prepend-icon=""
-                              @change="bgBase64"
-                              accept="image/png, image/jpeg, image/bmp"
-                              show-size
-                              :rules="imgRules"
-                            >
-                            </v-file-input>
-                            <b-row>
-                              <div class="container" align="left">
-                                <v-img
-                                  :src="`http://localhost:8080/api/Program/GetPictureFile/${imgId}`"
-                                  width="25%"
-                                  height="100%"
-                                  style="
-                                    border-radius: 10px;
-                                    position: relative;
-                                  "
-                                ></v-img>
-                              </div>
-                            </b-row>
-                          </b-col>
-                        </b-row>
-                      </b-container>
-
-                      <template #modal-footer>
-                        <div class="w-100">
-                          <v-btn
-                            :loading="createLoading"
-                            class="btnsize"
-                            color="#90c445"
-                            elevation="5"
-                            rounded
-                            larg
-                            @click="addNewProgram"
-                            >ثبت
-                          </v-btn>
-
-                          <v-btn
-                            class="select2"
-                            color="#f7b73a"
-                            elevation="3"
-                            rounded
-                            larg
-                            outlined
-                            @click="closeCreateModal"
-                            >انصراف
-                          </v-btn>
-                        </div>
-                      </template>
-                    </b-modal>
-                  </div>
-
-                  <!-- Edit Modal -->
-                  <div>
-                    <b-modal
-                      v-model="showEditProgramModal"
-                      dir="rtl"
-                      id="modal-center"
-                      title=" ویرایش برنامه"
-                      :header-bg-variant="headerBgVariant"
-                      :header-text-variant="headerTextVariant"
-                    >
-                      <b-container fluid>
-                        <b-row>
-                          <b-col>
-                            <b-form-input
-                              type="text"
-                              v-model="editProgramForm.Title"
-                              placeholder="نام برنامه "
-                              required
-                              outlined
-                            />
-
-                            <br />
-
-                            <b-form-input
-                              v-model="editProgramForm.PointsNeeded"
-                              placeholder="تعداد امتیاز لازم"
-                              type="number"
-                              required
-                              outlined
-                            />
-
-                            <br />
-
-                            <b-form-input
-                              v-model="editProgramForm.Description"
-                              placeholder="توضیحات"
-                              required
-                              outlined
-                            />
-
-                            <br />
-
-                            <v-file-input
-                              label="عکس برنامه "
-                              outlined
-                              :clearable="true"
-                              append-icon="add_a_photo"
-                              prepend-icon=""
-                              @change="bgBase64"
-                              accept="image/png, image/jpeg, image/bmp"
-                              show-size
-                              :rules="imgRules"
-                            >
-                            </v-file-input>
-
-                            <!-- <b-row>
-                              <div class="container" align="left">
-                                <v-img
-                                  :src="`http://localhost:8080/api/Program/GetPictureFile/${imgId}`"
-                                  width="25%"
-                                  height="100%"
-                                  style="
-                                    border-radius: 10px;
-                                    position: relative;
-                                  "
-                                ></v-img>
-                              </div>
-                            </b-row> -->
-                          </b-col>
-                        </b-row>
-                      </b-container>
-
-                      <template #modal-footer>
-                        <div class="w-100">
-                          <v-btn
-                            :loading="editLoading"
-                            class="btnsize"
-                            color="#90c445"
-                            elevation="5"
-                            rounded
-                            larg
-                            @click="updateProgrambtn"
-                            >ویرایش
-                          </v-btn>
-
-                          <v-btn
-                            class="select2"
-                            color="#f7b73a"
-                            elevation="3"
-                            rounded
-                            larg
-                            outlined
-                            @click="closeEditProgramModal"
-                            >انصراف
-                          </v-btn>
-                        </div>
-                      </template>
-                    </b-modal>
-                  </div>
-
-                  <!-- Delete Modal -->
-                  <div>
-                    <b-modal
-                      v-model="showDeleteModal"
-                      dir="rtl"
-                      id="modal-center"
-                      title=" حذف برنامه"
-                      :header-bg-variant="headerBgVariant"
-                      :header-text-variant="headerTextVariant"
-                    >
-                      <b-container fluid>
-                        <b-row>
-                          <b-col>
-                            <h4>برنامه مورد نظر حذف شود؟</h4>
-                          </b-col>
-                        </b-row>
-                      </b-container>
-
-                      <template #modal-footer>
-                        <div class="w-100">
-                          <v-btn
-                            :loading="deleteLoading"
-                            class="btnsize"
-                            color="#90c445"
-                            elevation="5"
-                            rounded
-                            larg
-                            @click="deleteProgrambtn"
-                            >بلی
-                          </v-btn>
-
-                          <v-btn
-                            class="select2"
-                            color="#f7b73a"
-                            elevation="3"
-                            rounded
-                            larg
-                            outlined
-                            @click="closeDeletModal"
-                            >انصراف
-                          </v-btn>
-                        </div>
-                      </template>
-                    </b-modal>
-                  </div>
-                </b-col>
-                <b-col> </b-col>
-              </b-row>
-
-              <div class="table">
-                <b-table
-                  :items="programitems"
-                  :fields="programfields"
-                  striped
-                  hover
-                  responsive="sm"
-                  :loading="loadingTable"
-                  loading-text="در حال بارگیری اطلاعات ..."
-                >
-                  <template #cell(actions)="row">
-                    <v-icon
-                      @click="editProgramRow(row)"
-                      style="font-size: 20px; color: blue"
-                      >edit</v-icon
-                    >
-
-                    <v-icon
-                      @click="deletRow(row)"
-                      style="font-size: 20px; color: #f7b73a"
-                      >delete_outline</v-icon
-                    >
-                  </template>
-
-                  <template align="center" #cell(Picture)="row">
-                    <div class="container pic" align="right">
-                      <v-img
-                        :src="`http://localhost:8080/api/Program/GetPictureFile/${row.item.Picture}`"
-                        width="100%"
-                        style="border-radius: 10px"
-                      ></v-img>
-                    </div>
-                  </template>
-                </b-table>
-              </div>
-            </div>
-          </b-col>
-          <b-col cols="1"> </b-col>
-        </b-row>
-      </b-tab>
-
-      <b-tab
-        class="mytabs"
-        title=" فعالیت ها "
-        :title-link-class="'tab-title-class'"
-      >
-        <!-- add score -->
-        <div>
-          <b-row dir="rtl">
-            <b-col cols="1"> </b-col>
-
-            <b-col cols="10">
-              <div>
-                <b-row dir="rtl">
-                  <b-col class="mb-5">
-                    <v-btn
-                      style="color: white"
-                      color="#10503B"
-                      elevation="3"
-                      rounded
-                      large
-                      @click="openCreateScoreModal"
-                      >افزودن فعالیت
-                    </v-btn>
-
-                    <div>
-                      <b-modal
-                        v-model="showCreateScoreModal"
-                        dir="rtl"
-                        id="modal-center"
-                        title=" افزودن فعالیت"
-                        :header-bg-variant="headerBgVariant"
-                        :header-text-variant="headerTextVariant"
-                      >
-                        <b-container fluid>
-                          <b-row>
-                            <b-col>
-                              <b-form-input
-                                type="text"
-                                v-model="scoreform.ActivityName"
-                                placeholder="نام فعالیت "
-                                required
-                                outlined
-                              />
-
-                              <br />
-
-                              <b-form-input
-                                v-model="scoreform.Points"
-                                type="number"
-                                placeholder="تعداد امتیاز"
-                                required
-                                outlined
-                              />
-
-                              <br />
-
-                              <b-form-input
-                                v-model="scoreform.Description"
-                                placeholder="توضیحات"
-                                required
-                                outlined
-                              />
-
-                              <br />
-                            </b-col>
-                          </b-row>
-                        </b-container>
-
-                        <template #modal-footer>
-                          <div class="w-100">
-                            <v-btn
-                              :loading="createLoading"
-                              class="btnsize"
-                              color="#90c445"
-                              elevation="5"
-                              rounded
-                              larg
-                              @click="addNewScore"
-                              >ثبت
-                            </v-btn>
-
-                            <v-btn
-                              class="select2"
-                              color="#f7b73a"
-                              elevation="3"
-                              rounded
-                              larg
-                              outlined
-                              @click="closeCreateModal"
-                              >انصراف
-                            </v-btn>
-                          </div>
-                        </template>
-                      </b-modal>
-                    </div>
-
-                    <!-- Edit Modal -->
-                    <div>
-                      <b-modal
-                        v-model="showEditScoreModal"
-                        dir="rtl"
-                        id="modal-center"
-                        title=" ویرایش فعالیت"
-                        :header-bg-variant="headerBgVariant"
-                        :header-text-variant="headerTextVariant"
-                      >
-                        <b-container fluid>
-                          <b-row>
-                            <b-col>
-                              <b-form-input
-                                type="text"
-                                v-model="editForm.ActivityName"
-                                placeholder="نام فعالیت "
-                                required
-                                outlined
-                              />
-
-                              <br />
-
-                              <b-form-input
-                                v-model="editForm.Points"
-                                placeholder="تعداد امتیاز"
-                                type="number"
-                                required
-                                outlined
-                              />
-
-                              <br />
-
-                              <b-form-input
-                                v-model="editForm.Description"
-                                placeholder="توضیحات"
-                                required
-                                outlined
-                              />
-
-                              <br />
-                            </b-col>
-                          </b-row>
-                        </b-container>
-
-                        <template #modal-footer>
-                          <div class="w-100">
-                            <v-btn
-                              :loading="editLoading"
-                              class="btnsize"
-                              color="#90c445"
-                              elevation="5"
-                              rounded
-                              larg
-                              @click="updateScorebtn"
-                              >ویرایش
-                            </v-btn>
-
-                            <v-btn
-                              class="select2"
-                              color="#f7b73a"
-                              elevation="3"
-                              rounded
-                              larg
-                              outlined
-                              @click="closeEditModal"
-                              >انصراف
-                            </v-btn>
-                          </div>
-                        </template>
-                      </b-modal>
-                    </div>
-
-                    <!-- Delete Modal -->
-                    <div>
-                      <b-modal
-                        v-model="showDeleteScoreModal"
-                        dir="rtl"
-                        id="modal-center"
-                        title=" حذف فعالیت"
-                        :header-bg-variant="headerBgVariant"
-                        :header-text-variant="headerTextVariant"
-                      >
-                        <b-container fluid>
-                          <b-row>
-                            <b-col>
-                              <h4>فعالیت مورد نظر حذف شود؟</h4>
-                            </b-col>
-                          </b-row>
-                        </b-container>
-
-                        <template #modal-footer>
-                          <div class="w-100">
-                            <v-btn
-                              :loading="deleteLoading"
-                              class="btnsize"
-                              color="#90c445"
-                              elevation="5"
-                              rounded
-                              larg
-                              @click="deleteScorebtn"
-                              >بلی
-                            </v-btn>
-
-                            <v-btn
-                              class="select2"
-                              color="#f7b73a"
-                              elevation="3"
-                              rounded
-                              larg
-                              outlined
-                              @click="closeDeletModal"
-                              >انصراف
-                            </v-btn>
-                          </div>
-                        </template>
-                      </b-modal>
-                    </div>
-
-                    <!-- delete score from customer -->
-                    <div>
-                      <b-modal
-                        v-model="removeScoreFromCustomerModal"
-                        dir="rtl"
-                        id="modal-center"
-                        title=" حذف فعالیت"
-                        :header-bg-variant="headerBgVariant"
-                        :header-text-variant="headerTextVariant"
-                      >
-                        <b-container fluid>
-                          <b-row>
-                            <b-col>
-                              <h4>فعالیت مورد نظر حذف شود؟</h4>
-                            </b-col>
-                          </b-row>
-                        </b-container>
-
-                        <template #modal-footer>
-                          <div class="w-100">
-                            <v-btn
-                              :loading="deleteCustomerScoreLoading"
-                              class="btnsize"
-                              color="#90c445"
-                              elevation="5"
-                              rounded
-                              larg
-                              @click="deleteScoreOfCustomerbtn"
-                              >بلی
-                            </v-btn>
-
-                            <v-btn
-                              class="select2"
-                              color="#f7b73a"
-                              elevation="3"
-                              rounded
-                              larg
-                              outlined
-                              @click="closeDeletModal"
-                              >انصراف
-                            </v-btn>
-                          </div>
-                        </template>
-                      </b-modal>
-                    </div>
-                  </b-col>
-                  <b-col> </b-col>
-                </b-row>
-
-                <div>
-                  <b-table
-                    :items="AllScores"
-                    :fields="fields"
-                    striped
-                    responsive="sm"
-                    hover
-                  >
-                    <template #cell(actions)="row">
-                      <v-icon
-                        @click="editScoreRow(row)"
-                        style="font-size: 20px; color: #10503b"
-                        >edit</v-icon
-                      >
-
-                      <v-icon
-                        @click="deletScoreRow(row)"
-                        style="font-size: 20px; color: #f7b73a"
-                        >delete_outline</v-icon
-                      >
-                    </template>
-                  </b-table>
-                </div>
-              </div>
-            </b-col>
-
-            <b-col cols="1"> </b-col>
-          </b-row>
-
-          <v-snackbar v-model="snackbarGreen" :color="snackColor" dir="rtl">
-            {{ text }}
-
-            <template v-slot:action="{ attrs }">
-              <v-btn
-                color="dark"
-                rounded
-                v-bind="attrs"
-                text
-                @click="snackbarGreen = false"
-              >
-                x
-              </v-btn>
-            </template>
-          </v-snackbar>
-        </div>
-      </b-tab>
-
       <b-tab title=" مشتریان " :title-link-class="'tab-title-class'">
         <div>
           <b-row dir="rtl">
@@ -678,7 +61,7 @@
                       elevation="3"
                       dark
                       rounded
-                        color="#10503B"
+                      color="#10503B"
                       @click="showAll"
                       :disabled="!showSearch"
                     >
@@ -1015,6 +398,19 @@
                         <b> شماره موبایل: </b> {{ personal.Mobile }}
                       </b-col>
                     </b-row>
+
+                    <br />
+
+                    <b-row>
+                      <b-col>
+                        <b> کارگزار: </b>
+                        {{ personal.Kargozar }}
+                      </b-col>
+                      <b-col>
+                        <b>کد ملی: </b> {{ personal.NationalCode }}
+                      </b-col>
+                    </b-row>
+
                     <br />
 
                     <b-row>
@@ -1031,9 +427,10 @@
 
                     <b-row>
                       <b-col>
-                        <b> ایمیل: </b>
-                        {{ personal.Email }}
+                        <b> استان: </b>
+                        {{ personal.ProvinceId }}
                       </b-col>
+
                       <b-col>
                         <b> شهر: </b>
                         {{ personal.CityId }}
@@ -1058,6 +455,33 @@
                         <b> شغل: </b>
                         {{ personal.JobType }}
                       </b-col>
+
+                      <b-col>
+                        <b> ایمیل: </b>
+                        {{ personal.Email }}
+                      </b-col>
+                    </b-row>
+
+                    <br />
+
+                    <b-row>
+                      <b-col>
+                        <b> تحصیلات: </b>
+                        {{ personal.Degree }}
+                      </b-col>
+
+                      <b-col> </b-col>
+                    </b-row>
+
+                    <b-row>
+                      <div class="container" align="center">
+                        <v-img
+                          :src="`http://localhost:8080/api/Customer/GetPictureFile/${personal.ProfilePictrue}`"
+                          width="25%"
+                          height="100%"
+                          style="border-radius: 10px; position: relative"
+                        ></v-img>
+                      </div>
                     </b-row>
                   </div>
 
@@ -1220,7 +644,7 @@
                       <v-text-field
                         v-model="editCustomer.Name"
                         type="text"
-                        placeholder="نام "
+                        label="نام"
                         required
                         outlined
                         dense
@@ -1230,7 +654,7 @@
                       <v-text-field
                         v-model="editCustomer.Family"
                         type="text"
-                        placeholder="نام خانوادگی"
+                        label="نام خانوادگی"
                         required
                         outlined
                         dense
@@ -1239,7 +663,7 @@
 
                       <v-text-field
                         v-model="editCustomer.Mobile"
-                        placeholder="شماره موبایل"
+                        label="شماره موبایل"
                         required
                         outlined
                         dense
@@ -1251,7 +675,7 @@
                         v-model="editCustomer.Password"
                         :type="show4 ? 'text' : 'password'"
                         required
-                        placeholder="رمز عبور "
+                        label="رمز عبور "
                         @click:append="show4 = !show4"
                         outlined
                         dense
@@ -1299,6 +723,720 @@
           <br /><br /><br />
         </div>
       </b-tab>
+
+      <b-tab title=" برنامه ها" :title-link-class="'tab-title-class'">
+        <b-row dir="rtl">
+          <b-col cols="1"> </b-col>
+          <b-col cols="10">
+            <div>
+              <b-row dir="rtl">
+                <b-row
+                  class="mt-4 d-flex justify-content-end"
+                  style="padding-left: 5%; padding-right: 3%"
+                >
+                  <b-col cols="12" md="12" class="d-flex justify-content-end">
+                    <v-btn
+                      style="color: white"
+                      color="#10503B"
+                      elevation="3"
+                      rounded
+                      large
+                      @click="openCreateModal"
+                      >افزودن برنامه
+                    </v-btn>
+                  </b-col>
+                </b-row>
+
+                <b-container style="padding-left: 5%" fluid>
+                  <b-row>
+                    <b-col cols="12" md="4" class="d-flex">
+                      <div dir="rtl" class="container">
+                        <v-text-field
+                          color="#10503B"
+                          v-model="searchProgram"
+                          label=" نام برنامه"
+                          dense
+                          dir="rtl"
+                        ></v-text-field>
+
+                        <!-- <v-text-field
+                        color="#10503B"
+                        v-model="searchFamily"
+                        label=" نام خانوادگی"
+                        dense
+                      ></v-text-field> -->
+                      </div>
+
+                      <v-btn
+                        elevation="3"
+                        dark
+                        rounded
+                        color="#10503B"
+                        @click="doSearchProgram"
+                        style="margin-right: 0.3125em"
+                      >
+                        <v-icon> search </v-icon>
+                      </v-btn>
+                    </b-col>
+
+                    <b-col cols="12" md="3" class="text-right test pr-0">
+                      <v-btn
+                        elevation="3"
+                        dark
+                        rounded
+                        color="#10503B"
+                        @click="showAllPrograms"
+                        :disabled="!showSearchProgram"
+                      >
+                        مشاهده همه
+                      </v-btn>
+                    </b-col>
+                  </b-row>
+                </b-container>
+
+                <!-- افزودن برنامه -->
+                <div>
+                  <b-modal
+                    v-model="showCreateModal"
+                    dir="rtl"
+                    id="modal-center"
+                    title=" افزودن برنامه "
+                    :header-bg-variant="headerBgVariant"
+                    :header-text-variant="headerTextVariant"
+                  >
+                    <b-container fluid>
+                      <b-row>
+                        <b-col>
+                          <b-form-input
+                            type="text"
+                            v-model="programform.Title"
+                            placeholder="نام برنامه "
+                            required
+                            outlined
+                          />
+
+                          <br />
+
+                          <b-form-input
+                            v-model="programform.PointsNeeded"
+                            type="number"
+                            placeholder="تعداد امتیاز مورد نیاز"
+                            required
+                            outlined
+                          />
+
+                          <br />
+
+                          <b-form-input
+                            v-model="programform.Description"
+                            placeholder="توضیحات"
+                            required
+                            outlined
+                          />
+
+                          <br />
+
+                          <v-file-input
+                            label="عکس برنامه "
+                            outlined
+                            :clearable="true"
+                            append-icon="add_a_photo"
+                            prepend-icon=""
+                            @change="bgBase64"
+                            accept="image/png, image/jpeg, image/bmp"
+                            show-size
+                            :rules="imgRules"
+                          >
+                          </v-file-input>
+                          <b-row>
+                            <div class="container" align="left">
+                              <v-img
+                                :src="`http://localhost:8080/api/Program/GetPictureFile/${imgId}`"
+                                width="25%"
+                                height="100%"
+                                style="border-radius: 10px; position: relative"
+                              ></v-img>
+                            </div>
+                          </b-row>
+                        </b-col>
+                      </b-row>
+                    </b-container>
+
+                    <template #modal-footer>
+                      <div class="w-100">
+                        <v-btn
+                          :loading="createLoading"
+                          class="btnsize"
+                          color="#90c445"
+                          elevation="5"
+                          rounded
+                          larg
+                          @click="addNewProgram"
+                          >ثبت
+                        </v-btn>
+
+                        <v-btn
+                          class="select2"
+                          color="#f7b73a"
+                          elevation="3"
+                          rounded
+                          larg
+                          outlined
+                          @click="closeCreateModal"
+                          >انصراف
+                        </v-btn>
+                      </div>
+                    </template>
+                  </b-modal>
+                </div>
+
+                <!-- Edit Modal -->
+                <div>
+                  <b-modal
+                    v-model="showEditProgramModal"
+                    dir="rtl"
+                    id="modal-center"
+                    title=" ویرایش برنامه"
+                    :header-bg-variant="headerBgVariant"
+                    :header-text-variant="headerTextVariant"
+                  >
+                    <b-container fluid>
+                      <b-row>
+                        <b-col>
+                          <b-form-input
+                            type="text"
+                            v-model="editProgramForm.Title"
+                            placeholder="نام برنامه "
+                            required
+                            outlined
+                          />
+
+                          <br />
+
+                          <b-form-input
+                            v-model="editProgramForm.PointsNeeded"
+                            placeholder="تعداد امتیاز لازم"
+                            type="number"
+                            required
+                            outlined
+                          />
+
+                          <br />
+
+                          <b-form-input
+                            v-model="editProgramForm.Description"
+                            placeholder="توضیحات"
+                            required
+                            outlined
+                          />
+
+                          <br />
+
+                          <v-file-input
+                            label="عکس برنامه "
+                            outlined
+                            :clearable="true"
+                            append-icon="add_a_photo"
+                            prepend-icon=""
+                            @change="bgBase64"
+                            accept="image/png, image/jpeg, image/bmp"
+                            show-size
+                            :rules="imgRules"
+                          >
+                          </v-file-input>
+
+                          <!-- <b-row>
+                              <div class="container" align="left">
+                                <v-img
+                                  :src="`http://localhost:8080/api/Program/GetPictureFile/${imgId}`"
+                                  width="25%"
+                                  height="100%"
+                                  style="
+                                    border-radius: 10px;
+                                    position: relative;
+                                  "
+                                ></v-img>
+                              </div>
+                            </b-row> -->
+                        </b-col>
+                      </b-row>
+                    </b-container>
+
+                    <template #modal-footer>
+                      <div class="w-100">
+                        <v-btn
+                          :loading="editLoading"
+                          class="btnsize"
+                          color="#90c445"
+                          elevation="5"
+                          rounded
+                          larg
+                          @click="updateProgrambtn"
+                          >ویرایش
+                        </v-btn>
+
+                        <v-btn
+                          class="select2"
+                          color="#f7b73a"
+                          elevation="3"
+                          rounded
+                          larg
+                          outlined
+                          @click="closeEditProgramModal"
+                          >انصراف
+                        </v-btn>
+                      </div>
+                    </template>
+                  </b-modal>
+                </div>
+
+                <!-- Delete Modal -->
+                <div>
+                  <b-modal
+                    v-model="showDeleteModal"
+                    dir="rtl"
+                    id="modal-center"
+                    title=" حذف برنامه"
+                    :header-bg-variant="headerBgVariant"
+                    :header-text-variant="headerTextVariant"
+                  >
+                    <b-container fluid>
+                      <b-row>
+                        <b-col>
+                          <h4>برنامه مورد نظر حذف شود؟</h4>
+                        </b-col>
+                      </b-row>
+                    </b-container>
+
+                    <template #modal-footer>
+                      <div class="w-100">
+                        <v-btn
+                          :loading="deleteLoading"
+                          class="btnsize"
+                          color="#90c445"
+                          elevation="5"
+                          rounded
+                          larg
+                          @click="deleteProgrambtn"
+                          >بلی
+                        </v-btn>
+
+                        <v-btn
+                          class="select2"
+                          color="#f7b73a"
+                          elevation="3"
+                          rounded
+                          larg
+                          outlined
+                          @click="closeDeletModal"
+                          >انصراف
+                        </v-btn>
+                      </div>
+                    </template>
+                  </b-modal>
+                </div>
+
+                <b-col> </b-col>
+              </b-row>
+              <br />
+              <br />
+
+              <div class="table">
+                <b-table
+                  :items="programitems"
+                  :fields="programfields"
+                  striped
+                  hover
+                  responsive="sm"
+                  :loading="loadingTable"
+                  loading-text="در حال بارگیری اطلاعات ..."
+                >
+                  <template #cell(actions)="row">
+                    <v-icon
+                      @click="editProgramRow(row)"
+                      style="font-size: 20px; color: blue"
+                      >edit</v-icon
+                    >
+
+                    <v-icon
+                      @click="deletRow(row)"
+                      style="font-size: 20px; color: #f7b73a"
+                      >delete_outline</v-icon
+                    >
+                  </template>
+
+                  <template align="center" #cell(Picture)="row">
+                    <div class="container pic" align="right">
+                      <v-img
+                        :src="`http://localhost:8080/api/Program/GetPictureFile/${row.item.Picture}`"
+                        width="100%"
+                        style="border-radius: 10px"
+                      ></v-img>
+                    </div>
+                  </template>
+                </b-table>
+              </div>
+            </div>
+          </b-col>
+          <b-col cols="1"> </b-col>
+        </b-row>
+      </b-tab>
+
+      <b-tab
+        class="mytabs"
+        title=" فعالیت ها "
+        :title-link-class="'tab-title-class'"
+      >
+        <div>
+          <b-row dir="rtl">
+            <b-col cols="1"> </b-col>
+
+            <b-col cols="10">
+              <div>
+                <b-col class="mb-5">
+                  <b-row
+                    class="mt-4 d-flex justify-content-end"
+                    style="padding-left: 5%; padding-right: 3%"
+                  >
+                    <b-col cols="12" md="12" class="d-flex justify-content-end">
+                      <v-btn
+                        style="color: white"
+                        color="#10503B"
+                        elevation="3"
+                        rounded
+                        large
+                        @click="openCreateScoreModal"
+                        >افزودن فعالیت
+                      </v-btn>
+                    </b-col>
+                  </b-row>
+
+                  <b-container style="padding-left: 5%" fluid>
+                    <b-row>
+                      <b-col cols="12" md="4" class="d-flex">
+                        <div dir="rtl" class="container">
+                          <v-text-field
+                            color="#10503B"
+                            v-model="searchScore"
+                            label=" نام فعالیت"
+                            dense
+                            dir="rtl"
+                          ></v-text-field>
+                        </div>
+
+                        <v-btn
+                          elevation="3"
+                          dark
+                          rounded
+                          color="#10503B"
+                          @click="doSearchScore"
+                          style="margin-right: 0.3125em"
+                        >
+                          <v-icon> search </v-icon>
+                        </v-btn>
+                      </b-col>
+
+                      <b-col cols="12" md="3" class="text-right test pr-0">
+                        <v-btn
+                          elevation="3"
+                          dark
+                          rounded
+                          color="#10503B"
+                          @click="showAllScores"
+                          :disabled="!showSearchScore"
+                        >
+                          مشاهده همه
+                        </v-btn>
+                      </b-col>
+                    </b-row>
+                  </b-container>
+
+                  <!-- create score -->
+                  <div>
+                    <b-modal
+                      v-model="showCreateScoreModal"
+                      dir="rtl"
+                      id="modal-center"
+                      title=" افزودن فعالیت"
+                      :header-bg-variant="headerBgVariant"
+                      :header-text-variant="headerTextVariant"
+                    >
+                      <b-container fluid>
+                        <b-row>
+                          <b-col>
+                            <b-form-input
+                              type="text"
+                              v-model="scoreform.ActivityName"
+                              placeholder="نام فعالیت "
+                              required
+                              outlined
+                            />
+
+                            <br />
+
+                            <b-form-input
+                              v-model="scoreform.Points"
+                              type="number"
+                              placeholder="تعداد امتیاز"
+                              required
+                              outlined
+                            />
+
+                            <br />
+
+                            <b-form-input
+                              v-model="scoreform.Description"
+                              placeholder="توضیحات"
+                              required
+                              outlined
+                            />
+
+                            <br />
+                          </b-col>
+                        </b-row>
+                      </b-container>
+
+                      <template #modal-footer>
+                        <div class="w-100">
+                          <v-btn
+                            :loading="createLoading"
+                            class="btnsize"
+                            color="#90c445"
+                            elevation="5"
+                            rounded
+                            larg
+                            @click="addNewScore"
+                            >ثبت
+                          </v-btn>
+
+                          <v-btn
+                            class="select2"
+                            color="#f7b73a"
+                            elevation="3"
+                            rounded
+                            larg
+                            outlined
+                            @click="closeCreateModal"
+                            >انصراف
+                          </v-btn>
+                        </div>
+                      </template>
+                    </b-modal>
+                  </div>
+
+                  <!-- Edit Modal -->
+                  <div>
+                    <b-modal
+                      v-model="showEditScoreModal"
+                      dir="rtl"
+                      id="modal-center"
+                      title=" ویرایش فعالیت"
+                      :header-bg-variant="headerBgVariant"
+                      :header-text-variant="headerTextVariant"
+                    >
+                      <b-container fluid>
+                        <b-row>
+                          <b-col>
+                            <b-form-input
+                              type="text"
+                              v-model="editForm.ActivityName"
+                              placeholder="نام فعالیت "
+                              required
+                              outlined
+                            />
+
+                            <br />
+
+                            <b-form-input
+                              v-model="editForm.Points"
+                              placeholder="تعداد امتیاز"
+                              type="number"
+                              required
+                              outlined
+                            />
+
+                            <br />
+
+                            <b-form-input
+                              v-model="editForm.Description"
+                              placeholder="توضیحات"
+                              required
+                              outlined
+                            />
+
+                            <br />
+                          </b-col>
+                        </b-row>
+                      </b-container>
+
+                      <template #modal-footer>
+                        <div class="w-100">
+                          <v-btn
+                            :loading="editLoading"
+                            class="btnsize"
+                            color="#90c445"
+                            elevation="5"
+                            rounded
+                            larg
+                            @click="updateScorebtn"
+                            >ویرایش
+                          </v-btn>
+
+                          <v-btn
+                            class="select2"
+                            color="#f7b73a"
+                            elevation="3"
+                            rounded
+                            larg
+                            outlined
+                            @click="closeEditModal"
+                            >انصراف
+                          </v-btn>
+                        </div>
+                      </template>
+                    </b-modal>
+                  </div>
+
+                  <!-- Delete Modal -->
+                  <div>
+                    <b-modal
+                      v-model="showDeleteScoreModal"
+                      dir="rtl"
+                      id="modal-center"
+                      title=" حذف فعالیت"
+                      :header-bg-variant="headerBgVariant"
+                      :header-text-variant="headerTextVariant"
+                    >
+                      <b-container fluid>
+                        <b-row>
+                          <b-col>
+                            <h4>فعالیت مورد نظر حذف شود؟</h4>
+                          </b-col>
+                        </b-row>
+                      </b-container>
+
+                      <template #modal-footer>
+                        <div class="w-100">
+                          <v-btn
+                            :loading="deleteLoading"
+                            class="btnsize"
+                            color="#90c445"
+                            elevation="5"
+                            rounded
+                            larg
+                            @click="deleteScorebtn"
+                            >بلی
+                          </v-btn>
+
+                          <v-btn
+                            class="select2"
+                            color="#f7b73a"
+                            elevation="3"
+                            rounded
+                            larg
+                            outlined
+                            @click="closeDeletModal"
+                            >انصراف
+                          </v-btn>
+                        </div>
+                      </template>
+                    </b-modal>
+                  </div>
+
+                  <!-- delete score from customer -->
+                  <div>
+                    <b-modal
+                      v-model="removeScoreFromCustomerModal"
+                      dir="rtl"
+                      id="modal-center"
+                      title=" حذف فعالیت"
+                      :header-bg-variant="headerBgVariant"
+                      :header-text-variant="headerTextVariant"
+                    >
+                      <b-container fluid>
+                        <b-row>
+                          <b-col>
+                            <h4>فعالیت مورد نظر حذف شود؟</h4>
+                          </b-col>
+                        </b-row>
+                      </b-container>
+
+                      <template #modal-footer>
+                        <div class="w-100">
+                          <v-btn
+                            :loading="deleteCustomerScoreLoading"
+                            class="btnsize"
+                            color="#90c445"
+                            elevation="5"
+                            rounded
+                            larg
+                            @click="deleteScoreOfCustomerbtn"
+                            >بلی
+                          </v-btn>
+
+                          <v-btn
+                            class="select2"
+                            color="#f7b73a"
+                            elevation="3"
+                            rounded
+                            larg
+                            outlined
+                            @click="closeDeletModal"
+                            >انصراف
+                          </v-btn>
+                        </div>
+                      </template>
+                    </b-modal>
+                  </div>
+                </b-col>
+                <b-col> </b-col>
+
+                <div>
+                  <b-table
+                    :items="AllScores"
+                    :fields="fields"
+                    striped
+                    responsive="sm"
+                    hover
+                  >
+                    <template #cell(actions)="row">
+                      <v-icon
+                        @click="editScoreRow(row)"
+                        style="font-size: 20px; color: #10503b"
+                        >edit</v-icon
+                      >
+
+                      <v-icon
+                        @click="deletScoreRow(row)"
+                        style="font-size: 20px; color: #f7b73a"
+                        >delete_outline</v-icon
+                      >
+                    </template>
+                  </b-table>
+                </div>
+              </div>
+            </b-col>
+
+            <b-col cols="1"> </b-col>
+          </b-row>
+
+          <v-snackbar v-model="snackbarGreen" :color="snackColor" dir="rtl">
+            {{ text }}
+
+            <template v-slot:action="{ attrs }">
+              <v-btn
+                color="dark"
+                rounded
+                v-bind="attrs"
+                text
+                @click="snackbarGreen = false"
+              >
+                x
+              </v-btn>
+            </template>
+          </v-snackbar>
+        </div>
+      </b-tab>
     </b-tabs>
 
     <v-snackbar v-model="snackbarGreen" :color="snackColor" dir="rtl">
@@ -1343,10 +1481,16 @@ export default {
   name: "App",
   data() {
     return {
+      bDate: "",
+      ProfileImg: "",
       //search
       searchName: "",
-      searchFamily: "",
+      searchProgram: "",
+      searchScore: "",
+
       showSearch: false,
+      showSearchProgram: false,
+      showSearchScore: false,
 
       showDetailsModal: false,
       addScoreToCustomerModal: false,
@@ -1354,7 +1498,6 @@ export default {
 
       // program image
       bg64: "",
-      imgId: "",
 
       getenPrograms: [],
       getenScores: [],
@@ -1369,6 +1512,11 @@ export default {
         IsMarried: "",
         JobType: "",
         Mobile: "",
+        ProvinceId: "",
+        Kargozar: "",
+        NationalCode: "",
+        Degree: "",
+        ProfilePictrue: "",
       },
 
       //Users
@@ -1451,7 +1599,7 @@ export default {
       ],
 
       programitems: [],
-
+      AllScores: [],
       //score
       //create
       // createLoading: false,
@@ -1561,6 +1709,54 @@ export default {
   mounted() {},
 
   methods: {
+
+    async showAllScores() {
+      this.showSearchScore = false;
+
+      this.loadingTable = true;
+      await axios
+        .get(`http://localhost:8080/api/Score/GetAll`, {
+          headers: {
+            token: localStorage.getItem("token"),
+          },
+        })
+
+        .then((response) => {
+          this.AllScores = response.data;
+          this.text = "در حال دریافت اطلاعات ...";
+          this.snackbarGreen = true;
+          this.snackColor = "green";
+          this.signUpLoading = false;
+        })
+        .catch((e) => {
+          this.errors.push(e);
+        });
+    },
+
+    async showAllPrograms() {
+      this.showSearchProgram = false;
+
+      this.loadingTable = true;
+      await axios
+        .get(`http://localhost:8080/api/Program/GetAll`, {
+          headers: {
+            token: localStorage.getItem("token"),
+          },
+        })
+
+        .then((response) => {
+          this.programitems = response.data;
+          this.text = "در حال دریافت اطلاعات ...";
+          this.snackbarGreen = true;
+          this.snackColor = "green";
+          this.signUpLoading = false;
+        })
+        .catch((e) => {
+          this.errors.push(e);
+        });
+      this.loadingTable = false;
+    },
+
     async showAll() {
       this.showSearch = false;
 
@@ -1579,32 +1775,11 @@ export default {
 
           this.snackColor = "green";
 
-          console.log("AllUsers: ", this.AllUsers);
-
-          // if (response.data.MessageType == 1) {
-          //   this.snackbarGreen = true;
-
-          //   this.snackColor = "green";
-          //   // this.$router.push({ path: "/customerLogin" });
-          // } else {
-          //   this.snackbarGreen = true;
-
-          //   this.snackColor = "red";
-          // }
-
           this.signUpLoading = false;
         })
         .catch((e) => {
           this.errors.push(e);
         });
-
-      // await this.getUserScores();
-      // this.AllScores = this.getScores;
-      // console.log("allScores", this.AllScores);
-
-      // await this.getUserprograms();
-      // this.programitems = this.getprograms;
-      // console.log("allPrograms :", this.programitems);
       this.loadingTable = false;
     },
 
@@ -1649,6 +1824,19 @@ export default {
       this.removeScoreFromCustomerModal = false;
     },
 
+      async doSearchScore() {
+      this.showSearchScore = true;
+      let res = await axios.get(
+        `http://localhost:8080/api/Score/GetByName?name=${this.searchScore}`,
+        {
+          headers: {
+            token: localStorage.getItem("token"),
+          },
+        }
+      );
+      this.AllScores = res.data;
+    },
+
     async doSearch() {
       this.showSearch = true;
       let res = await axios.get(
@@ -1661,32 +1849,27 @@ export default {
         }
       );
 
-      console.log("res : ", res);
 
       this.AllUsers = res.data;
-
-      //   await axios
-      // .get(`http://localhost:8080/api/User/GetAllCustomers`, {
-      //   headers: {
-      //     token: localStorage.getItem("token"),
-      //   },
-      // })
-
-      // .then((response) => {
-      //   this.AllUsers = response.data;
-      //   // this.text = "در حال دریافت اطلاعات ...";
-      //   // this.snackbarGreen = true;
-
-      //   // this.snackColor = "green";
-
-      //   console.log("AllUsers: ", this.AllUsers);
-
-      //   this.signUpLoading = false;
-      // })
-      // .catch((e) => {
-      //   this.errors.push(e);
-      // });
     },
+
+    async doSearchProgram() {
+      this.showSearchProgram = true;
+      let res = await axios.get(
+        `http://localhost:8080/api/Program/GetByName?name=${this.searchProgram}`,
+
+        {
+          headers: {
+            token: localStorage.getItem("token"),
+          },
+        }
+      );
+
+      console.log("res : ", res);
+
+      this.programitems = res.data;
+    },
+
     async getImg() {
       let res = await axios.get(
         `http://localhost:8080/api/Customer/GetPictureFile/${this.imgId}`,
@@ -2018,10 +2201,35 @@ export default {
       "updateprogram",
     ]),
 
-    showDetails(row) {
+    async showDetails(row) {
+      console.log("row", row);
+
       this.showDetailsModal = true;
 
+      this.bDate = row.item.BirthDate;
+      this.personal.BirthDate = this.bDate.substring(0, 10);
+
       this.personal.FullName = row.item.FullName;
+
+      this.personal.ProfilePictrue = row.item.ProfilePictrue;
+
+      if (row.item.Degree == 5) {
+        this.personal.Degree = "دیپلم";
+      } else if (row.item.Degree == 1) {
+        this.personal.Degree = "کاردانی";
+      } else if (row.item.Degree == 2) {
+        this.personal.Degree = "لیسانس";
+      } else if (row.item.Degree == 3) {
+        this.personal.Degree = "فوق لیسانس";
+      } else if (row.item.Degree == 4) {
+        this.personal.Degree = "دکترا";
+      }
+
+      // this.personal.Degree = row.item.Degree;
+
+      this.personal.NationalCode = row.item.NationalCode;
+
+      this.personal.Kargozar = row.item.Kargozar;
 
       if (row.item.Gender) {
         this.personal.Gender = "مرد";
@@ -2044,10 +2252,20 @@ export default {
 
       this.personal.CityId = row.item.CityId;
 
-      let bDate = row.item.BirthDate;
+      await axios
+        .get(`http://localhost:8080/api/City/GetById/${row.item.CityId}`, {
+          headers: {
+            token: localStorage.getItem("token"),
+          },
+        })
 
-      this.personal.BirthDate = bDate;
-      console.log("personal: ", this.personal);
+        .then((response) => {
+          this.personal.ProvinceId = response.data.ProvinceName;
+          this.personal.CityId = response.data.Name;
+        })
+        .catch((e) => {
+          this.errors.push(e);
+        });
     },
 
     //create
