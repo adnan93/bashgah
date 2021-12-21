@@ -16,18 +16,29 @@
         <p>{{ program.Title }}</p>
         <h5>{{ program.Description }}</h5>
       </b-card-text>
-
+<!-- 
       <v-btn
         class="btnsize"
         color="#90c445"
         elevation="5"
         rounded
         small
-        @click="UserLogin()"
-        :disabled="program.reminder"
+        @click="addNewProgram()"
+
       >
-        افزودن
-      </v-btn>
+      
+        ادامه
+      </v-btn> -->
+
+      <router-link 
+      
+      :to="{ path: '/AddNewProgram/'+ program.Id }"
+             v-bind:tooltip=" program.Id" append>
+      
+      <a > ادامه</a>
+      
+      </router-link>
+
     </b-card>
   </div>
 </template>
@@ -45,29 +56,30 @@ export default {
       imgId: "",
     };
   },
- async created(){
-
-      //  let res = await axios.get(
-      //   `http://localhost:8080/api/Customer/GetPictureFile/${this.program.Picture}`,
-      //   this.program.Picture,
-      //   {
-      //     headers: {
-      //       token: localStorage.getItem("token"),
-      //     },
-      //   }
-      // );
-      // console.log("img is: ", res.data);
-
+  async created() {
+    console.log("program is: ", this.program)
+    //  let res = await axios.get(
+    //   `http://localhost:8080/api/Customer/GetPictureFile/${this.program.Picture}`,
+    //   this.program.Picture,
+    //   {
+    //     headers: {
+    //       token: localStorage.getItem("token"),
+    //     },
+    //   }
+    // );
+    // console.log("img is: ", res.data);
   },
   methods: {
-   
+    addNewProgram() {
+      this.$router.push({ path: "/AddNewProgram" });
+    },
   },
 };
 </script>
 
 <style scope>
 .program {
-  border: 3px solid #10503B;
+  border: 3px solid #10503b;
 
   margin-bottom: 1rem;
 }

@@ -149,9 +149,9 @@
                   append-icon="add_a_photo"
                   prepend-icon=""
                   @change="bgBase64"
-                  accept="image/png, image/jpeg, image/bmp"
+                  accept=image/*
                   show-size
-                  :rules="[imgRules]"
+                  :rules="imgRules"
                   
                 >
                 </v-file-input>
@@ -184,6 +184,7 @@
 
             <br />
           </b-form>
+
         </b-card>
       </b-col>
 
@@ -320,7 +321,7 @@ export default {
       imgId: "",
 
       imgRules: [
-        (v) => v.size < 500000 || "حجم عكس بايد كمتر از KB 500 می باشد",
+        (v) => v.size < 500000 || "حجم عكس بايد كمتر از  500 KB  می باشد",
       ],
 
       Province: [],
@@ -369,7 +370,6 @@ export default {
         { Name: "دکترا", Value: 4 },
       ],
 
-   
       show4: false,
     };
   },

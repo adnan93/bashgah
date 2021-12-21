@@ -197,7 +197,7 @@
 
                   <template #cell(CustomerPrograms)="row">
                     <v-icon
-                      @click="showPrograms(row)"
+                      @click="showCustomerPrograms(row)"
                       style="font-size: 20px; color: #0f6b4d"
                       >poll</v-icon
                     >
@@ -554,6 +554,85 @@
                         larg
                         outlined
                         @click="closeCreateModal"
+                        >انصراف
+                      </v-btn>
+                    </div>
+                  </template>
+
+                  <v-snackbar
+                    v-model="snackbarGreen"
+                    :color="snackColor"
+                    dir="rtl"
+                  >
+                    {{ text }}
+
+                    <template v-slot:action="{ attrs }">
+                      <v-btn
+                        color="red"
+                        rounded
+                        v-bind="attrs"
+                        text
+                        @click="snackbarGreen = false"
+                      >
+                        x
+                      </v-btn>
+                    </template>
+                  </v-snackbar>
+                </b-modal>
+              </div>
+
+              <!-- show customer programs -->
+              <div>
+                <b-modal
+                  v-model="showCustomerProgramsModal"
+                  dir="rtl"
+                  id="modal-center"
+                  title=" لیست برنامه  ها"
+                  :header-bg-variant="headerBgVariant"
+                  :header-text-variant="headerTextVariant"
+                >
+                  <b-container fluid>
+                    <b-row>
+                      <b-col>
+                        <div>
+                          <b-table
+                            :items="CustomerPrograms"
+                            :fields="fieldsOfCustomerPrograms"
+                            striped
+                            responsive="sm"
+                            hover
+                            outlined
+                          >
+                            <template #cell(actions)="row">
+                              <v-icon
+                                @click="RemoveProgramFromCustomer(row)"
+                                style="font-size: 20px; color: #f7b73a"
+                                >delete_outline</v-icon
+                              >
+                            </template>
+
+                            <template #table-busy>
+                              <div class="text-center my-2">
+                                <b-spinner class="align-middle"></b-spinner>
+                                <strong>در حال دریافت اطلاعات...</strong>
+                              </div>
+                            </template>
+                          </b-table>
+                        </div>
+                      </b-col>
+                    </b-row>
+                  </b-container>
+
+                  <template #modal-footer>
+                    <div class="w-100">
+                      <v-btn
+                        class="select2"
+                        color="#f7b73a"
+                        elevation="3"
+                        rounded
+                        larg
+                        outlined
+                        @click="closeeditCustomerModal"
                         >انصراف
                       </v-btn>
                     </div>
@@ -1054,7 +1133,7 @@
                   <template #cell(actions)="row">
                     <v-icon
                       @click="editProgramRow(row)"
-                      style="font-size: 20px; color: blue"
+                      style="font-size: 20px; color: #0f6b4d"
                       >edit</v-icon
                     >
 
@@ -1388,6 +1467,56 @@
                       </template>
                     </b-modal>
                   </div>
+
+                    <!-- delete program from customer -->
+                  <div>
+                    <b-modal
+                      v-model="removeProgramFromCustomerModal"
+                      dir="rtl"
+                      id="modal-center"
+                      title=" حذف برنامه"
+                      :header-bg-variant="headerBgVariant"
+                      :header-text-variant="headerTextVariant"
+                    >
+                      <b-container fluid>
+                        <b-row>
+                          <b-col>
+                            <h4>برنامه مورد نظر حذف شود؟</h4>
+                          </b-col>
+                        </b-row>
+                      </b-container>
+
+                      <template #modal-footer>
+                        <div class="w-100">
+                          <v-btn
+                            :loading="deleteCustomerScoreLoading"
+                            class="btnsize"
+                            color="#90c445"
+                            elevation="5"
+                            rounded
+                            larg
+                            @click="deleteProgramOfCustomerbtn"
+                            >بلی
+                          </v-btn>
+
+                          <v-btn
+                            class="select2"
+                            color="#f7b73a"
+                            elevation="3"
+                            rounded
+                            larg
+                            outlined
+                            @click="closeDeletModal"
+                            >انصراف
+                          </v-btn>
+                        </div>
+                      </template>
+                    </b-modal>
+                  </div>
+
+
+
+
                 </b-col>
                 <b-col> </b-col>
 
@@ -1527,6 +1656,7 @@ export default {
       IdOfCustomer: "",
       Customeritems: [],
       scoreOfCustomer: "",
+      programOfCustomer: "",
 
       Customerfields: [
         { FullName: "نام مشتری" },
@@ -1630,8 +1760,11 @@ export default {
       showCreateModal: false,
       showCreateCustomerModal: false,
       showCustomerScoresModal: false,
+      showCustomerProgramsModal: false,
+
       showApplyModal: false,
       removeScoreFromCustomerModal: false,
+      removeProgramFromCustomerModal: false,
 
       showEditScoreModal: false,
       showEditProgramModal: false,
@@ -1657,7 +1790,16 @@ export default {
         { Actions: "عملیات" },
       ],
 
+      fieldsOfCustomerPrograms : [
+        { Title: "نام برنامه" },
+        { PointsNeeded: " تعداد امتیاز لازم" },
+        { Description: "توضیحات" },
+        { Actions: "عملیات" },
+      ],
+
       items: [],
+
+      CustomerPrograms: [],
 
       show4: false,
 
@@ -1709,6 +1851,27 @@ export default {
   mounted() {},
 
   methods: {
+    async showCustomerPrograms(row) {
+      this.showCustomerProgramsModal = true;
+      this.IdOfCustomer = row.item.Id;
+
+      await axios
+        .get(
+          `http://localhost:8080/api/User/GetCustomerPrograms/${this.IdOfCustomer}`,
+          {
+            headers: {
+              token: localStorage.getItem("token"),
+            },
+          }
+        )
+        .then((response) => {
+          this.CustomerPrograms = response.data;
+          console.log("Customer scores:", response.data);
+        })
+        .catch((e) => {
+          this.errors.push(e);
+        });
+    },
 
     async showAllScores() {
       this.showSearchScore = false;
@@ -1789,7 +1952,13 @@ export default {
       this.removeScoreFromCustomerModal = true;
     },
 
-    async deleteScoreOfCustomerbtn() {
+    RemoveProgramFromCustomer(row){
+            console.log("row score of customer", row);
+      this.programOfCustomer = row.item.Id;
+      this.removeProgramFromCustomerModal = true;
+    },
+
+       async deleteScoreOfCustomerbtn() {
       this.deleteCustomerScoreLoading = true;
       let response = await axios.post(
         `http://localhost:8080/api/User/RemoveScoreFromCustomer/${this.scoreOfCustomer}`,
@@ -1824,7 +1993,43 @@ export default {
       this.removeScoreFromCustomerModal = false;
     },
 
-      async doSearchScore() {
+
+
+    async deleteProgramOfCustomerbtn() {
+      this.deleteCustomerScoreLoading = true;
+      let response = await axios.post(
+        `http://localhost:8080/api/User/RemoveProgramFromCustomer/${this.programOfCustomer}`,
+       this.programOfCustomer,
+        {
+          headers: {
+            token: localStorage.getItem("token"),
+          },
+        }
+      );
+
+      await axios
+        .get(
+          `http://localhost:8080/api/User/GetCustomerPrograms/${this.IdOfCustomer}`,
+          {
+            headers: {
+              token: localStorage.getItem("token"),
+            },
+          }
+        )
+        .then((response) => {
+          this.CustomerPrograms = response.data;
+        })
+        .catch((e) => {
+          this.errors.push(e);
+        });
+      this.deleteCustomerScoreLoading = false;
+
+      this.snackbarGreen = true;
+      this.text = response.data.Description;
+      this.removeProgramFromCustomerModal = false;
+    },
+
+    async doSearchScore() {
       this.showSearchScore = true;
       let res = await axios.get(
         `http://localhost:8080/api/Score/GetByName?name=${this.searchScore}`,
@@ -1848,7 +2053,6 @@ export default {
           },
         }
       );
-
 
       this.AllUsers = res.data;
     },
@@ -2045,6 +2249,8 @@ export default {
       this.showEditCustomerModal = false;
       this.addScoreToCustomerModal = false;
       this.showApplyModal = false;
+      this.showCustomerProgramsModal = false;
+
     },
 
     async editCustomerbtn() {

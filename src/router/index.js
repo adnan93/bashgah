@@ -15,7 +15,7 @@ const routes = [
     name: 'customerLogin',
     component: () => import('../views/customerLogin.vue')
   },
-  
+
   {
     path: '/SignUp',
     name: 'SignUp',
@@ -27,7 +27,7 @@ const routes = [
     name: 'Update',
     component: () => import('../views/Update.vue')
   },
-  
+
 
   {
     path: '/Score',
@@ -56,37 +56,46 @@ const routes = [
     path: '/customerProfile',
     name: 'customerProfile',
     component: () => import('../views/customerProfile.vue')
-  }, 
+  },
 
   {
     path: '/Customer',
     name: 'Customer',
     component: () => import('../views/Customer.vue')
-  }, 
+  },
 
   {
     path: '/Completed',
     name: 'Completed',
     component: () => import('../views/Completed.vue')
-  }, 
-  
+  },
+
 
   {
     path: '/User',
     name: 'User',
     component: () => import('../views/User.vue')
-  }, 
-
-
-
-  
+  },
 
 
 
 
-  
- 
-  
+  {
+    path: '/AddNewProgram/:id',
+    name: 'AddNewProgram',
+    component: () => import('../views/AddNewProgram.vue')
+  },
+
+
+
+
+
+
+
+
+
+
+
 ]
 
 const router = new VueRouter({

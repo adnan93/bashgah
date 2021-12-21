@@ -164,7 +164,7 @@ export default {
           },
         }
       );
-      if (response.data.JobType) {
+      if (response.data.JobType  ) {
         console.log("user is : ", response.data);
         this.snackbarGreen = true;
 

@@ -133,6 +133,8 @@
 
             <br />
           </b-form>
+          <br>
+          <h5>* برای دریافت 5 امتیاز اطلاعات خود را تکمیل کنید</h5>
         </b-card>
       </b-col>
 
@@ -186,7 +188,6 @@ import axios from "axios";
 export default {
   name: "Update",
   async created() {
-    
     if (!window.location.hash) {
       window.location = window.location + "#loaded";
       window.location.reload();
@@ -369,7 +370,7 @@ export default {
     },
 
     async getImg() {
-    await axios.get(
+      await axios.get(
         `http://localhost:8080/api/Customer/GetPictureFile/${this.imgId}`,
         this.imgId,
         {
@@ -378,8 +379,7 @@ export default {
           },
         }
       );
-
-},
+    },
     async bgSend() {
       this.form.Base64File = this.bg64;
     },
@@ -486,7 +486,6 @@ export default {
     // },
 
     async sendImg() {
-
       await axios.post(`http://localhost:8080/api/Customer/UpdateUserImage`, {
         headers: {
           "Content-Type": "multipart/form-data",
