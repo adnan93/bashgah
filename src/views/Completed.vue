@@ -46,7 +46,11 @@
                 </v-select>
                 <br />
 
+              <div> 
+          
+                
                 <v-select
+                id="deg1"
                   :items="Degree"
                   label="تحصیلات"
                   :item-text="'Name'"
@@ -54,11 +58,12 @@
                   v-model="form.Degree"
                   outlined
                   dense
+                  v-validate="'required'"
+                  required     
                   :rules="[emailRules.required]"
-                  required
                 >
                 </v-select>
-
+                </div>
                 <br />
 
                 <v-text-field
@@ -73,7 +78,23 @@
                 >
                 </v-text-field>
                 <div>
+                  
+                      <v-text-field
+                      id="date3"
+                    label="تاریخ تولد"
+                  :item-text="'Name'"
+                  :item-value="'Value'"
+                    v-model="form.BirthDate"
+                  outlined
+                  dense
+                  required
+                  :rules="[emailRules.required]"
+                  append-icon="today"
+                >
+                </v-text-field>
+
                   <date-picker
+                  element="date3"
                     class="datePicker"
                     v-model="form.BirthDate"
                     label="تاریخ تولد"
@@ -81,9 +102,8 @@
                     format="jYYYY-jMM-jDD"
                     inputFormat="YYYY-MM-DD"
                     type="date"
-                    required
-                    :rules="[emailRules.required]"
                   ></date-picker>
+
                 </div>
 
                 <br />
@@ -142,16 +162,31 @@
                 >
                 </v-select>
 
-                <v-file-input
+                <!-- <v-text-field
+                id="pic"
+                                    v-model="form.ProfilePictrue"
+                  style="hight: 150px"
+                  type="Email"
                   label="  250*250 عکس پروفایل "
+                  :rules="[emailRules.required]"
+                  outlined
+                  required
+                  dense
+                /> -->
+                
+
+                <v-file-input
+                element="pic"
+                  placeholder="  250*250 عکس پروفایل "
                   outlined
                   :clearable="true"
                   append-icon="add_a_photo"
                   prepend-icon=""
                   @change="bgBase64"
+                  v-model="imgId" 
                   accept=image/*
                   show-size
-                  :rules="imgRules"
+                  :rules="[imgRules.required]"
                   
                 >
                 </v-file-input>
@@ -257,7 +292,17 @@ export default {
     this.form.IsMarried = response.data.IsMarried.toString();
     this.form.Gender = response.data.Gender.toString();
 
-    this.form.BirthDate = response.data.BirthDate.toString();
+    this.bDate = response.data.BirthDate;
+
+    if (this.bDate == "0001-01-01T00:00:00") {
+      console.log("date :: ", response.data.BirthDate.toString());
+
+      this.form.BirthDate = null;
+    } else {
+      this.form.BirthDate = this.bDate.substring(0, 10);
+    }
+
+    //this.form.BirthDate = this.bDate.substring(0, 10);
 
     this.form.Degree = response.data.Degree;
 
@@ -295,6 +340,7 @@ export default {
   data() {
     return {
       text: "  در حال دریافت اطلاعات ...",
+      bDate: "",
 
       //validation
       phoneRules: {
@@ -320,9 +366,11 @@ export default {
       bg64: "",
       imgId: "",
 
-      imgRules: [
-        (v) => v.size < 500000 || "حجم عكس بايد كمتر از  500 KB  می باشد",
-      ],
+      imgRules: {
+        required: (value) => !!value || "این فیلد الزامی است",
+        validImg: (v) =>
+          v.size < 500000 || "حجم عكس بايد كمتر از  500 KB  می باشد",
+      },
 
       Province: [],
       cities: [],

@@ -1,10 +1,8 @@
 <template>
   <div>
-    <b-row > 
-     <b-col  :key="program.id" v-for="program in programs"> 
-       <Program :program="program" /> </b-col>
-
-    </b-row>
+    <div class="mycards ml-5" :key="program.id" v-for="program in programs">
+      <Program :program="program" />
+    </div>
   </div>
 </template>
 
@@ -23,4 +21,7 @@ export default {
 </script>
 
 <style>
+.mycards {
+  float: right !important;
+}
 </style>

@@ -5,9 +5,9 @@
 
       <!-- تعداد امتیاز -->
       <b-row>
-        <b-col cols="3"> </b-col>
+        <b-col cols="2"> </b-col>
 
-        <b-col cols="6">
+        <b-col cols="8">
           <div dir="rtl">
             <h3>
             
@@ -16,7 +16,7 @@
           </div>
         </b-col>
 
-        <b-col cols="3"> </b-col>
+        <b-col cols="2"> </b-col>
       </b-row>
 
       <br />
@@ -52,131 +52,6 @@
               مشاهده لیست برنامه ها
             </v-btn>
 
-            <!-- show score list  -->
-
-            <!-- add new -->
-            <!-- <div>
-                          <b-modal
-                            v-model="showCreateModal"
-                            dir="rtl"
-                            id="modal-center"
-                            title=" افزودن فعالیت"
-                            :header-bg-variant="headerBgVariant"
-                            :header-text-variant="headerTextVariant"
-                          >
-                            <b-container fluid>
-                              <b-row>
-                                <b-col>
-                                  <h3>فعالیت مد نظر را اضافه کنید:</h3>
-                                  <hr />
-
-                                  <div>
-                                    <b-table
-                                      :items="AllScores"
-                                      :fields="scorefields"
-                                      striped
-                                      responsive="sm"
-                                      hover
-                                      outlined
-                                    >
-                                      <template #cell(actions)="row">
-                                        <div
-                                          @click="addNewScoreToCustomer(row)"
-                                        >
-                                          <div
-                                            v-if="
-                                              getenScores.includes(
-                                                row.item.ActivityName
-                                              ) ||
-                                              row.item.ActivityName ==
-                                                selectedName
-                                            "
-                                          >
-                                            <v-icon
-                                              style="
-                                                font-size: 20px;
-                                                color: #90c445;
-                                              "
-                                            >
-                                              done_all
-                                            </v-icon>
-                                          </div>
-
-                                          <div v-else>
-                                            <v-icon
-                                              style="
-                                                font-size: 20px;
-                                                color: #90c445;
-                                              "
-                                            >
-                                              add_circle
-                                            </v-icon>
-                                          </div>
-                                        </div>
-                                      </template>
-                                    </b-table>
-                                  </div>
-                                </b-col>
-                              </b-row>
-                            </b-container>
-
-                            <template #modal-footer>
-                              <div class="w-100">
-                                <v-btn
-                                  class="select2"
-                                  color="#90c445"
-                                  elevation="3"
-                                  rounded
-                                  larg
-                                  outlined
-                                  @click="closeCreateModal"
-                                  >انصراف
-                                </v-btn>
-                              </div>
-                            </template>
-
-                            <v-snackbar
-                              v-model="snackbarGreen"
-                              :color="snackColor"
-                              dir="rtl"
-                            >
-                              {{ text }}
-
-                              <template v-slot:action="{ attrs }">
-                                <v-btn
-                                  color="red"
-                                  rounded
-                                  v-bind="attrs"
-                                  text
-                                  @click="snackbarGreen = false"
-                                >
-                                  x
-                                </v-btn>
-                              </template>
-                            </v-snackbar>
-                          </b-modal>
-                        </div> -->
-
-            <!-- <div>
-                  <b-table
-                    :items="CustomerScores"
-                    :fields="fields"
-                    striped
-                    responsive="sm"
-                    hover
-                    :busy="isBusyScore"
-                    outlined
-                  >
-                    <template #cell(actions)=""> </template>
-
-                    <template #table-busy>
-                      <div class="text-center my-2">
-                        <b-spinner class="align-middle"></b-spinner>
-                        <strong>در حال دریافت اطلاعات...</strong>
-                      </div>
-                    </template>
-                  </b-table>
-                </div> -->
             <hr />
             <h4>برنامه مد نظر خود را انتخاب کنید:</h4>
             <br />

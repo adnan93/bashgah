@@ -14,7 +14,7 @@
           امتیاز
         </h5>
         <p>{{ program.Title }}</p>
-        <h5>{{ program.Description }}</h5>
+        <!-- <h5>{{ program.Description }}</h5> -->
       </b-card-text>
 <!-- 
       <v-btn
