@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="mycards ml-5" :key="program.id" v-for="program in programs">
+    <div class="mycards ml-10" :key="program.id" v-for="program in programs">
       <Program :program="program" />
     </div>
   </div>

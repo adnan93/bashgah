@@ -1,45 +1,52 @@
 <template>
   <div>
-    <b-card
-      :class="[program.reminder ? 'reminder' : 'program']"
-      :img-src="`http://localhost:8080/api/Program/GetPictureFile/${program.Picture}`"
-      img-alt="Image"
-      img-top
-      tag="article"
-      style="max-width: 10rem"
-    >
-      <b-card-text>
-        <h5>
-          {{ program.PointsNeeded }}
-          امتیاز
-        </h5>
-        <p>{{ program.Title }}</p>
-        <!-- <h5>{{ program.Description }}</h5> -->
-      </b-card-text>
-<!-- 
-      <v-btn
-        class="btnsize"
-        color="#90c445"
-        elevation="5"
-        rounded
-        small
-        @click="addNewProgram()"
-
+    <div class="mCard mb-10">
+      <b-card
+        :class="[program.reminder ? 'reminder' : 'program']"
+        :img-src="`http://localhost:8080/api/Program/GetPictureFile/${program.Picture}`"
+        img-alt="Image"
+        img-top
+        tag="article"
+        style="max-width: 10rem"
       >
-      
-        ادامه
-      </v-btn> -->
+        <b-card-text>
+          <h5>
+           ({{ program.PointsNeeded }}) 
+            امتیاز
+          </h5>
+          <b >{{ program.Title }}</b>
+          <!-- <h5>{{ program.Description }}</h5> -->
+          <br>
+        </b-card-text>
+        
 
-      <router-link 
-      
-      :to="{ path: '/AddNewProgram/'+ program.Id }"
-             v-bind:tooltip=" program.Id" append>
-      
-      <a > ادامه</a>
-      
-      </router-link>
+        <div class="mt-3"> 
+        <router-link
+          :to="{ path: '/AddNewProgram/' + program.Id }"
+          v-bind:tooltip="program.Id"
+          append
+        >
+     
+          <a  style="color: #90c445" > ادامه </a>
+        </router-link>
+        </div>
 
-    </b-card>
+      </b-card>
+    </div>
+
+    <!-- <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+     <br />
+    <br />
+    <br />
+    <br />
+    <br /> -->
   </div>
 </template>
 
@@ -57,7 +64,7 @@ export default {
     };
   },
   async created() {
-    console.log("program is: ", this.program)
+    console.log("program is: ", this.program);
     //  let res = await axios.get(
     //   `http://localhost:8080/api/Customer/GetPictureFile/${this.program.Picture}`,
     //   this.program.Picture,
@@ -79,7 +86,7 @@ export default {
 
 <style scope>
 .program {
-  border: 3px solid #10503b;
+  /* border: 3px solid #10503b; */
 
   margin-bottom: 1rem;
 }
@@ -94,5 +101,22 @@ export default {
   display: flex;
   align-items: center;
   justify-content: space-between;
+}
+
+.mCard {
+  display: grid;
+  box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.9);
+  border-radius: 18px  ;
+  grid-template-columns: 150px;
+  grid-template-rows: 280px;
+    text-align: center;
+
+}
+
+.mCard:hover {
+  transform: scale(1.15);
+  box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.6);
+  transition: 0.5s ease;
+
 }
 </style>
