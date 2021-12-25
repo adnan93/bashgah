@@ -50,7 +50,8 @@
           
                 
                 <v-select
-                id="deg1"
+
+                  id="deg1"
                   :items="Degree"
                   label="تحصیلات"
                   :item-text="'Name'"
@@ -58,10 +59,10 @@
                   v-model="form.Degree"
                   outlined
                   dense
-                  v-validate="'required'"
-                  required     
+                  
+                  required
                   :rules="[emailRules.required]"
-                >
+                  >
                 </v-select>
                 </div>
                 <br />
@@ -77,6 +78,8 @@
                   :rules="[emailRules.required]"
                 >
                 </v-text-field>
+                <br>
+
                 <div>
                   
                       <v-text-field
@@ -173,6 +176,7 @@
                   required
                   dense
                 /> -->
+                <br>
                 
 
                 <v-file-input
@@ -231,6 +235,13 @@
     <br />
     <br />
     <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+
+
 
     <v-snackbar v-model="snackbarGreen" color="green" dir="rtl">
       {{ text }}
@@ -354,6 +365,11 @@ export default {
           /^\w+([.-]?\w+)@\w+([.-]?\w+)(\.\w{2,3})+$/.test(v) || " معتبر نیست",
       },
 
+      rules: {
+        select: [(v) => !!v || "این فیلد الزامی است"],
+        select2: [(v) => v.length > 0 || "Item is required in select 2"],
+      },
+
       loadingbtn: false,
       date: "",
       //img
@@ -396,6 +412,9 @@ export default {
         Base64File: "",
         Kargozar: "",
         NationalCode: "",
+        Description: "",
+        FileBytes:""
+
       },
 
       mar: null,
@@ -440,7 +459,7 @@ export default {
         .then((response) => {
           console.log("updated customer: ", response);
 
-          this.$router.push({ path: "/customerProfile" });
+        //  this.$router.push({ path: "/customerProfile" });
         })
         .catch((e) => {
           this.errors.push(e);

@@ -155,34 +155,35 @@ export default {
       this.loadingbtn = true;
       event.preventDefault();
       await this.CustomerLogIn(this.form);
-
-      let response = await axios.get(
-        `http://localhost:8080/api/Customer/GetMyUser`,
-        {
-          headers: {
-            token: localStorage.getItem("token"),
-          },
-        }
-      );
-      if (response.data.JobType  ) {
-        console.log("user is : ", response.data);
-        this.snackbarGreen = true;
-
-        this.$router.push({ path: "/customerProfile" });
-      } else {
-        this.$router.push({ path: "/Update" });
-      }
-
       this.text = await this.getMessage;
 
       if ((await this.getMessageType) == 1) {
+        let response = await axios.get(
+          `http://localhost:8080/api/Customer/GetMyUser`,
+          {
+            headers: {
+              token: localStorage.getItem("token"),
+            },
+          }
+        );
+
+        if (response.data.JobType) {
+          console.log("user is : ", response.data);
+
+          this.$router.push({ path: "/customerProfile" });
+        } else {
+          this.$router.push({ path: "/Update" });
+        }
+        // this.snackbarGreen = true;
+
         this.snackColor = "green";
 
-     //   this.$router.push({ path: "/Update" });
-      } else {
+        //   this.$router.push({ path: "/Update" });
+      } else if ((await this.getMessageType) == 0) {
+        console.log("nooo");
         this.snackColor = "red";
+        this.snackbarGreen = true;
       }
-      this.snackbarGreen = true;
       this.loadingbtn = false;
     },
   },

@@ -77,14 +77,22 @@ const routes = [
     component: () => import('../views/User.vue')
   },
 
-
-
-
   {
     path: '/AddNewProgram/:id',
     name: 'AddNewProgram',
     component: () => import('../views/AddNewProgram.vue')
   },
+
+  {
+    path: '/Register',
+    name: 'Register',
+    component: () => import('../views/Register.vue')
+  },
+
+ 
+
+
+  
 
 
 

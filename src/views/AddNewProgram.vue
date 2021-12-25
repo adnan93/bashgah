@@ -31,12 +31,14 @@
 
             <b-row class="myCard">
               <div align="center">
-                <h5>
-                  <b> تعداد امتیاز لازم : </b>
-                  <b> {{ programDetails.data.PointsNeeded }} </b>
+                  <b style="color: black"> تعداد امتیاز لازم : </b>
+
+                
+                  <b class="points">
+                    {{ programDetails.data.PointsNeeded }}
+                  </b>
 
                   می باشد
-                </h5>
               </div>
             </b-row>
             <br />
@@ -83,6 +85,28 @@
             </b-row>
           </b-col>
         </b-row>
+        <hr />
+
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
         <br />
       </b-col>
 
@@ -227,10 +251,8 @@ export default {
         .catch((e) => {
           this.errors.push(e);
         });
-        
-      this.showApplyModal = false;
 
-     
+      this.showApplyModal = false;
     },
   },
 };
@@ -238,11 +260,16 @@ export default {
 
 <style>
 .myCard {
-  background-color: rgb(122, 196, 122);
-  border-radius: 20%;
+  background-color: #c7d7d2;
+  /* border-radius: 20%; */
   width: 100%;
+  padding-top: 10px;
+  scroll-padding-bottom: 10px;
 }
 .afzodan {
   padding: 0px !important;
+}
+.points{
+  font-size: 15px !important;
 }
 </style>

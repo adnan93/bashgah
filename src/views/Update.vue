@@ -82,14 +82,6 @@
 
                   <br />
 
-                  <v-text-field
-                    v-model="form.Mobile"
-                    label="شماره موبایل"
-                    required
-                    outlined
-                    dense
-                    :rules="[phoneRules.required, phoneRules.validNum]"
-                  />
                 </b-col>
                 <br />
               </b-row>
@@ -236,7 +228,6 @@ export default {
 
     this.form.Password = response.data.Password;
 
-    this.form.Mobile = response.data.Mobile;
 
     this.form.IsMarried = response.data.IsMarried.toString();
     this.form.Gender = response.data.Gender.toString();
@@ -319,7 +310,6 @@ export default {
         Family: "",
         Password: "",
         Gender: "",
-        Mobile: "",
         IsActive: "",
         IsMarried: "",
         BirthDate: "",
@@ -446,7 +436,7 @@ export default {
 
       this.loadingbtn = true;
       await axios
-        .post(`http://localhost:8080/api/Customer/Update`, this.form, {
+        .post(`http://localhost:8080/api/Customer/UpdateRequired`, this.form, {
           headers: {
             token: localStorage.getItem("token"),
           },

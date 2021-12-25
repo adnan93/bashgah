@@ -39,7 +39,7 @@
               x-large
               @click="GoToCustomer()"
             >
-              <v-icon style="font-size: 20px">people_alt</v-icon> کاربر
+              <!-- <v-icon style="font-size: 20px">people_alt</v-icon>  -->ورود
             </v-btn>
 
             <v-btn
@@ -51,8 +51,8 @@
               outlined
               @click="UserLogin()"
             >
-              <v-icon style="font-size: 20px; color: black">portrait</v-icon>
-              مدیر
+              <!-- <v-icon style="font-size: 20px; color: black">portrait</v-icon> -->
+              ثبت نام جدید
             </v-btn>
             <hr />
           </div>
@@ -112,7 +112,8 @@ export default {
   mounted() {},
   methods: {
     UserLogin() {
-      this.$router.push("UserLogin");
+      this.$router.push("Register");
+     // https://accounts.ebidar.com/
     },
     login() {
       this.$router.push("customerLogin");

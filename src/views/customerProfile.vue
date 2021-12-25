@@ -10,8 +10,8 @@
         <b-col cols="8">
           <div dir="rtl">
             <h3>
-            
-              مشتری گرامی {{ FullName }} تعداد امتیاز های فعلی  ({{ points}}) امتیاز می باشد
+              مشتری گرامی {{ FullName }} تعداد امتیاز های فعلی ({{ points }})
+              امتیاز می باشد
             </h3>
           </div>
         </b-col>
@@ -214,109 +214,6 @@
                         </template>
                       </b-modal>
                     </div>
-
-                    <!-- add new -->
-
-                    <!-- <div>
-                          <b-modal
-                            v-model="showCreateProgramModal"
-                            dir="rtl"
-                            id="modal-center"
-                            title=" افزودن برنامه"
-                            :header-bg-variant="headerBgVariant"
-                            :header-text-variant="headerTextVariant"
-                          >
-                            <b-container fluid>
-                              <b-row>
-                                <b-col>
-                                  <h3>برنامه مد نظر را اضافه کنید :</h3>
-
-                                  <hr />
-
-                                  <div>
-                                    <b-table
-                                      :items="AllPrograms"
-                                      :fields="programsFields"
-                                      striped
-                                      responsive="sm"
-                                      hover
-                                      outlined
-                                    >
-                                      <template #cell(actions)="row">
-                                        <div
-                                          @click="addNewProgramToCustomer(row)"
-                                        >
-                                          <div
-                                            v-if="
-                                              getenPrograms.includes(
-                                                row.item.Title
-                                              ) || row.item.Title == Title
-                                            "
-                                          >
-                                            <v-icon
-                                              style="
-                                                font-size: 20px;
-                                                color: #90c445;
-                                              "
-                                            >
-                                              done_all
-                                            </v-icon>
-                                          </div>
-
-                                          <div v-else>
-                                            <v-icon
-                                              style="
-                                                font-size: 20px;
-                                                color: #90c445;
-                                              "
-                                            >
-                                              add_circle
-                                            </v-icon>
-                                          </div>
-                                        </div>
-                                      </template>
-                                    </b-table>
-                                  </div>
-                                </b-col>
-                              </b-row>
-                            </b-container>
-
-                            <template #modal-footer>
-                              <div class="w-100">
-                                <v-btn
-                                  class="select2"
-                                  color="#90c445"
-                                  elevation="3"
-                                  rounded
-                                  larg
-                                  outlined
-                                  @click="closeCreateProgramModal"
-                                  >انصراف
-                                </v-btn>
-                              </div>
-                            </template>
-
-                            <v-snackbar
-                              v-model="snackbarGreen"
-                              :color="snackColor"
-                              dir="rtl"
-                            >
-                              {{ text }}
-
-                              <template v-slot:action="{ attrs }">
-                                <v-btn
-                                  color="red"
-                                  rounded
-                                  v-bind="attrs"
-                                  text
-                                  @click="snackbarGreen = false"
-                                >
-                                  x
-                                </v-btn>
-                              </template>
-                            </v-snackbar>
-                          </b-modal>
-                        </div>  -->
                   </b-col>
                   <b-col> </b-col>
                 </b-row>
@@ -376,12 +273,28 @@
           </v-btn>
         </template>
       </v-snackbar>
-
-      <!-- </b-card>
-      </b-card-group> -->
-
-      <!-- <div class="chart" ref="chart1"></div> -->
     </div>
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
   </div>
 </template>
 

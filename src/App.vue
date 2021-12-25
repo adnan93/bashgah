@@ -34,12 +34,12 @@
                 <b style="color: #90c445"> </b>
               </h6>
             </b-nav-item>
-<!-- 
+            <!-- 
             <b-nav-item class="ml-2" href="/customerProfile">
               <h6><b style="color: #90c445"> صفحه اصلى </b></h6>
             </b-nav-item> -->
 
-            <b-nav-item class="ml-2" href="/Update"  v-show="showBtn()" >
+            <b-nav-item class="ml-2" href="/Update" v-show="showBtn()">
               <h6><b style="color: #90c445">ویرایش پروفایل </b></h6>
             </b-nav-item>
 
@@ -115,6 +115,90 @@
       </v-snackbar>
 
       <router-view class="home" />
+
+      <b-row class="footer" align="center">
+        <hr />
+
+        <b-col>
+          <div class="container">
+          
+             <h5>  <b> لینک های مفید </b> </h5> 
+              <br />
+
+              <h6 class="bedar" style="color:black;">
+                <a  href="https://ex.ebidar.com/v-533" style="color:black;">
+                  <li class="bedar">اقتصاد بیدار</li>
+                </a>
+              </h6>
+
+             
+
+              <h6>
+                <a style="color: black" href="https://t.me/tahlilonline_com">
+                  <li>تحلیل انلاین</li>
+                </a>
+              </h6>
+
+               <h6 class="ml-10">
+                <a style="color: black"> <li>طلاگرام</li> </a>
+              </h6>
+        
+          </div>
+        </b-col>
+
+        <b-col>
+          <div class="container">
+            <h5> <b> راه های ارتباطی </b> </h5>
+            <br />
+            <h6 style="color: white;">شیراز، بلوار شهید رجائی (فرهنگ شهر)، کوچه 30، ساختمان زمرد. </h6>
+
+            <h3>
+              <a href="tel:07136317299" style="color: red"> 071-36317299</a>
+            </h3>
+
+            <br />
+          </div>
+          <div class="container">
+            <a class="ml-1" href="https://t.me/tahlilonline_com">
+              <img src="@/assets/telegram.png" />
+            </a>
+
+            <a
+              class="ml-1"
+              href="https://instagram.com/tahlilonline_com?utm_medium=copy_link"
+            >
+              <img src="@/assets/instagram.png" />
+            </a>
+
+            <a
+              class="ml-2"
+              href="https://www.linkedin.com/mwlite/company/tahlilonline"
+            >
+              <img src="@/assets/lin.png" />
+            </a>
+
+            <a class="ml-2" href="https://www.aparat.com/tahlilonline.com">
+              <img src="@/assets/aparat.png" />
+            </a>
+
+            <a href="https://www.youtube.com/channel/UCo0Q1Re84VCVjemnr6-uN_g">
+              <img src="@/assets/youtube.png" />
+            </a>
+          </div>
+        </b-col>
+        <hr />
+        <br>
+
+        <h5>
+          <v-icon style="font-size: 20px; color: #90c445"> copyright </v-icon>
+          کلیه حقوق متعلق به گروه مالی زمرد ‌می ‌باشد.
+        </h5>
+        <br />
+
+        <br />
+      </b-row>
+
+      <br />
     </b-row>
   </v-app>
 </template>
@@ -155,7 +239,7 @@ export default {
       }
       this.showCreateModal = false;
 
-     // this.$router.push({ path: "/" });
+      // this.$router.push({ path: "/" });
 
       this.snackbarGreen = true;
     },
@@ -238,5 +322,12 @@ a {
 
 .navbar.navbar-dark.bg-dark {
   background-color: #10503b !important;
+}
+.footer {
+  background-color: #c8cfc7;
+}
+
+.bedar{
+  color: rgb(253, 247, 247) !important;
 }
 </style>
