@@ -21,11 +21,11 @@
               <b-form @submit="onSubmit">
                 <v-text-field
                   v-model="form.Mobile"
-                  placeholder="شماره موبایل"
+                  label="شماره موبایل"
                   required
                   outlined
                   dense
-                  :rules="[phoneRules.required, phoneRules.validNum]"
+                  :rules="[rules.required, rules.validNum , rules.counter]"
                 />
 
                 <v-text-field
@@ -145,6 +145,13 @@ export default {
         required: (value) => !!value || "این فیلد الزامی است",
         validNum: (v) => /^[\s۰-۹\s0-9]+$/.test(v) || "شماره معتبر نیست",
       },
+
+         rules: {
+          required: value => !!value || 'این فیلد الزامی است.',
+          counter: value => value.length == 11 || 'شماره معتبر نیست',
+          validNum: (v) => /^[\s۰-۹\s0-9]+$/.test(v) || "شماره معتبر نیست",
+        },
+
     };
   },
 

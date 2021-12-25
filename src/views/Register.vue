@@ -20,7 +20,7 @@
                   required
                   outlined
                   dense
-                  :rules="[phoneRules.required, phoneRules.validNum]"
+                  :rules="[phoneRules.required, phoneRules.validNum , phoneRules.counter]"
                 />
 
                 <v-text-field
@@ -29,7 +29,7 @@
                   required
                   outlined
                   dense
-                  :rules="[phoneRules.required, phoneRules.validNum]"
+                  :rules="[rules.required, rules.validNum , rules.counter]"
                 />
               </b-col>
               <br />
@@ -116,6 +116,7 @@ export default {
       phoneRules: {
         required: (value) => !!value || "این فیلد الزامی است",
         validNum: (v) => /^[\s۰-۹\s0-9]+$/.test(v) || "شماره معتبر نیست",
+        counter: value => value.length == 10 || 'کد ملی معتبر نیست',
       },
 
       emailRules: {
@@ -123,6 +124,12 @@ export default {
         validEmail: (v) =>
           /^\w+([.-]?\w+)@\w+([.-]?\w+)(\.\w{2,3})+$/.test(v) || " معتبر نیست",
       },
+
+         rules: {
+          required: value => !!value || 'این فیلد الزامی است.',
+          counter: value => value.length == 11 || 'شماره معتبر نیست',
+          validNum: (v) => /^[\s۰-۹\s0-9]+$/.test(v) || "شماره معتبر نیست",
+        },
 
       loadingbtn: false,
       date: "",
