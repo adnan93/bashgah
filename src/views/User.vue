@@ -19,7 +19,17 @@
                     rounded
                     large
                     @click="openCreateCustomerModal"
-                    >افزودن مشتری
+                  >
+                    افزودن مشتری جدید
+                  </v-btn>
+                  <v-btn
+                    style="color: white"
+                    color="#10503B"
+                    elevation="3"
+                    rounded
+                    large
+                    @click="watingCustomer"
+                    >لیست انتظار تایید
                   </v-btn>
                 </b-col>
               </b-row>
@@ -611,6 +621,14 @@
                               >
                             </template>
 
+                            <template #cell(status)="row">
+                              <v-icon
+                                @click="setStatus(row)"
+                                style="font-size: 20px; color: #0f6b4d"
+                                >info</v-icon
+                              >
+                            </template>
+
                             <template #table-busy>
                               <div class="text-center my-2">
                                 <b-spinner class="align-middle"></b-spinner>
@@ -657,6 +675,72 @@
                       </v-btn>
                     </template>
                   </v-snackbar>
+                </b-modal>
+              </div>
+
+              <!-- status -->
+              <div>
+                <b-modal
+                  v-model="showEditStatusModal"
+                  dir="rtl"
+                  id="modal-center"
+                  title=" ویرایش وضعیت برنامه"
+                  :header-bg-variant="headerBgVariant"
+                  :header-text-variant="headerTextVariant"
+                >
+                  <div dir="rtl">
+                    <b-form>
+                      <br />
+
+                      <v-select
+                        class="select"
+                        :items="statusList"
+                        :item-text="'Name'"
+                        :item-value="'Id'"
+                        type="text"
+                        v-model="customerStatus.Status"
+                        label="وضعیت"
+                        outlined
+                        dense
+                      >
+                      </v-select>
+                      <br />
+
+                      <v-text-field
+                        v-model="customerStatus.UserDescription"
+                        type="text"
+                        label="توضیحات"
+                        outlined
+                        dense
+                      />
+                    </b-form>
+                  </div>
+
+                  <template #modal-footer>
+                    <div class="w-100">
+                      <v-btn
+                        :loading="editCustomerLoading"
+                        class="btnsize"
+                        color="#90c445"
+                        elevation="5"
+                        rounded
+                        larg
+                        @click="EditStatusbtn"
+                        >ویرایش
+                      </v-btn>
+
+                      <v-btn
+                        class="select2"
+                        color="#f7b73a"
+                        elevation="3"
+                        rounded
+                        larg
+                        outlined
+                        @click="closeDeletCustomerModal"
+                        >انصراف
+                      </v-btn>
+                    </div>
+                  </template>
                 </b-modal>
               </div>
 
@@ -1099,7 +1183,7 @@
                           @click="deleteProgrambtn"
                           >بلی
                         </v-btn>
-
+                        <!-- 
                         <v-btn
                           class="select2"
                           color="#f7b73a"
@@ -1107,9 +1191,9 @@
                           rounded
                           larg
                           outlined
-                          @click="closeDeletModal"
+                          @click="closeModal"
                           >انصراف
-                        </v-btn>
+                        </v-btn> -->
                       </div>
                     </template>
                   </b-modal>
@@ -1468,7 +1552,7 @@
                     </b-modal>
                   </div>
 
-                    <!-- delete program from customer -->
+                  <!-- delete program from customer -->
                   <div>
                     <b-modal
                       v-model="removeProgramFromCustomerModal"
@@ -1513,10 +1597,6 @@
                       </template>
                     </b-modal>
                   </div>
-
-
-
-
                 </b-col>
                 <b-col> </b-col>
 
@@ -1543,16 +1623,13 @@
                     </template>
                   </b-table>
                 </div>
-                 <br />
-            <br />
-            <br />
-               <br />      
-            <br />
-            <br />
-            <br />
-         
-                  
-
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
               </div>
             </b-col>
 
@@ -1577,6 +1654,104 @@
         </div>
       </b-tab>
     </b-tabs>
+
+    <!-- show customer programs -->
+    <div>
+      <b-modal
+        v-model="showWatingProgramsModal"
+        dir="rtl"
+        id="modal-center"
+        title="  لیست برنامه  های در حال انتظار"
+        :header-bg-variant="headerBgVariant"
+        :header-text-variant="headerTextVariant"
+      >
+        <b-container fluid>
+          <b-row>
+            <b-col>
+              <div>
+                <b-table
+                  :items="WaitingPrograms"
+                  :fields="fieldsOfWaitingPrograms"
+                  striped
+                  responsive="sm"
+                  hover
+                  outlined
+                >
+                  <template #cell(actions)="row">
+                    <v-icon
+                      @click="RemoveProgramFromCustomer(row)"
+                      style="font-size: 20px; color: #f7b73a"
+                      >delete_outline</v-icon
+                    >
+                  </template>
+
+                  <template #cell(status)="row">
+                    <v-icon
+                      @click="setStatus(row)"
+                      style="font-size: 20px; color: #0f6b4d"
+                      >info</v-icon
+                    >
+
+                      <v-select
+                    class="select"
+                    :items="kargozarList"
+                    :item-text="'Name'"
+                    :item-value="'Id'"
+                    type="text"
+                    v-model="form.Kargozar"
+                    label="کارگزار ناظر"
+                    required
+                    outlined
+                    :rules="[phoneRules.required]"
+                    dense
+                  >
+                  </v-select>
+                  </template>
+
+                  <template #table-busy>
+                    <div class="text-center my-2">
+                      <b-spinner class="align-middle"></b-spinner>
+                      <strong>در حال دریافت اطلاعات...</strong>
+                    </div>
+                  </template>
+                </b-table>
+              </div>
+            </b-col>
+          </b-row>
+        </b-container>
+
+        <template #modal-footer>
+          <div class="w-100">
+            <v-btn
+              class="select2"
+              color="#f7b73a"
+              elevation="3"
+              rounded
+              larg
+              outlined
+              @click="closeeditCustomerModal"
+              >انصراف
+            </v-btn>
+          </div>
+        </template>
+
+        <v-snackbar v-model="snackbarGreen" :color="snackColor" dir="rtl">
+          {{ text }}
+
+          <template v-slot:action="{ attrs }">
+            <v-btn
+              color="red"
+              rounded
+              v-bind="attrs"
+              text
+              @click="snackbarGreen = false"
+            >
+              x
+            </v-btn>
+          </template>
+        </v-snackbar>
+      </b-modal>
+    </div>
 
     <v-snackbar v-model="snackbarGreen" :color="snackColor" dir="rtl">
       {{ text }}
@@ -1622,6 +1797,15 @@ export default {
     return {
       bDate: "",
       ProfileImg: "",
+      //status
+      status: "",
+      statusList: [
+        { Name: " در انتظار تایید", Id: 0 },
+        { Name: "تایید شده", Id: 1 },
+        { Name: "رد شده", Id: 2 },
+      ],
+      WaitingPrograms: [],
+
       //search
       searchName: "",
       searchProgram: "",
@@ -1687,6 +1871,7 @@ export default {
 
       //customer edit
       showEditCustomerModal: false,
+      showEditStatusModal: false,
       editdRow: "",
       editCustomerLoading: false,
 
@@ -1771,6 +1956,7 @@ export default {
       showCreateCustomerModal: false,
       showCustomerScoresModal: false,
       showCustomerProgramsModal: false,
+      showWatingProgramsModal:false,
 
       showApplyModal: false,
       removeScoreFromCustomerModal: false,
@@ -1800,12 +1986,22 @@ export default {
         { Actions: "عملیات" },
       ],
 
-      fieldsOfCustomerPrograms : [
+      fieldsOfCustomerPrograms: [
         { Title: "نام برنامه" },
         { PointsNeeded: " تعداد امتیاز لازم" },
         { Description: "توضیحات" },
+        { status: "وضعیت" },
         { Actions: "عملیات" },
       ],
+
+       fieldsOfwaitingPrograms: [
+        { Title: "نام برنامه" },
+        { Customer: "نام مشتری" },
+        { status: "وضعیت" },
+      ],
+
+
+
 
       items: [],
 
@@ -1850,6 +2046,13 @@ export default {
         Family: "",
       },
 
+      //customerStatus
+      customerStatus: {
+        Id: "",
+        Status: "",
+        UserDescription: "",
+      },
+
       //validation
       phoneRules: {
         required: (value) => !!value || "این فیلد الزامی است",
@@ -1861,6 +2064,67 @@ export default {
   mounted() {},
 
   methods: {
+    async watingCustomer() {
+      this.showWatingProgramsModal = true;
+
+      await axios.get(
+          `http://localhost:8080/api/User/GetAllProgramCustomersWaiting`,
+
+          {
+            headers: {
+              token: localStorage.getItem("token"),
+            },
+          }
+        )
+        .then((response) => {
+          this.WaitingPrograms = response.data;
+          
+          console.log( this.WaitingPrograms);
+        })
+        .catch((e) => {
+          this.errors.push(e);
+        });
+    },
+
+    closeModal() {
+      this.showDeleteModal = false;
+    },
+
+    setStatus(row) {
+      this.showEditStatusModal = true;
+      this.status = row;
+      console.log("row--", row);
+
+      this.customerStatus.Id = row.item.Id;
+      this.customerStatus.Status = row.item.Status;
+
+      this.customerStatus.UserDescription = row.item.UserDescription;
+    },
+
+    async EditStatusbtn() {
+      console.log(this.customerStatus);
+
+      await axios
+        .post(
+          `http://localhost:8080/api/User/UpdateProgramCustomerStatus/${this.customerStatus}`,
+          this.customerStatus,
+          {
+            headers: {
+              token: localStorage.getItem("token"),
+            },
+          }
+        )
+        .then((response) => {
+          this.snackbarGreen = true;
+          this.snackColor = "green";
+          this.text = response.data.Description;
+        })
+        .catch((e) => {
+          this.errors.push(e);
+        });
+      this.showEditStatusModal = false;
+    },
+
     async showCustomerPrograms(row) {
       this.showCustomerProgramsModal = true;
       this.IdOfCustomer = row.item.Id;
@@ -1868,6 +2132,7 @@ export default {
       await axios
         .get(
           `http://localhost:8080/api/User/GetCustomerPrograms/${this.IdOfCustomer}`,
+
           {
             headers: {
               token: localStorage.getItem("token"),
@@ -1962,13 +2227,13 @@ export default {
       this.removeScoreFromCustomerModal = true;
     },
 
-    RemoveProgramFromCustomer(row){
-            console.log("row score of customer", row);
+    RemoveProgramFromCustomer(row) {
+      console.log("row score of customer", row);
       this.programOfCustomer = row.item.Id;
       this.removeProgramFromCustomerModal = true;
     },
 
-       async deleteScoreOfCustomerbtn() {
+    async deleteScoreOfCustomerbtn() {
       this.deleteCustomerScoreLoading = true;
       let response = await axios.post(
         `http://localhost:8080/api/User/RemoveScoreFromCustomer/${this.scoreOfCustomer}`,
@@ -2003,13 +2268,11 @@ export default {
       this.removeScoreFromCustomerModal = false;
     },
 
-
-
     async deleteProgramOfCustomerbtn() {
       this.deleteCustomerScoreLoading = true;
       let response = await axios.post(
         `http://localhost:8080/api/User/RemoveProgramFromCustomer/${this.programOfCustomer}`,
-       this.programOfCustomer,
+        this.programOfCustomer,
         {
           headers: {
             token: localStorage.getItem("token"),
@@ -2260,7 +2523,6 @@ export default {
       this.addScoreToCustomerModal = false;
       this.showApplyModal = false;
       this.showCustomerProgramsModal = false;
-
     },
 
     async editCustomerbtn() {
@@ -2393,6 +2655,7 @@ export default {
 
     closeDeletCustomerModal() {
       this.showDeleteCustomerModal = false;
+      this.showEditStatusModal = false;
     },
 
     async deleteCustRow(row) {
@@ -2631,6 +2894,7 @@ export default {
 
     closeEditModal() {
       this.showEditScoreModal = false;
+      this.showEditStatusModal = false;
     },
 
     async updateScorebtn() {
@@ -2680,9 +2944,9 @@ export default {
     },
 
     closeDeletModal() {
-      this.showDeleteModal = false;
       this.showDeleteScoreModal = false;
       this.removeScoreFromCustomerModal = false;
+      this.removeProgramFromCustomerModal = false;
     },
 
     async deleteProgrambtn() {

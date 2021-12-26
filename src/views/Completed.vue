@@ -394,12 +394,7 @@ export default {
 
       //form
       form: {
-        Name: "",
-        Family: "",
-        Password: "",
         Gender: "",
-        Mobile: "",
-        IsActive: "",
         IsMarried: "",
         BirthDate: "",
         Degree: "",
@@ -408,13 +403,9 @@ export default {
         Address: "",
         CityId: "",
         ProfilePictrue: "",
-        ProvinceId: "",
-        Base64File: "",
-        Kargozar: "",
-        NationalCode: "",
         Description: "",
-        FileBytes:""
-
+        Base64File: "",
+        FileBytes: "",
       },
 
       mar: null,
@@ -459,7 +450,7 @@ export default {
         .then((response) => {
           console.log("updated customer: ", response);
 
-        //  this.$router.push({ path: "/customerProfile" });
+          //  this.$router.push({ path: "/customerProfile" });
         })
         .catch((e) => {
           this.errors.push(e);

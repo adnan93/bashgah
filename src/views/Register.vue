@@ -16,16 +16,17 @@
                 <v-text-field
                   type="text"
                   v-model="form.NationalCode"
-                  label="کد ملی"
+                  placeholder="کد ملی"
+
                   required
                   outlined
                   dense
-                  :rules="[phoneRules.required, phoneRules.validNum , phoneRules.counter]"
+                  :rules="[phoneRules.required]"
                 />
 
                 <v-text-field
                   v-model="form.Mobile"
-                  label="شماره موبایل"
+                  placeholder="شماره موبایل"
                   required
                   outlined
                   dense

@@ -18,39 +18,36 @@
           <b-col cols="5">
             <br />
 
-            <b-row class="myCard">
-              <div align="center">
-                <h5>
-                  <b> نام برنامه : </b>
+            <b-row class="myCard" align="center">
+              <b-col align="left">
+                <h5><b style="color: black"> نام برنامه  </b></h5>
+              </b-col>
+              <b-col align="right">
+                {{ programDetails.data.Title }}
+              </b-col>
+            </b-row>
 
-                  {{ programDetails.data.Title }}
+            <br />
+
+            <b-row class="myCard" align="center">
+              <b-col align="left">
+                <h5 class="mt-2">
+                  <b style="color: black"> تعداد امتیاز لازم </b>
                 </h5>
-              </div>
+              </b-col>
+              <b-col align="right">
+                <h2>{{ programDetails.data.PointsNeeded }}</h2>
+              </b-col>
             </b-row>
             <br />
 
-            <b-row class="myCard">
-              <div align="center">
-                  <b style="color: black"> تعداد امتیاز لازم : </b>
-
-                
-                  <b class="points">
-                    {{ programDetails.data.PointsNeeded }}
-                  </b>
-
-                  می باشد
-              </div>
-            </b-row>
-            <br />
-
-            <b-row class="myCard">
-              <div align="center">
-                <h5>
-                  <b> توضیحات : </b>
-
-                  {{ programDetails.data.Description }}
-                </h5>
-              </div>
+            <b-row class="container myCard" align="center">
+              <b-col align="left">
+                <h5 ><b style="color: black"> توضیحات  </b></h5>
+              </b-col>
+              <b-col align="right">
+                {{ programDetails.data.Description }}
+              </b-col>
             </b-row>
 
             <br />
@@ -269,7 +266,7 @@ export default {
 .afzodan {
   padding: 0px !important;
 }
-.points{
+.points {
   font-size: 15px !important;
 }
 </style>

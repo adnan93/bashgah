@@ -228,17 +228,11 @@
                     :busy="isBusyProgram"
                     outlined
                   >
-                    <template #cell(actions)="row">
+                    <template #cell(Status)="row">
                       <v-icon
                         @click="editRow(row)"
                         style="font-size: 20px; color: blue"
                         >edit</v-icon
-                      >
-
-                      <v-icon
-                        @click="deletRow(row)"
-                        style="font-size: 20px; color: red"
-                        >delete_outline</v-icon
                       >
                     </template>
 
@@ -400,12 +394,13 @@ export default {
       programsFields: [
         { Title: "نام برنامه" },
         { PointsNeeded: "تعداد امتیاز لازم" },
-        { Description: "توضیحات" },
-        { status: "وضعیت" },
+        { Status: "وضعیت" },
+        { UserDescription: "توضیحات" },
       ],
       Title: "",
 
       items: [],
+      UpdatedCustomerPrograms: [],
     };
   },
 
@@ -529,93 +524,92 @@ export default {
     },
 
     //add new program
-    async addNewProgramToCustomer(row) {
-      this.icon = "done";
+    // async addNewProgramToCustomer(row) {
+    //   this.icon = "done";
 
-      console.log(row, "row");
-      this.showTrueIcon = true;
-      this.showPlusIcon = false;
+    //   console.log(row, "row");
+    //   this.showTrueIcon = true;
+    //   this.showPlusIcon = false;
 
-      // let temp = [];
-      this.editedRow = row;
-      this.Title = row.item.Title;
-      this.selectedId = row.item.Id;
+    //   // let temp = [];
+    //   this.editedRow = row;
+    //   this.Title = row.item.Title;
+    //   this.selectedId = row.item.Id;
 
-      // this.openEditModal();
-      console.log("CustomerPrograms:", this.CustomerPrograms);
+    //   // this.openEditModal();
 
-      console.log("AllPrograms:", this.AllPrograms);
+    //   console.log("AllPrograms:", this.AllPrograms);
 
-      console.log("selectedId:", this.selectedId);
+    //   console.log("selectedId:", this.selectedId);
 
-      for (let item of this.CustomerPrograms) {
-        this.getenPrograms.push(item.Title);
-      }
-      console.log("temp", this.getenPrograms);
-      console.log("selectedId:", this.selectedName);
+    //   for (let item of this.CustomerPrograms) {
+    //     this.getenPrograms.push(item.Title);
+    //   }
+    //   console.log("temp", this.getenPrograms);
+    //   console.log("selectedId:", this.selectedName);
 
-      if (this.getenPrograms.includes(this.Title)) {
-        console.log("added ");
+    //   if (this.getenPrograms.includes(this.Title)) {
+    //     console.log("added ");
 
-        this.snackColor = "red";
-        this.text = "اين برنامه قبلا اضافه شده !";
-        this.snackbarGreen = true;
-      } else {
-        console.log("noot");
-        this.snackColor = "green";
+    //     this.snackColor = "red";
+    //     this.text = "اين برنامه قبلا اضافه شده !";
+    //     this.snackbarGreen = true;
+    //   } else {
+    //     console.log("noot");
+    //     this.snackColor = "green";
 
-        await axios
-          .post(
-            `http://localhost:8080/api/Customer/AddProgramToCustomer/${this.selectedId}`,
-            this.selectedId,
-            {
-              headers: {
-                token: localStorage.getItem("token"),
-              },
-            }
-          )
-          .then((response) => {
-            // this.CustomerScores = response.data;
-            this.snackbarGreen = true;
-            this.text = response.data.Description;
-            if (response.data.MessageType == 0) {
-              this.snackColor = "red";
-            } else {
-              this.snackColor = "green";
-            }
+    //     await axios
+    //       .post(
+    //         `http://localhost:8080/api/Customer/AddProgramToCustomer/${this.selectedId}`,
+    //         this.selectedId,
+    //         {
+    //           headers: {
+    //             token: localStorage.getItem("token"),
+    //           },
+    //         }
+    //       )
+    //       .then((response) => {
+    //         // this.CustomerScores = response.data;
+    //         this.snackbarGreen = true;
+    //         this.text = response.data.Description;
+    //         if (response.data.MessageType == 0) {
+    //           this.snackColor = "red";
+    //         } else {
+    //           this.snackColor = "green";
+    //         }
 
-            console.log("add new progrma:", response.data);
-          });
+    //         console.log("add new progrma:", response.data);
+    //       });
 
-        await axios
-          .get(`http://localhost:8080/api/Customer/GetCustomerPrograms`, {
-            headers: {
-              token: localStorage.getItem("token"),
-            },
-          })
-          .then((response) => {
-            this.CustomerPrograms = response.data;
-            console.log("Customer programs:", response.data);
-          })
-          .catch((e) => {
-            this.errors.push(e);
-          });
+    //     await axios
+    //       .get(`http://localhost:8080/api/Customer/GetCustomerPrograms`, {
+    //         headers: {
+    //           token: localStorage.getItem("token"),
+    //         },
+    //       })
+    //       .then((response) => {
+    //         this.CustomerPrograms = response.data;
+    //         console.log("Customer programs:", response.data);
+    //       })
+    //       .catch((e) => {
+    //         this.errors.push(e);
+    //       });
 
-        //Customer Points
-        await axios
-          .get(`http://localhost:8080/api/Customer/GetCustomerPoints`, {
-            headers: {
-              token: localStorage.getItem("token"),
-            },
-          })
-          .then((response) => {
-            this.points = response.data;
-          })
-          .catch((e) => {
-            this.errors.push(e);
-          });
-      }
-    },
+    //     //Customer Points
+    //     await axios
+    //       .get(`http://localhost:8080/api/Customer/GetCustomerPoints`, {
+    //         headers: {
+    //           token: localStorage.getItem("token"),
+    //         },
+    //       })
+    //       .then((response) => {
+    //         this.points = response.data;
+    //       })
+    //       .catch((e) => {
+    //         this.errors.push(e);
+    //       });
+    //   }
+    // },
 
     openEditModal() {
       this.showEditModal = true;
@@ -692,7 +686,23 @@ export default {
       })
       .then((response) => {
         this.CustomerPrograms = response.data;
-        console.log("Customer programs:", response.data);
+
+        for (let item of this.CustomerPrograms) {
+          // console.log(item)
+          if (item.Status == 0) {
+            console.log("item.Status", item.Status);
+
+            item.Status = " در انتظار تایید";
+          } else if (item.Status == 1) {
+            item.Status = "تایید شده";
+            console.log("item.Status", item.Status);
+          } else if (item.Status == 2) {
+            item.Status = "رد شده";
+            console.log("item.Status", item.Status);
+          }
+        }
+
+     
       })
       .catch((e) => {
         this.errors.push(e);

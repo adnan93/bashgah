@@ -21,7 +21,7 @@
               <b-form @submit="onSubmit">
                 <v-text-field
                   v-model="form.Mobile"
-                  label="شماره موبایل"
+                  placeholder="شماره موبایل"
                   required
                   outlined
                   dense

@@ -81,7 +81,6 @@
                   </v-select>
 
                   <br />
-
                 </b-col>
                 <br />
               </b-row>
@@ -125,7 +124,8 @@
 
             <br />
           </b-form>
-          <br>
+
+          <br />
           <h5>* برای دریافت 5 امتیاز اطلاعات خود را تکمیل کنید</h5>
         </b-card>
       </b-col>
@@ -134,7 +134,6 @@
     </b-row>
     <br />
     <br />
-
     <br />
     <br />
     <br />
@@ -149,7 +148,6 @@
     <br />
     <br />
     <br />
-
     <br />
     <br />
     <br />
@@ -227,7 +225,6 @@ export default {
     this.form.Family = response.data.Family;
 
     this.form.Password = response.data.Password;
-
 
     this.form.IsMarried = response.data.IsMarried.toString();
     this.form.Gender = response.data.Gender.toString();
@@ -338,8 +335,8 @@ export default {
       ],
 
       kargozarList: [
-        { Name: "سهم آشنا", Value: 0 },
         { Name: "اقتصاد بیدار", Value: 1 },
+        { Name: "سهم آشنا", Value: 0 },
         { Name: "سایر", Value: 2 },
       ],
 
