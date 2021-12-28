@@ -13,6 +13,7 @@
               >
                 <b-col cols="12" md="12" class="d-flex justify-content-end">
                   <v-btn
+                    class="ml-1"
                     style="color: white"
                     color="#10503B"
                     elevation="3"
@@ -20,7 +21,17 @@
                     large
                     @click="openCreateCustomerModal"
                   >
-                    افزودن مشتری جدید
+                    افزودن مشتری
+                  </v-btn>
+                  <v-btn
+                    class="ml-1"
+                    style="color: white"
+                    color="#10503B"
+                    elevation="3"
+                    rounded
+                    large
+                    @click="watingCustomer"
+                    >لیست انتظار
                   </v-btn>
                   <v-btn
                     style="color: white"
@@ -28,8 +39,9 @@
                     elevation="3"
                     rounded
                     large
-                    @click="watingCustomer"
-                    >لیست انتظار تایید
+                    @click="owerCustomer"
+                  >
+                    مشتریان ما
                   </v-btn>
                 </b-col>
               </b-row>
@@ -104,7 +116,6 @@
                         v-model="form.Name"
                         type="text"
                         placeholder="نام "
-                        required
                         outlined
                         dense
                         :rules="[phoneRules.required]"
@@ -114,7 +125,6 @@
                         v-model="form.Family"
                         type="text"
                         placeholder="نام خانوادگی"
-                        required
                         outlined
                         dense
                         :rules="[phoneRules.required]"
@@ -123,7 +133,6 @@
                       <v-text-field
                         v-model="form.Mobile"
                         placeholder="شماره موبایل"
-                        required
                         outlined
                         dense
                         :rules="[phoneRules.required, phoneRules.validNum]"
@@ -133,7 +142,6 @@
                         :append-icon="show4 ? 'mdi-eye' : 'mdi-eye-off'"
                         v-model="form.Password"
                         :type="show4 ? 'text' : 'password'"
-                        required
                         placeholder="رمز عبور "
                         @click:append="show4 = !show4"
                         outlined
@@ -1671,43 +1679,86 @@
               <div>
                 <b-table
                   :items="WaitingPrograms"
-                  :fields="fieldsOfWaitingPrograms"
+                  :fields="watingCustomerList"
                   striped
                   responsive="sm"
                   hover
-                  outlined
                 >
-                  <template #cell(actions)="row">
-                    <v-icon
-                      @click="RemoveProgramFromCustomer(row)"
-                      style="font-size: 20px; color: #f7b73a"
-                      >delete_outline</v-icon
-                    >
+                  <template #table-busy>
+                    <div class="text-center my-2">
+                      <b-spinner class="align-middle"></b-spinner>
+                      <strong>در حال دریافت اطلاعات...</strong>
+                    </div>
                   </template>
 
-                  <template #cell(status)="row">
+                  <template #cell(programStatus)="row">
                     <v-icon
+                      align="center"
                       @click="setStatus(row)"
-                      style="font-size: 20px; color: #0f6b4d"
+                      style="font-size: 20px; color: #0f6b4d; align: center"
                       >info</v-icon
                     >
-
-                      <v-select
-                    class="select"
-                    :items="kargozarList"
-                    :item-text="'Name'"
-                    :item-value="'Id'"
-                    type="text"
-                    v-model="form.Kargozar"
-                    label="کارگزار ناظر"
-                    required
-                    outlined
-                    :rules="[phoneRules.required]"
-                    dense
-                  >
-                  </v-select>
                   </template>
+                </b-table>
+              </div>
+            </b-col>
+          </b-row>
+        </b-container>
 
+        <template #modal-footer>
+          <div class="w-100">
+            <v-btn
+              class="select2"
+              color="#f7b73a"
+              elevation="3"
+              rounded
+              larg
+              outlined
+              @click="closeeditCustomerModal"
+              >انصراف
+            </v-btn>
+          </div>
+        </template>
+
+        <v-snackbar v-model="snackbarGreen" :color="snackColor" dir="rtl">
+          {{ text }}
+
+          <template v-slot:action="{ attrs }">
+            <v-btn
+              color="red"
+              rounded
+              v-bind="attrs"
+              text
+              @click="snackbarGreen = false"
+            >
+              x
+            </v-btn>
+          </template>
+        </v-snackbar>
+      </b-modal>
+    </div>
+
+    <!-- our costomer -->
+    <div>
+      <b-modal
+        v-model="showOwerCustomerModal"
+        dir="rtl"
+        id="modal-center"
+        title="  لیست مشتریان ما"
+        :header-bg-variant="headerBgVariant"
+        :header-text-variant="headerTextVariant"
+      >
+        <b-container fluid>
+          <b-row>
+            <b-col>
+              <div>
+                <b-table
+                  :items="registerCustomer"
+                  :fields="owerCustomers"
+                  striped
+                  responsive="sm"
+                  hover
+                >
                   <template #table-busy>
                     <div class="text-center my-2">
                       <b-spinner class="align-middle"></b-spinner>
@@ -1731,6 +1782,16 @@
               outlined
               @click="closeeditCustomerModal"
               >انصراف
+            </v-btn>
+            <v-btn
+              class="select2"
+              color="#90c445"
+              elevation="3"
+              rounded
+              larg
+              
+              @click="getFile"
+              >دریافت فایل
             </v-btn>
           </div>
         </template>
@@ -1775,6 +1836,7 @@
 import axios from "axios";
 import config from "@/config";
 import { mapGetters, mapActions } from "vuex";
+import Papa from "papaparse";
 
 // import { createChart } from "lightweight-charts";
 //  import { LightweightCharts } from "lightweight-charts";
@@ -1956,7 +2018,8 @@ export default {
       showCreateCustomerModal: false,
       showCustomerScoresModal: false,
       showCustomerProgramsModal: false,
-      showWatingProgramsModal:false,
+      showWatingProgramsModal: false,
+      showOwerCustomerModal: false,
 
       showApplyModal: false,
       removeScoreFromCustomerModal: false,
@@ -1994,19 +2057,18 @@ export default {
         { Actions: "عملیات" },
       ],
 
-       fieldsOfwaitingPrograms: [
-        { Title: "نام برنامه" },
-        { Customer: "نام مشتری" },
-        { status: "وضعیت" },
+      watingCustomerList: [
+        { CustomerName: "نام مشتری" },
+        { ProgramTitle: "نام برنامه" },
+        { programStatus: " وضعیت " },
       ],
 
+      owerCustomers: [{ Mobile: "شماره مشتری" }, { NationalCode: "نام مشتری" }],
 
-
+      registerCustomer: [],
 
       items: [],
-
       CustomerPrograms: [],
-
       show4: false,
 
       //loading
@@ -2064,10 +2126,50 @@ export default {
   mounted() {},
 
   methods: {
+    getFile() {
+      var blob = new Blob([Papa.unparse(this.registerCustomer)], {
+        type: "text/csv;charset=utf-8;",
+      });
+
+      var link = document.createElement("a");
+
+      var url = URL.createObjectURL(blob);
+      link.setAttribute("href", url);
+      link.setAttribute("download", "filename.csv");
+      link.style.visibility = "hidden";
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    },
+
+    async owerCustomer() {
+      this.showOwerCustomerModal = true;
+
+      await axios
+        .get(
+          `http://localhost:8080/api/RegisterLog/GetAll`,
+
+          {
+            headers: {
+              token: localStorage.getItem("token"),
+            },
+          }
+        )
+        .then((response) => {
+          this.registerCustomer = response.data;
+
+          console.log(this.registerCustomer);
+        })
+        .catch((e) => {
+          this.errors.push(e);
+        });
+    },
+
     async watingCustomer() {
       this.showWatingProgramsModal = true;
 
-      await axios.get(
+      await axios
+        .get(
           `http://localhost:8080/api/User/GetAllProgramCustomersWaiting`,
 
           {
@@ -2078,8 +2180,8 @@ export default {
         )
         .then((response) => {
           this.WaitingPrograms = response.data;
-          
-          console.log( this.WaitingPrograms);
+
+          console.log(this.WaitingPrograms);
         })
         .catch((e) => {
           this.errors.push(e);
@@ -2090,7 +2192,9 @@ export default {
       this.showDeleteModal = false;
     },
 
-    setStatus(row) {
+    async setStatus(row) {
+      this.showWatingProgramsModal = false;
+      this.showCustomerProgramsModal = false;
       this.showEditStatusModal = true;
       this.status = row;
       console.log("row--", row);
@@ -2099,6 +2203,24 @@ export default {
       this.customerStatus.Status = row.item.Status;
 
       this.customerStatus.UserDescription = row.item.UserDescription;
+
+      await axios
+        .get(
+          `http://localhost:8080/api/User/GetCustomerPrograms/${this.IdOfCustomer}`,
+
+          {
+            headers: {
+              token: localStorage.getItem("token"),
+            },
+          }
+        )
+        .then((response) => {
+          this.CustomerPrograms = response.data;
+          console.log("Customer scores:", response.data);
+        })
+        .catch((e) => {
+          this.errors.push(e);
+        });
     },
 
     async EditStatusbtn() {
@@ -2523,6 +2645,8 @@ export default {
       this.addScoreToCustomerModal = false;
       this.showApplyModal = false;
       this.showCustomerProgramsModal = false;
+      this.showWatingProgramsModal = false;
+      this.showOwerCustomerModal = false;
     },
 
     async editCustomerbtn() {

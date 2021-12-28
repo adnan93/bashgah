@@ -120,12 +120,12 @@
         <hr />
 
         <b-col>
-          <div class="container">
+          <div class="place container">
           
              <h5>  <b> لینک های مفید </b> </h5> 
               <br />
 
-              <h6 class="bedar" style="color:black;">
+              <h6 class="place bedar" style="color:black;">
                 <a  href="https://ex.ebidar.com/v-533" style="color:black;">
                   <li class="bedar">اقتصاد بیدار</li>
                 </a>
@@ -147,52 +147,53 @@
         </b-col>
 
         <b-col>
-          <div class="container">
-            <h5> <b> راه های ارتباطی </b> </h5>
-            <br />
-            <h6 style="color: white;">شیراز، بلوار شهید رجائی (فرهنگ شهر)، کوچه 30، ساختمان زمرد. </h6>
+          <div >
 
+            <h5 class="place "> <b> راه های ارتباطی </b> </h5>
+            <br />
+            <div > 
+            <h6 style="color: white;">شیراز، بلوار شهید رجائی (فرهنگ شهر)، کوچه 30، ساختمان زمرد </h6>
+            </div>
+
+          <div class="place"> 
             <h3>
-              <a href="tel:07136317299" style="color: red"> 071-36317299 </a> 
+              <a href="tel:07136317299" style="color: red;"> 071-36317299 </a> 
             </h3>
+            </div>
 
             <br />
           </div>
           <div class="container">
             <a class="ml-1" href="https://t.me/tahlilonline_com">
-              <img src="@/assets/telegram.png" />
+              <img src="@/assets/tel3.png" />
             </a>
 
             <a
               class="ml-1"
               href="https://instagram.com/tahlilonline_com?utm_medium=copy_link"
             >
-              <img src="@/assets/instagram.png" />
+              <img src="@/assets/ins.png" />
             </a>
 
-            <a
-              class="ml-2"
-              href="https://www.linkedin.com/mwlite/company/tahlilonline"
-            >
-              <img src="@/assets/lin.png" />
-            </a>
+      
 
             <a class="ml-2" href="https://www.aparat.com/tahlilonline.com">
-              <img src="@/assets/aparat.png" />
+              <img src="@/assets/apa.png" />
             </a>
 
             <a href="https://www.youtube.com/channel/UCo0Q1Re84VCVjemnr6-uN_g">
-              <img src="@/assets/youtube.png" />
+              <img src="@/assets/you.png" />
             </a>
           </div>
         </b-col>
         <hr />
         <br>
 
-        <h5>
-          <v-icon style="font-size: 20px; color: #90c445"> copyright </v-icon>
+        <h6>
+          <v-icon style="font-size: 20px; color: white"> copyright </v-icon>
+
           کلیه حقوق متعلق به گروه مالی زمرد ‌می ‌باشد.
-        </h5>
+        </h6>
         <br />
 
         <br />
@@ -329,5 +330,10 @@ a {
 
 .bedar{
   color: rgb(253, 247, 247) !important;
+}
+.place{
+    color: #10503b !important;
+
+  
 }
 </style>

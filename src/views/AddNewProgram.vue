@@ -9,7 +9,7 @@
           <b-col align="center" cols="7">
             <v-img
               :src="`http://localhost:8080/api/Program/GetPictureFile/${programDetails.data.Picture}`"
-              height="100%"
+              height="60%%"
               width="60%"
               style="border-radius: 10px; position: relative"
             ></v-img>
@@ -20,7 +20,7 @@
 
             <b-row class="myCard" align="center">
               <b-col align="left">
-                <h5><b style="color: black"> نام برنامه  </b></h5>
+                <h5><b style="color: black"> نام برنامه:  </b></h5>
               </b-col>
               <b-col align="right">
                 {{ programDetails.data.Title }}
@@ -32,7 +32,7 @@
             <b-row class="myCard" align="center">
               <b-col align="left">
                 <h5 class="mt-2">
-                  <b style="color: black"> تعداد امتیاز لازم </b>
+                  <b style="color: black">تعداد امتیاز لازم:  </b>
                 </h5>
               </b-col>
               <b-col align="right">
@@ -43,10 +43,12 @@
 
             <b-row class="container myCard" align="center">
               <b-col align="left">
-                <h5 ><b style="color: black"> توضیحات  </b></h5>
+                <h5 ><b style="color: black"> توضیحات:  </b></h5>
               </b-col>
               <b-col align="right">
+      
                 {{ programDetails.data.Description }}
+         
               </b-col>
             </b-row>
 
@@ -147,7 +149,7 @@
         <template #modal-footer>
           <div class="w-100">
             <v-btn
-              :loading="deleteCustomerLoading"
+              :loading="addProgrmLoading"
               class="btnsize"
               color="#90c445"
               elevation="5"
@@ -185,6 +187,7 @@ export default {
       showApplyModal: false,
       headerBgVariant: "dark",
       headerTextVariant: "light",
+      addProgrmLoading: false,
 
       //snackbar
       snackbarGreen: false,
@@ -225,6 +228,7 @@ export default {
     },
 
     async addNewProgram() {
+      this.addProgrmLoading =true;
       await axios
         .post(
           `http://localhost:8080/api/Customer/AddProgramToCustomer/${this.programId}`,
@@ -250,6 +254,8 @@ export default {
         });
 
       this.showApplyModal = false;
+            this.addProgrmLoading =false;
+
     },
   },
 };

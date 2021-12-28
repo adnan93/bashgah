@@ -8,11 +8,17 @@
         <b-col cols="2"> </b-col>
 
         <b-col cols="8">
-          <div dir="rtl">
-            <h3>
-              مشتری گرامی {{ FullName }} تعداد امتیاز های فعلی ({{ points }})
-              امتیاز می باشد
-            </h3>
+          <div class="container" dir="rtl">
+            <b-row>
+              <h3> 
+              مشتری گرامی
+             {{ FullName }} 
+               تعداد امتیاز های فعلی
+               ( {{ points }} ) 
+                امتیاز می باشد
+                </h3>
+    
+            </b-row>
           </div>
         </b-col>
 
@@ -701,8 +707,6 @@ export default {
             console.log("item.Status", item.Status);
           }
         }
-
-     
       })
       .catch((e) => {
         this.errors.push(e);
