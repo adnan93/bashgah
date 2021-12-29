@@ -189,9 +189,7 @@
                   @change="bgBase64"
                   v-model="imgId" 
                   accept=image/*
-                  show-size
-                  :rules="[imgRules.required]"
-                  
+                  show-size                  
                 >
                 </v-file-input>
 
@@ -268,6 +266,12 @@ import axios from "axios";
 export default {
   name: "Update",
   async created() {
+      if (!window.location.hash) {
+      window.location = window.location + "#loaded";
+      window.location.reload();
+    }
+
+
     this.snackbarGreen = true;
     this.loadingbtn = true;
     let rest = await axios.get(`http://localhost:8080/api/Province/GetAll`, {

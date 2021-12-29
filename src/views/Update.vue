@@ -55,12 +55,17 @@
                 <b-col>
                   <v-text-field
                     type="text"
-                    v-model="form.NationalCode"
+                    v-model="checkMelliCode"
                     label="کد ملی"
+                    placeholder="کد ملی ده رقمی"
                     required
                     outlined
                     dense
-                    :rules="[phoneRules.required, phoneRules.validNum]"
+                    :rules="[
+                      phoneRules.required,
+                      phoneRules.validNum,
+                      phoneRules.select2,
+                    ]"
                   />
 
                   <br />
@@ -107,6 +112,11 @@
               type="submit"
               variant="primary"
               :loading="loadingbtn"
+              :disabled="
+                form.Kargozar && MelliCodeStatus && form.Name && form.Password
+                  ? false
+                  : true
+              "
               >ثبت
             </v-btn>
 
@@ -118,6 +128,11 @@
               @click="GoToCompleteProfile()"
               variant="primary"
               :loading="loadingbtn"
+              :disabled="
+                form.Kargozar && form.NationalCode && form.Name && form.Password
+                  ? false
+                  : true
+              "
             >
               اطلاعات تکمیلی
             </v-btn>
@@ -174,6 +189,7 @@
 <script>
 import axios from "axios";
 // import config from "@/config";
+// import Vue from "vue";
 
 export default {
   name: "Update",
@@ -182,6 +198,7 @@ export default {
       window.location = window.location + "#loaded";
       window.location.reload();
     }
+
     this.snackbarGreen = true;
 
     this.loadingbtn = true;
@@ -242,6 +259,7 @@ export default {
     this.form.CityId = response.data.CityId;
     this.imgId = response.data.ProfilePictrue;
     this.form.NationalCode = response.data.NationalCode;
+    this.checkMelliCode = response.data.NationalCode;
     this.form.Kargozar = response.data.Kargozar;
 
     let res = await axios.get(
@@ -261,18 +279,24 @@ export default {
     this.form.ProfilePictrue = response.data.ProfilePictrue;
     this.loadingbtn = false;
   },
+
   mounted() {
     // window.location.reload(true);
   },
+  computed() {},
 
   data() {
     return {
       text: "  در حال دریافت اطلاعات ...",
+      meli_code: "",
+      MelliCodeStatus: false,
+      checkMelliCode: "",
 
       //validation
       phoneRules: {
         required: (value) => !!value || "این فیلد الزامی است",
-        validNum: (v) => /^[\s۰-۹\s0-9]+$/.test(v) || "شماره معتبر نیست",
+        validNum: (v) => /^[\s۰-۹\s0-9]+$/.test(v) || "کد ملی معتبر نیست",
+        select2: (v) => v.length == 10 || "کد ملی معتبر نیست",
       },
 
       emailRules: {
@@ -300,6 +324,7 @@ export default {
       Province: [],
       cities: [],
       files: [],
+      oncePrice: "",
 
       //form
       form: {
@@ -349,9 +374,56 @@ export default {
     };
   },
 
-  watch: {},
+  watch: {
+    checkMelliCode: function (meli_code) {
+      this.meli_code = meli_code;
+      if (meli_code.length == 10) {
+        if (
+          meli_code != "1111111111" ||
+          meli_code != "0000000000" ||
+          meli_code != "2222222222" ||
+          meli_code != "3333333333" ||
+          meli_code != "4444444444" ||
+          meli_code != "5555555555" ||
+          meli_code != "6666666666" ||
+          meli_code != "7777777777" ||
+          meli_code != "8888888888" ||
+          meli_code != "9999999999"
+        ) {
+          this.MelliCodeStatus = true;
+        }
+         else {
+          this.MelliCodeStatus = false;
+        }
+      } else {
+        this.MelliCodeStatus = false;
+      }
+
+      // const result = newValue
+      //   .replace(/\D/g, "")
+      //   .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+
+      //  Vue.nextTick(() => (this.oncePrice = result));
+
+      // this.form.ons = result;
+      this.form.NationalCode = meli_code;
+
+    },
+
+
+  },
 
   methods: {
+    // checkMelliCode(meli_code) {
+    //   if (meli_code.length == 10) {
+    //     {
+    //       return true;
+    //     }
+    //   } else {
+    //     return false;
+    //   }
+    // },
+
     GoToCompleteProfile() {
       this.$router.push({ path: "/Completed" });
     },

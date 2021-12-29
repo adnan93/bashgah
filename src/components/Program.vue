@@ -10,27 +10,26 @@
         style="max-width: 10rem"
       >
         <b-card-text>
-          <h5>
-           ({{ program.PointsNeeded }}) 
-            امتیاز
-          </h5>
-          <b >{{ program.Title }}</b>
+          <b-row> 
+
+          <h5>({{ program.PointsNeeded }}) امتیاز</h5>
+
+          <h6 style="  font-size: 15px; ">{{ program.Title }}</h6>
           <!-- <h5>{{ program.Description }}</h5> -->
-          <br>
+          <br />
+
+          <router-link
+            :to="{ path: '/AddNewProgram/' + program.Id }"
+            v-bind:tooltip="program.Id"
+            append
+          >
+            <a class="link" style="text-decoration: none; color: #90c445">
+              ادامه
+            </a>
+          </router-link>
+          </b-row>
+
         </b-card-text>
-        
-
-        <div class="mt-3"> 
-        <router-link
-          :to="{ path: '/AddNewProgram/' + program.Id }"
-          v-bind:tooltip="program.Id"
-          append
-        >
-     
-          <a  style="color: #90c445" > ادامه </a>
-        </router-link>
-        </div>
-
       </b-card>
     </div>
 
@@ -85,6 +84,11 @@ export default {
 </script>
 
 <style scope>
+a:link {
+  text-decoration: none;
+  background-color: none !important;
+}
+
 .program {
   /* border: 3px solid #10503b; */
 
@@ -106,17 +110,15 @@ export default {
 .mCard {
   display: grid;
   box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.9);
-  border-radius: 18px  ;
+  border-radius: 18px;
   grid-template-columns: 150px;
   grid-template-rows: 280px;
-    text-align: center;
-
+  text-align: center;
 }
 
 .mCard:hover {
   transform: scale(1.15);
   box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.6);
   transition: 0.5s ease;
-
 }
 </style>

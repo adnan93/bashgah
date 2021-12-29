@@ -15,22 +15,29 @@
               <b-col>
                 <v-text-field
                   type="text"
-                  v-model="form.NationalCode"
-                  placeholder="کد ملی"
-
+                  v-model="checkMelliCode"
+                  placeholder="کد ملی ده رقمی"
                   required
                   outlined
                   dense
-                  :rules="[phoneRules.required]"
+                  :rules="[
+                    melliRules.required,
+                    melliRules.validNum,
+                    melliRules.select2,
+                  ]"
                 />
 
                 <v-text-field
-                  v-model="form.Mobile"
+                  v-model="checkPhone"
                   placeholder="شماره موبایل"
                   required
                   outlined
                   dense
-                  :rules="[rules.required, rules.validNum , rules.counter]"
+                  :rules="[
+                    phoneRules.required,
+                    phoneRules.validNum,
+                    phoneRules.select2
+                  ]"
                 />
               </b-col>
               <br />
@@ -46,6 +53,7 @@
               type="submit"
               variant="primary"
               :loading="loadingbtn"
+              :disabled="MelliCodeStatus && MobileStatus ? false : true"
               >ثبت
             </v-btn>
 
@@ -59,7 +67,6 @@
     </b-row>
     <br />
     <br />
-
     <br />
     <br />
     <br />
@@ -74,7 +81,6 @@
     <br />
     <br />
     <br />
-
     <br />
     <br />
     <br />
@@ -95,6 +101,39 @@
         </v-btn>
       </template>
     </v-snackbar>
+
+    <b-modal
+      dir="rtl"
+      v-model="showMessageModal"
+      title="توجه"
+      :header-bg-variant="headerBgVariant"
+      :header-text-variant="headerTextVariant"
+      :body-bg-variant="bodyBgVariant"
+      :body-text-variant="bodyTextVariant"
+      :footer-bg-variant="bodyBgVariant"
+      :footer-text-variant="footerTextVariant"
+    >
+      <h4>جهت استفاده از خدمات باشگاه مشتریان زمرد،</h4>
+      <h4>باید در کارگزاری اقتصاد بیدار ثبت‌نام نمایید.</h4>
+
+      <template #modal-footer>
+        <div class="w-100">
+          <v-btn
+            :loading="getCodeLoading"
+            class="btnsize ml-1"
+            color="#90c445"
+            elevation="5"
+            rounded
+            large
+            type="submit"
+            variant="primary"
+            @click="redirect()"
+          >
+            تایید
+          </v-btn>
+        </div>
+      </template>
+    </b-modal>
   </div>
 </template>
 
@@ -105,19 +144,79 @@ import axios from "axios";
 export default {
   name: "Update",
 
+  watch: {
+    checkMelliCode: function (meli_code) {
+      if (
+        !/^\d{10}$/.test(meli_code) ||
+        meli_code != "0000000000" ||
+        meli_code == "1111111111" ||
+        meli_code == "2222222222" ||
+        meli_code == "3333333333" ||
+        meli_code == "4444444444" ||
+        meli_code == "5555555555" ||
+        meli_code == "6666666666" ||
+        meli_code == "7777777777" ||
+        meli_code == "8888888888" ||
+        meli_code == "9999999999"
+      )
+        this.MelliCodeStatus = false;
+
+      var check = parseInt(meli_code[9]);
+      var sum = 0;
+      var i;
+      for (i = 0; i < 9; ++i) {
+        sum += parseInt(meli_code[i]) * (10 - i);
+      }
+      sum %= 11;
+
+      if ((sum < 2 && check == sum) || (sum >= 2 && check + sum == 11)) {
+        this.MelliCodeStatus = true;
+      }
+
+      this.form.NationalCode = meli_code;
+    },
+
+    checkPhone: function (phone) {
+      this.phone = phone;
+      if (phone.length == 11) {
+        this.MobileStatus = true;
+      } else {
+        this.MobileStatus = false;
+      }
+      this.form.Mobile = phone;
+    },
+  },
+
   mounted() {
     // window.location.reload(true);
   },
 
   data() {
     return {
+      headerBgVariant: "dark",
+      headerTextVariant: "light",
+      bodyBgVariant: "light",
+      bodyTextVariant: "dark",
+      footerBgVariant: "warning",
+      footerTextVariant: "dark",
+      showMessageModal: false,
       text: "  در حال دریافت اطلاعات ...",
+      checkMelliCode: "",
+      regExp: /[a-zA-Z]/g,
+      MobileStatus: false,
+      checkPhone: "",
 
       //validation
+      melliRules: {
+        required: (value) => !!value || "این فیلد الزامی است",
+        validNum: (v) => /^[\s۰-۹\s0-9]+$/.test(v) || "کد ملی معتبر نیست",
+        select2: (v) => v.length == 10 || "کد ملی معتبر نیست",
+      },
+
       phoneRules: {
         required: (value) => !!value || "این فیلد الزامی است",
         validNum: (v) => /^[\s۰-۹\s0-9]+$/.test(v) || "شماره معتبر نیست",
-        counter: value => value.length == 10 || 'کد ملی معتبر نیست',
+        select2: (v) => v.length == 11 || "شماره معتبر نیست",
       },
 
       emailRules: {
@@ -126,11 +225,11 @@ export default {
           /^\w+([.-]?\w+)@\w+([.-]?\w+)(\.\w{2,3})+$/.test(v) || " معتبر نیست",
       },
 
-         rules: {
-          required: value => !!value || 'این فیلد الزامی است.',
-          counter: value => value.length == 11 || 'شماره معتبر نیست',
-          validNum: (v) => /^[\s۰-۹\s0-9]+$/.test(v) || "شماره معتبر نیست",
-        },
+      rules: {
+        required: (value) => !!value || "این فیلد الزامی است.",
+        counter: (value) => value.length == 11 || "شماره معتبر نیست",
+        validNum: (v) => /^[\s۰-۹\s0-9]+$/.test(v) || "شماره معتبر نیست",
+      },
 
       loadingbtn: false,
       date: "",
@@ -162,10 +261,13 @@ export default {
     };
   },
 
-  watch: {},
-
   methods: {
+    redirect() {
+      window.location.href = "https://ex.ebidar.com/v-533";
+    },
     async onSubmit(event) {
+      this.showMessageModal = true;
+
       event.preventDefault();
 
       console.log("form: ", this.form);
@@ -181,7 +283,6 @@ export default {
           console.log("updated customer: ", response);
 
           ///  https://ex.ebidar.com/v-533
-          window.location.href = "https://ex.ebidar.com/v-533";
         })
         .catch((e) => {
           this.errors.push(e);

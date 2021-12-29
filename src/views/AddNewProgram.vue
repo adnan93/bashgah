@@ -35,6 +35,7 @@
                   <b style="color: black">تعداد امتیاز لازم:  </b>
                 </h5>
               </b-col>
+              
               <b-col align="right">
                 <h2>{{ programDetails.data.PointsNeeded }}</h2>
               </b-col>
