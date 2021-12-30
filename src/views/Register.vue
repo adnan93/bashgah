@@ -216,7 +216,7 @@ export default {
       phoneRules: {
         required: (value) => !!value || "این فیلد الزامی است",
         validNum: (v) => /^[\s۰-۹\s0-9]+$/.test(v) || "شماره معتبر نیست",
-        select2: (v) => v.length == 11 || "شماره معتبر نیست",
+        select2: (v) => v.length == 11 || "شماره موبایل معتبر نیست",
       },
 
       emailRules: {
@@ -290,6 +290,7 @@ export default {
       this.loadingbtn = false;
     },
   },
+  
 };
 </script>
 

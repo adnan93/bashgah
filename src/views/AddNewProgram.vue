@@ -20,7 +20,7 @@
 
             <b-row class="myCard" align="center">
               <b-col align="left">
-                <h5><b style="color: black"> نام برنامه:  </b></h5>
+                <h5><b style="color: black"> نام برنامه: </b></h5>
               </b-col>
               <b-col align="right">
                 {{ programDetails.data.Title }}
@@ -32,10 +32,10 @@
             <b-row class="myCard" align="center">
               <b-col align="left">
                 <h5 class="mt-2">
-                  <b style="color: black">تعداد امتیاز لازم:  </b>
+                  <b style="color: black">تعداد امتیاز لازم: </b>
                 </h5>
               </b-col>
-              
+
               <b-col align="right">
                 <h2>{{ programDetails.data.PointsNeeded }}</h2>
               </b-col>
@@ -44,12 +44,10 @@
 
             <b-row class="container myCard" align="center">
               <b-col align="left">
-                <h5 ><b style="color: black"> توضیحات:  </b></h5>
+                <h5><b style="color: black"> توضیحات: </b></h5>
               </b-col>
               <b-col align="right">
-      
                 {{ programDetails.data.Description }}
-         
               </b-col>
             </b-row>
 
@@ -229,7 +227,7 @@ export default {
     },
 
     async addNewProgram() {
-      this.addProgrmLoading =true;
+      this.addProgrmLoading = true;
       await axios
         .post(
           `http://localhost:8080/api/Customer/AddProgramToCustomer/${this.programId}`,
@@ -255,8 +253,7 @@ export default {
         });
 
       this.showApplyModal = false;
-            this.addProgrmLoading =false;
-
+      this.addProgrmLoading = false;
     },
   },
 };

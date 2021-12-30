@@ -99,8 +99,6 @@
               <!-- create Customer -->
               <div>
                 <b-modal
-                  :body-bg-variant="bodyBgVariant"
-                  :footer-bg-variant="bodyBgVariant"
                   v-model="showCreateCustomerModal"
                   dir="rtl"
                   id="modal-center"
@@ -109,7 +107,7 @@
                   :header-text-variant="headerTextVariant"
                 >
                   <div dir="rtl">
-                    <b-form>
+                    <b-form @submit="onSubmit">
                       <br />
 
                       <v-text-field
@@ -118,6 +116,7 @@
                         placeholder="نام "
                         outlined
                         dense
+                        required
                         :rules="[phoneRules.required]"
                       />
 
@@ -127,6 +126,7 @@
                         placeholder="نام خانوادگی"
                         outlined
                         dense
+                        required
                         :rules="[phoneRules.required]"
                       />
 
@@ -134,6 +134,7 @@
                         v-model="form.Mobile"
                         placeholder="شماره موبایل"
                         outlined
+                        required
                         dense
                         :rules="[phoneRules.required, phoneRules.validNum]"
                       />
@@ -148,10 +149,9 @@
                         dense
                         :rules="[phoneRules.required]"
                       />
+                      <br />
                     </b-form>
-                  </div>
 
-                  <template #modal-footer>
                     <div class="w-100">
                       <v-btn
                         :loading="signUpLoading"
@@ -160,6 +160,7 @@
                         elevation="5"
                         rounded
                         large
+                        type="submit"
                         @click="createUser"
                         variant="primary"
                       >
@@ -177,7 +178,7 @@
                         >انصراف
                       </v-btn>
                     </div>
-                  </template>
+                  </div>
                 </b-modal>
               </div>
 
@@ -727,7 +728,7 @@
                   <template #modal-footer>
                     <div class="w-100">
                       <v-btn
-                        :loading="editCustomerLoading"
+                        :loading="editCustomerWaiting"
                         class="btnsize"
                         color="#90c445"
                         elevation="5"
@@ -1789,7 +1790,6 @@
               elevation="3"
               rounded
               larg
-              
               @click="getFile"
               >دریافت فایل
             </v-btn>
@@ -1857,6 +1857,9 @@ export default {
   name: "App",
   data() {
     return {
+      editCustomerWaiting:false,
+    
+
       bDate: "",
       ProfileImg: "",
       //status
@@ -2224,6 +2227,7 @@ export default {
     },
 
     async EditStatusbtn() {
+      this.editCustomerWaiting=true;
       console.log(this.customerStatus);
 
       await axios
@@ -2244,7 +2248,9 @@ export default {
         .catch((e) => {
           this.errors.push(e);
         });
+        this.editCustomerWaiting=false;
       this.showEditStatusModal = false;
+
     },
 
     async showCustomerPrograms(row) {
@@ -2893,7 +2899,9 @@ export default {
 
     //create customer
     openCreateCustomerModal() {
-      this.showCreateCustomerModal = true;
+      this.$router.push({ path: "/CreateCustomer" });
+
+      //  this.showCreateCustomerModal = true;
     },
     closeCreateCustomerModal() {
       this.showCreateCustomerModal = false;

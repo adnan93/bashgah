@@ -89,18 +89,11 @@ const routes = [
     component: () => import('../views/Register.vue')
   },
 
- 
-
-
-  
-
-
-
-
-
-
-
-
+  {
+    path: '/CreateCustomer',
+    name: 'CreateCustomer',
+    component: () => import('../views/CreateCustomer.vue')
+  },
 
 
 

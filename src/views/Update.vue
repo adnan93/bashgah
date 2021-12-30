@@ -62,9 +62,10 @@
                     outlined
                     dense
                     :rules="[
-                      phoneRules.required,
-                      phoneRules.validNum,
-                      phoneRules.select2,
+                      melliRules.required,
+                      melliRules.validNum,
+                      melliRules.select2,
+                      melliRules.select3,
                     ]"
                   />
 
@@ -127,9 +128,9 @@
               large
               @click="GoToCompleteProfile()"
               variant="primary"
-              :loading="loadingbtn"
+       
               :disabled="
-                form.Kargozar && form.NationalCode && form.Name && form.Password
+                form.Kargozar && MelliCodeStatus && form.Name && form.Password
                   ? false
                   : true
               "
@@ -299,6 +300,13 @@ export default {
         select2: (v) => v.length == 10 || "کد ملی معتبر نیست",
       },
 
+      melliRules: {
+        required: (value) => !!value || "این فیلد الزامی است",
+        validNum: (v) => /^[\s۰-۹\s0-9]+$/.test(v) || "کد ملی معتبر نیست",
+        select2: (v) => v.length == 10 || "کد ملی معتبر نیست",
+        select3: (v) => v == this.notVaildCode || "   کد ملی معتبر نمیباشد",
+      },
+
       emailRules: {
         required: (value) => !!value || "این فیلد الزامی است",
         validEmail: (v) =>
@@ -375,42 +383,40 @@ export default {
   },
 
   watch: {
-    checkMelliCode: function (meli_code) {
-      this.meli_code = meli_code;
-      if (meli_code.length == 10) {
-        if (
-          meli_code != "1111111111" ||
-          meli_code != "0000000000" ||
-          meli_code != "2222222222" ||
-          meli_code != "3333333333" ||
-          meli_code != "4444444444" ||
-          meli_code != "5555555555" ||
-          meli_code != "6666666666" ||
-          meli_code != "7777777777" ||
-          meli_code != "8888888888" ||
-          meli_code != "9999999999"
-        ) {
-          this.MelliCodeStatus = true;
-        }
-         else {
-          this.MelliCodeStatus = false;
-        }
-      } else {
+ checkMelliCode: function (meli_code) {
+      if (
+        !/^\d{10}$/.test(meli_code) ||
+        meli_code == "1111111111" ||
+        meli_code == "2222222222" ||
+        meli_code == "3333333333" ||
+        meli_code == "4444444444" ||
+        meli_code == "5555555555" ||
+        meli_code == "6666666666" ||
+        meli_code == "7777777777" ||
+        meli_code == "8888888888" ||
+        meli_code == "9999999999"
+      ) {
+        console.log("meli_code", meli_code);
+
         this.MelliCodeStatus = false;
+        return this.MobileStatus;
+      } else {
+        var check = parseInt(meli_code[9]);
+        var sum = 0;
+        var i;
+        for (i = 0; i < 9; ++i) {
+          sum += parseInt(meli_code[i]) * (10 - i);
+        }
+        sum %= 11;
+
+        if ((sum < 2 && check == sum) || (sum >= 2 && check + sum == 11)) {
+          this.MelliCodeStatus = true;
+          this.notVaildCode = meli_code;
+        }
+
+        this.form.NationalCode = meli_code;
       }
-
-      // const result = newValue
-      //   .replace(/\D/g, "")
-      //   .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-
-      //  Vue.nextTick(() => (this.oncePrice = result));
-
-      // this.form.ons = result;
-      this.form.NationalCode = meli_code;
-
-    },
-
-
+    }
   },
 
   methods: {
@@ -513,7 +519,7 @@ export default {
         .then((response) => {
           console.log("updated customer: ", response);
 
-          this.$router.push({ path: "/customerProfile" });
+         this.$router.push({ path: "/customerProfile" });
         })
         .catch((e) => {
           this.errors.push(e);

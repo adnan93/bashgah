@@ -143,13 +143,13 @@ export default {
 
       phoneRules: {
         required: (value) => !!value || "این فیلد الزامی است",
-        validNum: (v) => /^[\s۰-۹\s0-9]+$/.test(v) || "شماره معتبر نیست",
+        validNum: (v) => /^[\s۰-۹\s0-9]+$/.test(v) || "شماره موبایل معتبر نیست",
       },
 
          rules: {
           required: value => !!value || 'این فیلد الزامی است.',
-          counter: value => value.length == 11 || 'شماره معتبر نیست',
-          validNum: (v) => /^[\s۰-۹\s0-9]+$/.test(v) || "شماره معتبر نیست",
+          counter: value => value.length == 11 || 'شماره موبایل معتبر نیست',
+          validNum: (v) => /^[\s۰-۹\s0-9]+$/.test(v) || "شماره موبایل معتبر نیست",
         },
 
     };

@@ -50,7 +50,6 @@
           
                 
                 <v-select
-
                   id="deg1"
                   :items="Degree"
                   label="تحصیلات"
@@ -59,7 +58,6 @@
                   v-model="form.Degree"
                   outlined
                   dense
-                  
                   required
                   :rules="[emailRules.required]"
                   >
@@ -213,6 +211,12 @@
               rounded
               x-large
               @click="updateCust()"
+
+               :disabled=" form.Degree
+                  ? false
+                  : true
+              "
+
               type="submit"
               variant="primary"
               :loading="loadingbtn"
@@ -266,11 +270,10 @@ import axios from "axios";
 export default {
   name: "Update",
   async created() {
-      if (!window.location.hash) {
+    if (!window.location.hash) {
       window.location = window.location + "#loaded";
       window.location.reload();
     }
-
 
     this.snackbarGreen = true;
     this.loadingbtn = true;
@@ -454,7 +457,7 @@ export default {
         .then((response) => {
           console.log("updated customer: ", response);
 
-          this.$router.push({ path: "/customerProfile" });
+          // this.$router.push({ path: "/customerProfile" });
         })
         .catch((e) => {
           this.errors.push(e);

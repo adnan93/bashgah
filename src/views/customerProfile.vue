@@ -10,14 +10,11 @@
         <b-col cols="8">
           <div class="container" dir="rtl">
             <b-row>
-              <h3> 
-              مشتری گرامی
-             {{ FullName }} 
-               تعداد امتیاز های فعلی
-               ( {{ points }} ) 
-                امتیاز می باشد
-                </h3>
-    
+              <h3>
+                مشتری گرامی
+                {{ FullName }}
+                تعداد امتیاز های فعلی ( {{ points }} ) امتیاز می باشد
+              </h3>
             </b-row>
           </div>
         </b-col>
@@ -198,6 +195,13 @@
                                   hover
                                   outlined
                                 >
+                                  <template #cell(actions)="row">
+                                    <v-icon
+                                      @click="RemoveProgramFromCustomer(row)"
+                                      style="font-size: 20px; color: #f7b73a"
+                                      >delete_outline</v-icon
+                                    >
+                                  </template>
                                 </b-table>
                               </div>
                             </b-col>
@@ -218,6 +222,26 @@
                             </v-btn>
                           </div>
                         </template>
+
+                        <v-snackbar
+                          v-model="snackbarGreen"
+                          :color="snackColor"
+                          dir="rtl"
+                        >
+                          {{ text }}
+
+                          <template v-slot:action="{ attrs }">
+                            <v-btn
+                              color="dark"
+                              rounded
+                              v-bind="attrs"
+                              text
+                              @click="snackbarGreen = false"
+                            >
+                              x
+                            </v-btn>
+                          </template>
+                        </v-snackbar>
                       </b-modal>
                     </div>
                   </b-col>
@@ -257,6 +281,52 @@
 
         <b-col cols="1"> </b-col>
       </b-row>
+
+      <!-- delete program from customer -->
+      <div>
+        <b-modal
+          v-model="removeProgramFromCustomerModal"
+          dir="rtl"
+          id="modal-center"
+          title=" حذف برنامه"
+          :header-bg-variant="headerBgVariant"
+          :header-text-variant="headerTextVariant"
+        >
+          <b-container fluid>
+            <b-row>
+              <b-col>
+                <h4>برنامه مورد نظر حذف شود؟</h4>
+              </b-col>
+            </b-row>
+          </b-container>
+
+          <template #modal-footer>
+            <div class="w-100">
+              <v-btn
+                :loading="deleteCustomerWaiting"
+                class="btnsize"
+                color="#90c445"
+                elevation="5"
+                rounded
+                larg
+                @click="deleteProgramOfCustomerbtn"
+                >بلی
+              </v-btn>
+
+              <v-btn
+                class="select2"
+                color="#f7b73a"
+                elevation="3"
+                rounded
+                larg
+                outlined
+                @click="closeDeletModal"
+                >انصراف
+              </v-btn>
+            </div>
+          </template>
+        </b-modal>
+      </div>
 
       <v-snackbar v-model="snackbarGreen" :color="snackColor" dir="rtl">
         {{ text }}
@@ -311,8 +381,10 @@ export default {
 
   data() {
     return {
+      deleteCustomerWaiting:false,
       testprograms: [],
       loadingbtn: false,
+      removeProgramFromCustomerModal: false,
 
       //snackbar
       snackColor: "",
@@ -361,6 +433,7 @@ export default {
       //Delete
       deleteLoading: false,
       row: "",
+      programId: "",
 
       //customer
       FullName: "",
@@ -368,7 +441,7 @@ export default {
       //date
       today: 0,
 
-      points: 0,
+      points: "",
 
       //modal
       showCreateModal: false,
@@ -402,6 +475,7 @@ export default {
         { PointsNeeded: "تعداد امتیاز لازم" },
         { Status: "وضعیت" },
         { UserDescription: "توضیحات" },
+        { actions: "عملیات" },
       ],
       Title: "",
 
@@ -411,6 +485,83 @@ export default {
   },
 
   methods: {
+    closeDeletModal(){
+      this.removeProgramFromCustomerModal =false;
+    },
+
+    async deleteProgramOfCustomerbtn() {
+      this.deleteCustomerWaiting =true;
+      this.removeProgramFromCustomerModal = false;
+       await axios.post(
+        `http://localhost:8080/api/Customer/RemoveProgramByCustomer/${this.programId}`,
+        this.programId,
+        {
+          headers: {
+            token: localStorage.getItem("token"),
+          },
+        }
+      ) .then((response) => {
+
+        this.snackbarGreen = true;
+      this.text = response.data.Description;
+       })
+
+      await axios
+        .get(`http://localhost:8080/api/Customer/GetCustomerPrograms`, {
+          headers: {
+            token: localStorage.getItem("token"),
+          },
+        })
+            .then((response) => {
+        this.CustomerPrograms = response.data;
+
+        for (let item of this.CustomerPrograms) {
+          // console.log(item)
+          if (item.Status == 0) {
+            console.log("item.Status", item.Status);
+
+            item.Status = " در انتظار تایید";
+          } else if (item.Status == 1) {
+            item.Status = "تایید شده";
+            console.log("item.Status", item.Status);
+          } else if (item.Status == 2) {
+            item.Status = "رد شده";
+            console.log("item.Status", item.Status);
+          }
+        }
+      })
+        .catch((e) => {
+          this.errors.push(e);
+        });
+
+      await axios
+        .get(`http://localhost:8080/api/Customer/GetCustomerPoints`, {
+          headers: {
+            token: localStorage.getItem("token"),
+          },
+        })
+        .then((response) => {
+          console.log("response", response);
+
+          this.points = response.data;
+        })
+        .catch((e) => {
+          this.errors.push(e);
+        });
+
+      this.deleteCustomerScoreLoading = false;
+
+    
+      // this.removeProgramFromCustomerModal = false;
+            this.deleteCustomerWaiting =false;
+
+    },
+
+    RemoveProgramFromCustomer(row) {
+      console.log(row);
+      this.programId = row.item.Id;
+      this.removeProgramFromCustomerModal = true;
+    },
     showPrograms() {
       this.showlistPrograms = !this.showlistPrograms;
     },
