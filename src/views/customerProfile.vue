@@ -84,6 +84,12 @@
                         hover
                         outlined
                       >
+                        <template #cell(Persian)="row">
+                          {{
+                            new Date(row.item.Date).toLocaleDateString("fa-IR")
+                          }}
+                        </template>
+
                         <template #cell(actions)="row">
                           <div @click="addNewScoreToCustomer(row)">
                             <div
@@ -195,12 +201,42 @@
                                   hover
                                   outlined
                                 >
+                                  <template #cell(Persian)="row">
+                                    {{
+                                      new Date(
+                                        row.item.Date
+                                      ).toLocaleDateString("fa-IR")
+                                    }}
+                                  </template>
+
                                   <template #cell(actions)="row">
-                                    <v-icon
-                                      @click="RemoveProgramFromCustomer(row)"
-                                      style="font-size: 20px; color: #f7b73a"
-                                      >delete_outline</v-icon
-                                    >
+                                    <div>
+                                      <div v-if="row.item.Status== 'در انتظار تایید' ">
+                                        <v-icon
+                                          @click="
+                                            RemoveProgramFromCustomer(row)
+                                          "
+                                          style="
+                                            font-size: 20px;
+                                            color: #f7b73a;
+                                          "
+                                          >delete_outline</v-icon
+                                        >
+                                      </div>
+
+                                      <div v-else>
+                                         <!-- <v-icon
+                                         disabled
+                                        
+                                          style="
+                                            font-size: 20px;
+                                            color: #f7b73a;
+                                          "
+                                          >delete_outline</v-icon
+                                        > -->
+                                  
+                                      </div>
+                                    </div>
                                   </template>
                                 </b-table>
                               </div>
@@ -381,7 +417,8 @@ export default {
 
   data() {
     return {
-      deleteCustomerWaiting:false,
+      programStatus: "",
+      deleteCustomerWaiting: false,
       testprograms: [],
       loadingbtn: false,
       removeProgramFromCustomerModal: false,
@@ -467,6 +504,7 @@ export default {
       scorefields: [
         { ActivityName: "نام فعالیت" },
         { Points: "تعداد امتیاز" },
+        { Persian: " تاریخ " },
         { Description: "توضیحات" },
       ],
 
@@ -475,6 +513,8 @@ export default {
         { PointsNeeded: "تعداد امتیاز لازم" },
         { Status: "وضعیت" },
         { UserDescription: "توضیحات" },
+        { Persian: " تاریخ " },
+
         { actions: "عملیات" },
       ],
       Title: "",
@@ -485,26 +525,27 @@ export default {
   },
 
   methods: {
-    closeDeletModal(){
-      this.removeProgramFromCustomerModal =false;
+    closeDeletModal() {
+      this.removeProgramFromCustomerModal = false;
     },
 
     async deleteProgramOfCustomerbtn() {
-      this.deleteCustomerWaiting =true;
+      this.deleteCustomerWaiting = true;
       this.removeProgramFromCustomerModal = false;
-       await axios.post(
-        `http://localhost:8080/api/Customer/RemoveProgramByCustomer/${this.programId}`,
-        this.programId,
-        {
-          headers: {
-            token: localStorage.getItem("token"),
-          },
-        }
-      ) .then((response) => {
-
-        this.snackbarGreen = true;
-      this.text = response.data.Description;
-       })
+      await axios
+        .post(
+          `http://localhost:8080/api/Customer/RemoveProgramByCustomer/${this.programId}`,
+          this.programId,
+          {
+            headers: {
+              token: localStorage.getItem("token"),
+            },
+          }
+        )
+        .then((response) => {
+          this.snackbarGreen = true;
+          this.text = response.data.Description;
+        });
 
       await axios
         .get(`http://localhost:8080/api/Customer/GetCustomerPrograms`, {
@@ -512,24 +553,23 @@ export default {
             token: localStorage.getItem("token"),
           },
         })
-            .then((response) => {
-        this.CustomerPrograms = response.data;
+        .then((response) => {
+          this.CustomerPrograms = response.data;
 
-        for (let item of this.CustomerPrograms) {
-          // console.log(item)
-          if (item.Status == 0) {
-            console.log("item.Status", item.Status);
-
-            item.Status = " در انتظار تایید";
-          } else if (item.Status == 1) {
-            item.Status = "تایید شده";
-            console.log("item.Status", item.Status);
-          } else if (item.Status == 2) {
-            item.Status = "رد شده";
-            console.log("item.Status", item.Status);
+          for (let item of this.CustomerPrograms) {
+            // console.log(item)
+            if (item.Status == 0) {
+              console.log("item.Status", item.Status);
+              item.Status = "در انتظار تایید";
+            } else if (item.Status == 1) {
+              item.Status = "تایید شده";
+              console.log("item.Status", item.Status);
+            } else if (item.Status == 2) {
+              item.Status = "رد شده";
+              console.log("item.Status", item.Status);
+            }
           }
-        }
-      })
+        })
         .catch((e) => {
           this.errors.push(e);
         });
@@ -551,10 +591,8 @@ export default {
 
       this.deleteCustomerScoreLoading = false;
 
-    
       // this.removeProgramFromCustomerModal = false;
-            this.deleteCustomerWaiting =false;
-
+      this.deleteCustomerWaiting = false;
     },
 
     RemoveProgramFromCustomer(row) {
@@ -847,13 +885,19 @@ export default {
         for (let item of this.CustomerPrograms) {
           // console.log(item)
           if (item.Status == 0) {
+            this.programStatus = true;
+
             console.log("item.Status", item.Status);
 
-            item.Status = " در انتظار تایید";
+            item.Status = "در انتظار تایید";
           } else if (item.Status == 1) {
+            this.programStatus = false;
+
             item.Status = "تایید شده";
             console.log("item.Status", item.Status);
           } else if (item.Status == 2) {
+            this.programStatus = false;
+
             item.Status = "رد شده";
             console.log("item.Status", item.Status);
           }
@@ -898,50 +942,6 @@ export default {
     this.loadingbtn = false;
   },
 
-  mounted() {
-    this.testprograms = [
-      {
-        id: 1,
-        text: "أموزش خريد",
-        day: "sunday",
-        reminder: true,
-      },
-      {
-        id: 2,
-        text: "دوره فروش  ",
-        day: "satrday",
-        reminder: false,
-      },
-
-      {
-        id: 3,
-        text: "كلاس تكنيكال",
-        day: "wenthday",
-        reminder: true,
-      },
-
-      {
-        id: 4,
-        text: "كلاس خريد",
-        day: "friday",
-        reminder: false,
-      },
-
-      {
-        id: 5,
-        text: "دوره حسابداري",
-        day: "monday",
-        reminder: true,
-      },
-
-      {
-        id: 6,
-        text: "آموزش سهام",
-        day: "sunday",
-        reminder: false,
-      },
-    ];
-  },
 };
 </script>
 

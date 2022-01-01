@@ -457,7 +457,7 @@ export default {
         .then((response) => {
           console.log("updated customer: ", response);
 
-          // this.$router.push({ path: "/customerProfile" });
+          this.$router.push({ path: "/customerProfile" });
         })
         .catch((e) => {
           this.errors.push(e);

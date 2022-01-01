@@ -130,6 +130,7 @@ export default {
     checkMelliCode: function (meli_code) {
       if (
         !/^\d{10}$/.test(meli_code) ||
+        meli_code == "0000000000" ||
         meli_code == "1111111111" ||
         meli_code == "2222222222" ||
         meli_code == "3333333333" ||

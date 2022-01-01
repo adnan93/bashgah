@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="scrolling-warpper">
     <b-tabs content-class="mt-3" align="center">
       <b-tab title=" مشتریان " :title-link-class="'tab-title-class'">
         <div>
@@ -34,6 +34,7 @@
                     >لیست انتظار
                   </v-btn>
                   <v-btn
+                    class="ml-1"
                     style="color: white"
                     color="#10503B"
                     elevation="3"
@@ -42,6 +43,17 @@
                     @click="owerCustomer"
                   >
                     مشتریان ما
+                  </v-btn>
+
+                  <v-btn
+                    style="color: white"
+                    color="#10503B"
+                    elevation="3"
+                    rounded
+                    large
+                    @click="exportCustomers"
+                  >
+                    همه مشتریان
                   </v-btn>
                 </b-col>
               </b-row>
@@ -190,6 +202,8 @@
                   striped
                   responsive="sm"
                   hover
+                  :busy="customerTableLoading"
+                  loading-text="در حال بارگیری ..."
                 >
                   <template #table-busy>
                     <div class="text-center my-2">
@@ -231,6 +245,15 @@
                     >
                   </template>
 
+                  <template #cell(score)="row">
+                    <v-icon
+                      align="center"
+                      @click="showScore(row)"
+                      style="font-size: 20px; color: #0f6b4d"
+                      >star_rate</v-icon
+                    >
+                  </template>
+
                   <template #cell(actions)="row">
                     <v-icon
                       @click="editCustRow(row)"
@@ -260,7 +283,9 @@
                   <b-container fluid>
                     <b-row>
                       <b-col>
-                        <h3>فعالیت مد نظر را اضافه کنید:</h3>
+                        
+                        <h3>فعالیت مد نظر را به  {{ CustomerName}} اضافه کنید:</h3>
+                        
 
                         <div>
                           <b-table
@@ -271,32 +296,7 @@
                             hover
                             outlined
                           >
-                            <!-- <template #cell(Actions)="row">
-                              <div @click="addNewScoreToCustomer(row)">
-                                <div
-                                  v-if="
-                                    getenScores.includes(
-                                      row.item.ActivityName
-                                    ) || row.item.ActivityName == selectedName
-                                  "
-                                >
-                                  <v-icon
-                                    style="font-size: 20px; color: #90c445"
-                                  >
-                                    done_all
-                                  </v-icon>
-                                </div>
-
-                                <div v-else>
-                                  <v-icon
-                                    style="font-size: 20px; color: #90c445"
-                                  >
-                                    add_circle
-                                  </v-icon>
-                                </div>
-                              </div>
-                            </template>
- -->
+                           
 
                             <template #cell(Actions)="row">
                               <div>
@@ -481,15 +481,11 @@
                       </b-col>
                     </b-row>
 
-                    <br />
-
                     <b-row>
                       <b-col>
                         <b> تحصیلات: </b>
                         {{ personal.Degree }}
                       </b-col>
-
-                      <b-col> </b-col>
                     </b-row>
 
                     <b-row>
@@ -535,6 +531,8 @@
                     <b-row>
                       <b-col>
                         <div>
+                          <h3>{{ CustomerName }}</h3>
+
                           <b-table
                             :items="CustomerScores"
                             :fields="fields"
@@ -557,6 +555,15 @@
                                 <strong>در حال دریافت اطلاعات...</strong>
                               </div>
                             </template>
+
+                            <template #cell(Persian)="row">
+                              {{
+                                new Date(row.item.Date).toLocaleDateString(
+                                  "fa-IR"
+                                )
+                              }}
+                            </template>
+
                           </b-table>
                         </div>
                       </b-col>
@@ -610,9 +617,11 @@
                   :header-bg-variant="headerBgVariant"
                   :header-text-variant="headerTextVariant"
                 >
+
                   <b-container fluid>
                     <b-row>
                       <b-col>
+                         <h3>{{ CustomerName }}</h3>
                         <div>
                           <b-table
                             :items="CustomerPrograms"
@@ -628,6 +637,14 @@
                                 style="font-size: 20px; color: #f7b73a"
                                 >delete_outline</v-icon
                               >
+                            </template>
+
+                            <template #cell(Persian)="row">
+                              {{
+                                new Date(row.item.Date).toLocaleDateString(
+                                  "fa-IR"
+                                )
+                              }}
                             </template>
 
                             <template #cell(status)="row">
@@ -1223,6 +1240,14 @@
                   :loading="loadingTable"
                   loading-text="در حال بارگیری اطلاعات ..."
                 >
+                  <template #cell(Persian)="row">
+                    {{
+                      new Date(row.item.CreationDate).toLocaleDateString(
+                        "fa-IR"
+                      )
+                    }}
+                  </template>
+
                   <template #cell(actions)="row">
                     <v-icon
                       @click="editProgramRow(row)"
@@ -1617,6 +1642,14 @@
                     responsive="sm"
                     hover
                   >
+                    <template #cell(Persian)="row">
+                      {{
+                        new Date(row.item.CreationDate).toLocaleDateString(
+                          "fa-IR"
+                        )
+                      }}
+                    </template>
+
                     <template #cell(actions)="row">
                       <v-icon
                         @click="editScoreRow(row)"
@@ -1692,6 +1725,14 @@
                     </div>
                   </template>
 
+                      <template #cell(Persian)="row">
+                              {{
+                                new Date(row.item.Date).toLocaleDateString(
+                                  "fa-IR"
+                                )
+                              }}
+                            </template>
+
                   <template #cell(programStatus)="row">
                     <v-icon
                       align="center"
@@ -1701,6 +1742,62 @@
                     >
                   </template>
                 </b-table>
+              </div>
+            </b-col>
+          </b-row>
+        </b-container>
+
+        <template #modal-footer>
+          <div class="w-100">
+            <v-btn
+              class="select2"
+              color="#f7b73a"
+              elevation="3"
+              rounded
+              larg
+              outlined
+              @click="closeeditCustomerModal"
+              >انصراف
+            </v-btn>
+          </div>
+        </template>
+
+        <v-snackbar v-model="snackbarGreen" :color="snackColor" dir="rtl">
+          {{ text }}
+
+          <template v-slot:action="{ attrs }">
+            <v-btn
+              color="red"
+              rounded
+              v-bind="attrs"
+              text
+              @click="snackbarGreen = false"
+            >
+              x
+            </v-btn>
+          </template>
+        </v-snackbar>
+      </b-modal>
+    </div>
+
+    <!-- show score -->
+    <div>
+      <b-modal
+        v-model="showScoreModal"
+        dir="rtl"
+        id="modal-center"
+        title=" تعداد امتیاز"
+        :header-bg-variant="headerBgVariant"
+        :header-text-variant="headerTextVariant"
+      >
+        <b-container fluid>
+          <b-row>
+            <b-col>
+              <div>
+                <h4>
+                  تعداد امتیازهای کسب شده {{ CustomerName }} :
+                  {{ customerTotalScore }} امتیاز می باشد.
+                </h4>
               </div>
             </b-col>
           </b-row>
@@ -1857,8 +1954,13 @@ export default {
   name: "App",
   data() {
     return {
-      editCustomerWaiting:false,
-    
+      customerTableLoading:false,
+      showScoreModal: false,
+      customerName: "",
+      customerTotalScore: "",
+
+      editCustomerWaiting: false,
+      persianD: "",
 
       bDate: "",
       ProfileImg: "",
@@ -1920,10 +2022,10 @@ export default {
       Customerfields: [
         { FullName: "نام مشتری" },
         { details: "اطلاعلات مشتری" },
-
         { CustomerScores: " فعالیت ها" },
         { CustomerPrograms: " برنامه ها" },
         { addingScores: " افزودن فعالیت " },
+        { score: "  تعداد  امتیاز" },
         { actions: " عمليات" },
       ],
 
@@ -1981,10 +2083,11 @@ export default {
 
       //table
       programfields: [
+        { Picture: " عکس برنامه" },
         { Title: "نام برنامه" },
         { PointsNeeded: " امتیاز لازم" },
         { Description: "توضیحات" },
-        { Picture: " عکس برنامه" },
+        { Persian: "تاریخ" },
         { actions: "عملیات" },
       ],
 
@@ -2042,6 +2145,7 @@ export default {
         { ActivityName: "نام فعالیت" },
         { Points: "تعداد امتیاز" },
         { Description: "توضیحات" },
+        { Persian: "تاریخ" },
         { actions: "عملیات" },
       ],
 
@@ -2056,6 +2160,7 @@ export default {
         { Title: "نام برنامه" },
         { PointsNeeded: " تعداد امتیاز لازم" },
         { Description: "توضیحات" },
+        { Persian: "تاریخ" },
         { status: "وضعیت" },
         { Actions: "عملیات" },
       ],
@@ -2063,7 +2168,9 @@ export default {
       watingCustomerList: [
         { CustomerName: "نام مشتری" },
         { ProgramTitle: "نام برنامه" },
+        { Persian: " تاریخ " },
         { programStatus: " وضعیت " },
+        
       ],
 
       owerCustomers: [{ Mobile: "شماره مشتری" }, { NationalCode: "نام مشتری" }],
@@ -2129,6 +2236,42 @@ export default {
   mounted() {},
 
   methods: {
+    async showScore(row) {
+      console.log("rr", row);
+      this.CustomerName = row.item.FullName;
+      this.showScoreModal = true;
+      await axios
+        .get(
+          `http://localhost:8080/api/User/GetCustomerPoints/${row.item.Id}`,
+          {
+            headers: {
+              token: localStorage.getItem("token"),
+            },
+          }
+        )
+        .then((response) => {
+          this.customerTotalScore = response.data;
+
+          console.log(this.customerTotalScore);
+        })
+        .catch((e) => {
+          this.errors.push(e);
+        });
+    },
+
+    persianDate(row) {
+      console.log("rrr", row.item.CreationDate);
+      this.today = row.item.CreationDate;
+
+      this.persianD = new Date(this.today).toLocaleDateString("fa-IR");
+      //  return this.today;
+      // console.log(" today",  this.persianD);
+    },
+
+    async exportCustomers() {
+      this.$router.push({ path: "/ShowAllCustomers" });
+    },
+
     getFile() {
       var blob = new Blob([Papa.unparse(this.registerCustomer)], {
         type: "text/csv;charset=utf-8;",
@@ -2227,7 +2370,7 @@ export default {
     },
 
     async EditStatusbtn() {
-      this.editCustomerWaiting=true;
+      this.editCustomerWaiting = true;
       console.log(this.customerStatus);
 
       await axios
@@ -2248,14 +2391,14 @@ export default {
         .catch((e) => {
           this.errors.push(e);
         });
-        this.editCustomerWaiting=false;
+      this.editCustomerWaiting = false;
       this.showEditStatusModal = false;
-
     },
 
     async showCustomerPrograms(row) {
       this.showCustomerProgramsModal = true;
       this.IdOfCustomer = row.item.Id;
+      this.CustomerName = row.item.FullName;
 
       await axios
         .get(
@@ -2513,6 +2656,7 @@ export default {
     async showCustomerScores(row) {
       this.showCustomerScoresModal = true;
       this.IdOfCustomer = row.item.Id;
+      this.CustomerName = row.item.FullName;
 
       await axios
         .get(
@@ -2633,6 +2777,8 @@ export default {
       this.customerId = row.item.Id;
       this.addScoreToCustomerModal = true;
       this.selectedName = "";
+        this.CustomerName = row.item.FullName;
+
     },
 
     editCustRow(row) {
@@ -2653,6 +2799,7 @@ export default {
       this.showCustomerProgramsModal = false;
       this.showWatingProgramsModal = false;
       this.showOwerCustomerModal = false;
+      this.showScoreModal = false;
     },
 
     async editCustomerbtn() {
@@ -3210,6 +3357,7 @@ export default {
       window.location = window.location + "#loaded";
       window.location.reload();
     }
+    this.customerTableLoading=true;
     this.loadingTable = true;
     await axios
       .get(`http://localhost:8080/api/User/GetAllCustomers`, {
@@ -3252,11 +3400,19 @@ export default {
     this.programitems = this.getprograms;
     console.log("allPrograms :", this.programitems);
     this.loadingTable = false;
+        this.customerTableLoading=false;
+
   },
 };
 </script>
 
 <style >
+.scrolling-warpper{
+  overflow-x: scroll;
+  overflow-y: hidden;
+  white-space: nowrap;
+}
+
 .my-class {
   background: black;
   color: white;
