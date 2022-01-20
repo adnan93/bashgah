@@ -14,7 +14,7 @@ const state = {
 const actions = {
     async getUserprograms({ commit }) {
         let response = await axios.get(
-            `http://localhost:8080/api/Program/GetUserPrograms`,
+            `http://95.217.131.10/api/Program/GetUserPrograms`,
             {
                 headers: {
                     token: localStorage.getItem("token"),
@@ -30,7 +30,7 @@ const actions = {
 
         let response = await axios
             .post(
-                `http://localhost:8080/api/Program/Create`,
+                `http://95.217.131.10/api/Program/Create`,
                 form,
                 {
                     headers: {
@@ -54,7 +54,7 @@ const actions = {
 
         let response = await axios
             .post(
-                `http://localhost:8080/api/Program/Delete/${id}`,
+                `http://95.217.131.10/api/Program/Delete/${id}`,
                 id,
 
                 {
@@ -75,7 +75,7 @@ const actions = {
         console.log("id is:: ", id);
         let response = await axios
             .get(
-                `http://localhost:8080/api/Program/GetById/${id}`,
+                `http://95.217.131.10/api/Program/GetById/${id}`,
 
                 {
                     headers: {
@@ -96,7 +96,7 @@ const actions = {
 
         let response = await axios
             .post(
-                `http://localhost:8080/api/Program/Update`,
+                `http://95.217.131.10/api/Program/Update`,
                 form,
 
                 {

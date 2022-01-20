@@ -1,17 +1,18 @@
 <template>
   <div>
-    <br />
-    <div style="text-align: center">
-      <h4>
-        امروز
-        {{ today }}
-      </h4>
-    </div>
+    <div class="background">
+      <br />
+      <!-- <div style="text-align: center">
+        <h4 style="color: white">
+          امروز
+          {{ today }}
+        </h4>
+      </div> -->
 
-    <br />
-    <!-- <b-card class="cardSize"> -->
+      <br />
+      <!-- <b-card class="cardSize"> -->
 
-    <!-- <template #header>
+      <!-- <template #header>
           <div style="text-align: center">
             <b>
               <b class="mb-0"> امروز </b>
@@ -20,72 +21,75 @@
           </div>
         </template> -->
 
-    <b-row dir="rtl">
-      <b-col cols="3"> </b-col>
+      <b-row dir="rtl">
+        <b-col cols="3"> </b-col>
 
-      <b-col cols="6">
-        <div align="center">
-          <h1>به باشگاه مشتریان زمرد خوش آمدید</h1>
-          <br />
-          <br />
-          <br />
+        <b-col cols="6">
+          <div align="center">
+            <h1 style="color: white">به باشگاه زمرد خوش آمدید</h1>
 
-          <div class="container">
-            <v-btn
-              class="select2"
-              color="#90c445"
-              elevation="3"
-              rounded
-              x-large
-              @click="GoToCustomer()"
-            >
-              <!-- <v-icon style="font-size: 20px">people_alt</v-icon>  -->ورود
-            </v-btn>
+            <div class="container">
+              <v-btn
+                class="btn1 select2"
+                color="white"
+                style="color: #10503b"
+                elevation="3"
+                rounded
+                x-large
+                @click="GoToCustomer()"
+              >
+                <!-- <v-icon style="font-size: 20px">people_alt</v-icon>  -->
+                <b> ورود </b>
+                
+              </v-btn>
 
-            <v-btn
-              class="btnsize"
-              color="#6667ab"
-              elevation="5"
-              rounded
-              x-large
-              outlined
-              @click="UserLogin()"
-            >
-              <!-- <v-icon style="font-size: 20px; color: black">portrait</v-icon> -->
-              ثبت نام جدید
-            </v-btn>
-            <hr />
+              <v-btn
+                class="btnsize"
+                color="white"
+                style="color: #10503b"
+                elevation="5"
+                rounded
+                x-large
+                
+                @click="UserLogin()"
+              >
+                <!-- <v-icon style="font-size: 20px; color: black">portrait</v-icon> -->
+               <b>ثبت نام جدید </b> 
+              </v-btn>
+            </div>
           </div>
-        </div>
-      </b-col>
+        </b-col>
 
-      <b-col cols="3"> </b-col>
-    </b-row>
-    <br />
-    <br />
-    <br />
-    <br /><br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
+        <b-col cols="3"> </b-col>
+      </b-row>
+      <br />
+      <br />
+      <br />
+      <br /><br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+       <br />
+      <br />
+      <br />
+        <br />
+      <br />
+      <br />
+    
+    
 
-    <!-- </b-card> -->
+      <!-- </b-card> -->
+    </div>
   </div>
 </template>
 
@@ -113,7 +117,7 @@ export default {
   methods: {
     UserLogin() {
       this.$router.push("Register");
-     // https://accounts.ebidar.com/
+      // https://accounts.ebidar.com/
     },
     login() {
       this.$router.push("customerLogin");
@@ -143,12 +147,7 @@ p {
   margin: 0%;
   margin-bottom: 0% !important;
 }
-.background {
-  margin: 0% !important;
-  padding: 0% !important;
-  background-color: #f0f0f5;
-  width: 10rem;
-}
+
 
 .backGroundColor {
   background-color: #f0f0f5;
@@ -160,5 +159,16 @@ p {
 
 .cardSize {
   height: 50% !important;
+}
+
+.btn1 {
+  margin: 6%;
+}
+
+.background {
+  background-image: url("~@/assets/background1.jpg");
+   background-size: cover;
+  height: 100%;
+  width: 100%;
 }
 </style>

@@ -3,7 +3,7 @@
     <b-row dir="rtl">
       <b-col cols="2"> </b-col>
       <b-col cols="8">
-        <b-card class="mt-5" border-variant="dark" header-bg-variant="dark">
+        <b-card class="mt-5" border-variant="dark" header-bg-variant="#10503b">
           <template #header>
             <div style="text-align: center">
               <p style="color: white" class="mb-0">اطلاعات پایه</p>
@@ -22,11 +22,13 @@
                     outlined
                     dense
                     :rules="[phoneRules.required]"
+                    color="#10503b"
                   />
 
                   <br />
 
                   <v-text-field
+                    color="#10503b"
                     type="text"
                     v-model="form.Family"
                     label="نام خانوادگی"
@@ -39,6 +41,7 @@
                   <br />
 
                   <v-text-field
+                    color="#10503b"
                     :append-icon="show4 ? 'mdi-eye' : 'mdi-eye-off'"
                     v-model="form.Password"
                     :type="show4 ? 'text' : 'password'"
@@ -54,6 +57,7 @@
                 </b-col>
                 <b-col>
                   <v-text-field
+                    color="#10503b"
                     type="text"
                     v-model="checkMelliCode"
                     label="کد ملی"
@@ -72,6 +76,7 @@
                   <br />
 
                   <v-select
+                    color="#10503b"
                     class="select"
                     :items="kargozarList"
                     :item-text="'Name'"
@@ -94,7 +99,7 @@
               <!-- <b-row>
                 <div class="container" align="left">
                   <v-img
-                    :src="`http://localhost:8080/api/Customer/GetPictureFile/${imgId}`"
+                    :src="`http://95.217.131.10/api/Customer/GetPictureFile/${imgId}`"
                     width="25%"
                     height="100%"
                     style="border-radius: 10px; position: relative"
@@ -106,6 +111,7 @@
             <v-btn
               class="btnsize ml-1"
               color="#90c445"
+              style="color: white"
               elevation="5"
               rounded
               x-large
@@ -124,11 +130,11 @@
             <v-btn
               class="btnsize ml-1"
               color="#90c445"
+              style="color: white"
               elevation="5"
               large
               @click="GoToCompleteProfile()"
               variant="primary"
-       
               :disabled="
                 form.Kargozar && MelliCodeStatus && form.Name && form.Password
                   ? false
@@ -204,7 +210,7 @@ export default {
 
     this.loadingbtn = true;
 
-    let rest = await axios.get(`http://localhost:8080/api/Province/GetAll`, {
+    let rest = await axios.get(`http://95.217.131.10/api/Province/GetAll`, {
       headers: {
         token: localStorage.getItem("token"),
       },
@@ -216,7 +222,7 @@ export default {
 
     //  console.log('Province', this.Province);
 
-    //    let rest1 = await axios.get(`http://localhost:8080/api/City/GetAll`, {
+    //    let rest1 = await axios.get(`http://95.217.131.10/api/City/GetAll`, {
     //   headers: {
     //     token: localStorage.getItem("token"),
     //   },
@@ -227,7 +233,7 @@ export default {
     //  console.log('cities', this.cities);
 
     let response = await axios.get(
-      `http://localhost:8080/api/Customer/GetMyUser`,
+      `http://95.217.131.10/api/Customer/GetMyUser`,
       {
         headers: {
           token: localStorage.getItem("token"),
@@ -264,7 +270,7 @@ export default {
     this.form.Kargozar = response.data.Kargozar;
 
     let res = await axios.get(
-      `http://localhost:8080/api/City/GetByProvinceId/${response.data.ProvinceId}`,
+      `http://95.217.131.10/api/City/GetByProvinceId/${response.data.ProvinceId}`,
       response.data.ProvinceId,
       {
         headers: {
@@ -383,7 +389,7 @@ export default {
   },
 
   watch: {
- checkMelliCode: function (meli_code) {
+    checkMelliCode: function (meli_code) {
       if (
         !/^\d{10}$/.test(meli_code) ||
         meli_code == "0000000000" ||
@@ -417,7 +423,7 @@ export default {
 
         this.form.NationalCode = meli_code;
       }
-    }
+    },
   },
 
   methods: {
@@ -437,7 +443,7 @@ export default {
 
     async getImg() {
       await axios.get(
-        `http://localhost:8080/api/Customer/GetPictureFile/${this.imgId}`,
+        `http://95.217.131.10/api/Customer/GetPictureFile/${this.imgId}`,
         this.imgId,
         {
           headers: {
@@ -468,7 +474,7 @@ export default {
 
     async OstanChange() {
       let res = await axios.get(
-        `http://localhost:8080/api/City/GetByProvinceId/${this.form.ProvinceId}`,
+        `http://95.217.131.10/api/City/GetByProvinceId/${this.form.ProvinceId}`,
         this.form.ProvinceId,
         {
           headers: {
@@ -512,7 +518,7 @@ export default {
 
       this.loadingbtn = true;
       await axios
-        .post(`http://localhost:8080/api/Customer/UpdateRequired`, this.form, {
+        .post(`http://95.217.131.10/api/Customer/UpdateRequired`, this.form, {
           headers: {
             token: localStorage.getItem("token"),
           },
@@ -520,7 +526,7 @@ export default {
         .then((response) => {
           console.log("updated customer: ", response);
 
-         this.$router.push({ path: "/customerProfile" });
+          this.$router.push({ path: "/customerProfile" });
         })
         .catch((e) => {
           this.errors.push(e);
@@ -552,7 +558,7 @@ export default {
     // },
 
     async sendImg() {
-      await axios.post(`http://localhost:8080/api/Customer/UpdateUserImage`, {
+      await axios.post(`http://95.217.131.10/api/Customer/UpdateUserImage`, {
         headers: {
           "Content-Type": "multipart/form-data",
           token: localStorage.getItem("token"),
@@ -562,7 +568,7 @@ export default {
 
       // post({
       //   method: "post",
-      //   url: `http://localhost:8080/api/Customer/UpdateUserImage`,
+      //   url: `http://95.217.131.10/api/Customer/UpdateUserImage`,
       //   data: this.imageFile,
       //   headers: { "Content-Type": "multipart/form-data" },
       // });
@@ -588,5 +594,12 @@ export default {
   background: #333;
   border: 1px solid #555;
   color: #eee;
+}
+
+.card-header {
+  background-color: #10503b;
+}
+.modal-header {
+  background-color: #10503b;
 }
 </style>

@@ -45,6 +45,7 @@ export default {
         { Gender: "جنسیت" },
         { Email: "ایمیل" },
         { Degree: "تحصیلات" },
+        {Points: "امتیازات"},
         { JobType: "شغل" },
       ],
     };
@@ -52,7 +53,7 @@ export default {
   async created() {
     await axios
       .get(
-        `http://localhost:8080/api/User/GetAllCustomerJson`,
+        `http://95.217.131.10/api/User/GetAllCustomerJson`,
 
         {
           headers: {

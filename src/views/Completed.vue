@@ -3,7 +3,7 @@
     <b-row dir="rtl">
       <b-col cols="1"> </b-col>
       <b-col cols="10">
-        <b-card class="mt-5" border-variant="dark" header-bg-variant="dark">
+        <b-card class="mt-5" border-variant="dark" header-bg-variant="#10503b">
           <template #header>
             <div style="text-align: center">
               <p style="color: white" class="mb-0">اطلاعات تکمیلی</p>
@@ -26,11 +26,15 @@
                   dense
                   @change="OstanChange()"
                   :rules="[emailRules.required]"
+                  color="#10503b"
+                  
                 >
                 </v-select>
                 <br />
 
                 <v-select
+                                  color="#10503b"
+
                   class="select"
                   :items="cities"
                   :item-text="'Name'"
@@ -50,6 +54,8 @@
           
                 
                 <v-select
+                                  color="#10503b"
+
                   id="deg1"
                   :items="Degree"
                   label="تحصیلات"
@@ -66,6 +72,8 @@
                 <br />
 
                 <v-text-field
+                                  color="#10503b"
+
                   label="شغل"
                   :item-text="'Name'"
                   :item-value="'Value'"
@@ -112,6 +120,8 @@
 
               <b-col>
                 <v-text-field
+                                  color="#10503b"
+
                   v-model="form.Address"
                   type="text"
                   label="آدرس"
@@ -123,6 +133,8 @@
                 <br />
 
                 <v-text-field
+                                  color="#10503b"
+
                   v-model="form.Email"
                   style="hight: 150px"
                   type="Email"
@@ -135,6 +147,8 @@
                 <br />
 
                 <v-select
+                                  color="#10503b"
+
                   :items="Married"
                   label="وضعیت تاهل"
                   :item-text="'Name'"
@@ -149,6 +163,8 @@
                 <br />
 
                 <v-select
+                                  color="#10503b"
+
                   class="select"
                   :items="Gender"
                   :item-text="'Name'"
@@ -178,6 +194,8 @@
                 
 
                 <v-file-input
+                                  color="#10503b"
+
                 element="pic"
                   placeholder="  250*250 عکس پروفایل "
                   outlined
@@ -194,7 +212,7 @@
                 <b-row>
                   <div class="container" align="left">
                     <v-img
-                      :src="`http://localhost:8080/api/Customer/GetPictureFile/${imgId}`"
+                      :src="`http://95.217.131.10/api/Customer/GetPictureFile/${imgId}`"
                       width="25%"
                       height="100%"
                       style="border-radius: 10px; position: relative"
@@ -211,6 +229,7 @@
               rounded
               x-large
               @click="updateCust()"
+              style="color:white"
 
                :disabled=" form.Degree
                   ? false
@@ -269,96 +288,11 @@ import axios from "axios";
 
 export default {
   name: "Update",
-  async created() {
-    if (!window.location.hash) {
-      window.location = window.location + "#loaded";
-      window.location.reload();
-    }
-
-    this.snackbarGreen = true;
-    this.loadingbtn = true;
-    let rest = await axios.get(`http://localhost:8080/api/Province/GetAll`, {
-      headers: {
-        token: localStorage.getItem("token"),
-      },
-    });
-
-    this.Province = rest.data;
-
-    console.log("Province: ", rest.data);
-
-    let response = await axios.get(
-      `http://localhost:8080/api/Customer/GetMyUser`,
-      {
-        headers: {
-          token: localStorage.getItem("token"),
-        },
-      }
-    );
-    if (response) {
-      this.snackbarGreen = true;
-    }
-
-    console.log("Customer: ", response.data);
-    this.form.Name = response.data.Name;
-    this.form.Family = response.data.Family;
-
-    this.form.Password = response.data.Password;
-
-    this.form.Mobile = response.data.Mobile;
-
-    this.form.IsMarried = response.data.IsMarried.toString();
-    this.form.Gender = response.data.Gender.toString();
-
-    this.bDate = response.data.BirthDate;
-
-    if (this.bDate == "0001-01-01T00:00:00") {
-      console.log("date :: ", response.data.BirthDate.toString());
-
-      this.form.BirthDate = null;
-    } else {
-      this.form.BirthDate = this.bDate.substring(0, 10);
-    }
-
-    //this.form.BirthDate = this.bDate.substring(0, 10);
-
-    this.form.Degree = response.data.Degree;
-
-    this.form.JobType = response.data.JobType;
-
-    this.form.Email = response.data.Email;
-
-    this.form.Address = response.data.Address;
-
-    this.form.CityId = response.data.CityId;
-    this.imgId = response.data.ProfilePictrue;
-
-    this.form.NationalCode = response.data.NationalCode;
-    this.form.Kargozar = response.data.Kargozar;
-
-    let res = await axios.get(
-      `http://localhost:8080/api/City/GetByProvinceId/${response.data.ProvinceId}`,
-      response.data.ProvinceId,
-      {
-        headers: {
-          token: localStorage.getItem("token"),
-        },
-      }
-    );
-    this.getImg();
-    this.cities = res.data;
-
-    this.form.ProvinceId = response.data.ProvinceId;
-
-    this.form.ProfilePictrue = response.data.ProfilePictrue;
-    this.loadingbtn = false;
-  },
-  mounted() {},
-
   data() {
     return {
       text: "  در حال دریافت اطلاعات ...",
       bDate: "",
+      snackbarGreen: false,
 
       //validation
       phoneRules: {
@@ -438,6 +372,91 @@ export default {
       show4: false,
     };
   },
+  async created() {
+    if (!window.location.hash) {
+      window.location = window.location + "#loaded";
+      window.location.reload();
+    }
+
+    this.snackbarGreen = true;
+    this.loadingbtn = true;
+    let rest = await axios.get(`http://95.217.131.10/api/Province/GetAll`, {
+      headers: {
+        token: localStorage.getItem("token"),
+      },
+    });
+
+    this.Province = rest.data;
+
+    console.log("Province: ", rest.data);
+
+    let response = await axios.get(
+      `http://95.217.131.10/api/Customer/GetMyUser`,
+      {
+        headers: {
+          token: localStorage.getItem("token"),
+        },
+      }
+    );
+    if (response) {
+      this.snackbarGreen = true;
+    }
+
+    console.log("Customer: ", response.data);
+    this.form.Name = response.data.Name;
+    this.form.Family = response.data.Family;
+
+    this.form.Password = response.data.Password;
+
+    this.form.Mobile = response.data.Mobile;
+
+    this.form.IsMarried = response.data.IsMarried.toString();
+    this.form.Gender = response.data.Gender.toString();
+
+    this.bDate = response.data.BirthDate;
+
+    if (this.bDate == "0001-01-01T00:00:00") {
+      console.log("date :: ", response.data.BirthDate.toString());
+
+      this.form.BirthDate = null;
+    } else {
+      this.form.BirthDate = this.bDate.substring(0, 10);
+    }
+
+    //this.form.BirthDate = this.bDate.substring(0, 10);
+
+    this.form.Degree = response.data.Degree;
+
+    this.form.JobType = response.data.JobType;
+
+    this.form.Email = response.data.Email;
+
+    this.form.Address = response.data.Address;
+
+    this.form.CityId = response.data.CityId;
+    this.imgId = response.data.ProfilePictrue;
+
+    this.form.NationalCode = response.data.NationalCode;
+    this.form.Kargozar = response.data.Kargozar;
+
+    let res = await axios.get(
+      `http://95.217.131.10/api/City/GetByProvinceId/${response.data.ProvinceId}`,
+      response.data.ProvinceId,
+      {
+        headers: {
+          token: localStorage.getItem("token"),
+        },
+      }
+    );
+    this.getImg();
+    this.cities = res.data;
+
+    this.form.ProvinceId = response.data.ProvinceId;
+
+    this.form.ProfilePictrue = response.data.ProfilePictrue;
+    this.loadingbtn = false;
+  },
+  mounted() {},
 
   watch: {},
 
@@ -449,7 +468,7 @@ export default {
 
       this.loadingbtn = true;
       await axios
-        .post(`http://localhost:8080/api/Customer/Update`, this.form, {
+        .post(`http://95.217.131.10/api/Customer/Update`, this.form, {
           headers: {
             token: localStorage.getItem("token"),
           },
@@ -470,7 +489,7 @@ export default {
 
     async getImg() {
       await axios.get(
-        `http://localhost:8080/api/Customer/GetPictureFile/${this.imgId}`,
+        `http://95.217.131.10/api/Customer/GetPictureFile/${this.imgId}`,
         this.imgId,
         {
           headers: {
@@ -502,7 +521,7 @@ export default {
 
     async OstanChange() {
       let res = await axios.get(
-        `http://localhost:8080/api/City/GetByProvinceId/${this.form.ProvinceId}`,
+        `http://95.217.131.10/api/City/GetByProvinceId/${this.form.ProvinceId}`,
         this.form.ProvinceId,
         {
           headers: {
@@ -517,7 +536,7 @@ export default {
     async sendImg() {
       console.log(this.imageFile);
 
-      await axios.post(`http://localhost:8080/api/Customer/UpdateUserImage`, {
+      await axios.post(`http://95.217.131.10/api/Customer/UpdateUserImage`, {
         headers: {
           "Content-Type": "multipart/form-data",
           token: localStorage.getItem("token"),
@@ -527,7 +546,7 @@ export default {
 
       // post({
       //   method: "post",
-      //   url: `http://localhost:8080/api/Customer/UpdateUserImage`,
+      //   url: `http://95.217.131.10/api/Customer/UpdateUserImage`,
       //   data: this.imageFile,
       //   headers: { "Content-Type": "multipart/form-data" },
       // });
@@ -553,5 +572,12 @@ export default {
   background: #333;
   border: 1px solid #555;
   color: #eee;
+}
+
+.card-header {
+  background-color: #10503b;
+}
+.modal-header {
+  background-color: #10503b;
 }
 </style>

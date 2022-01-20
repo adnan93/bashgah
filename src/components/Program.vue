@@ -3,7 +3,7 @@
     <div class="mCard mb-10">
       <b-card
         :class="[program.reminder ? 'reminder' : 'program']"
-        :img-src="`http://localhost:8080/api/Program/GetPictureFile/${program.Picture}`"
+        :img-src="`http://95.217.131.10/api/Program/GetPictureFile/${program.Picture}`"
         img-alt="Image"
         img-top
         tag="article"
@@ -65,7 +65,7 @@ export default {
   async created() {
     console.log("program is: ", this.program);
     //  let res = await axios.get(
-    //   `http://localhost:8080/api/Customer/GetPictureFile/${this.program.Picture}`,
+    //   `http://95.217.131.10/api/Customer/GetPictureFile/${this.program.Picture}`,
     //   this.program.Picture,
     //   {
     //     headers: {

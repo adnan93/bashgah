@@ -3,7 +3,7 @@ import Vuex from "vuex"
 //import auth from "./auth"
 import scores from "./modules/scores"
 import program from "./modules/program"
-import customerLogin from "./modules/customerLogin"   
+import customerLogin from "./modules/customerLogin"
 import userlogin from "./modules/userlogin"
 
 
@@ -26,7 +26,7 @@ export default new Vuex.Store({
     },
 
     modules: {
-        
+
         scores,
         program,
         customerLogin,

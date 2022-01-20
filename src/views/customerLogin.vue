@@ -14,7 +14,7 @@
             <b-card class="mt-3" border-variant="dark">
               <template #header>
                 <div style="text-align: center">
-                  <p style="color: black" class="mb-0">ورود به باشگاه</p>
+                  <p style="color: white" class="mb-0">ورود به باشگاه</p>
                 </div>
               </template>
 
@@ -24,8 +24,9 @@
                   placeholder="شماره موبایل"
                   required
                   outlined
+                  color="#10503b"
                   dense
-                  :rules="[rules.required, rules.validNum , rules.counter]"
+                  :rules="[rules.required, rules.validNum, rules.counter]"
                 />
 
                 <v-text-field
@@ -37,6 +38,7 @@
                   @click:append="show4 = !show4"
                   outlined
                   dense
+                  color="#10503b"
                   :rules="[phoneRules.required]"
                 ></v-text-field>
 
@@ -45,6 +47,8 @@
                 <v-btn
                   class="btnsize ml-1"
                   color="#90c445"
+                    style="color:white"
+
                   elevation="5"
                   rounded
                   large
@@ -53,13 +57,13 @@
                   :loading="loadingbtn"
                   >ورود
                 </v-btn>
-
-                <a
-                  href="/ForgotPassword"
-                  style="text-decoration: none; color: #6667ab"
-                >
-                  <h8> رمز عبور خود را فراموش کردید؟ </h8>
-                </a>
+              
+                  <a
+                    href="/ForgotPassword"
+                    style="text-decoration: none; color: #6667ab"
+                  >
+                    رمز عبور خود را فراموش کردید؟
+                  </a>
               </b-form>
             </b-card>
           </div>
@@ -146,12 +150,11 @@ export default {
         validNum: (v) => /^[\s۰-۹\s0-9]+$/.test(v) || "شماره موبایل معتبر نیست",
       },
 
-         rules: {
-          required: value => !!value || 'این فیلد الزامی است.',
-          counter: value => value.length == 11 || 'شماره موبایل معتبر نیست',
-          validNum: (v) => /^[\s۰-۹\s0-9]+$/.test(v) || "شماره موبایل معتبر نیست",
-        },
-
+      rules: {
+        required: (value) => !!value || "این فیلد الزامی است.",
+        counter: (value) => value.length == 11 || "شماره موبایل معتبر نیست",
+        validNum: (v) => /^[\s۰-۹\s0-9]+$/.test(v) || "شماره موبایل معتبر نیست",
+      },
     };
   },
 
@@ -166,7 +169,7 @@ export default {
 
       if ((await this.getMessageType) == 1) {
         let response = await axios.get(
-          `http://localhost:8080/api/Customer/GetMyUser`,
+          `http://95.217.131.10/api/Customer/GetMyUser`,
           {
             headers: {
               token: localStorage.getItem("token"),
@@ -216,5 +219,9 @@ p {
 }
 .home {
   background-color: #f0f0f5;
+}
+
+.card-header {
+  background-color: #10503b;
 }
 </style>

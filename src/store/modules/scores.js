@@ -14,7 +14,7 @@ const state = {
 const actions = {
     async getUserScores({ commit }) {
         let response = await axios.get(
-            `http://localhost:8080/api/Score/GetUserScores`,
+            `http://95.217.131.10/api/Score/GetUserScores`,
             {
                 headers: {
                     token: localStorage.getItem("token"),
@@ -30,7 +30,7 @@ const actions = {
 
         let response = await axios
             .post(
-                `http://localhost:8080/api/Score/Create`,
+                `http://95.217.131.10/api/Score/Create`,
                 form,
                 {
                     headers: {
@@ -49,7 +49,7 @@ const actions = {
 
         let response = await axios
             .post(
-                `http://localhost:8080/api/Score/Delete/${id}`,
+                `http://95.217.131.10/api/Score/Delete/${id}`,
                 id,
 
                 {
@@ -71,7 +71,7 @@ const actions = {
         console.log("id is:: ", id);
         let response = await axios
             .get(
-                `http://localhost:8080/api/Score/GetById/${id}`,
+                `http://95.217.131.10/api/Score/GetById/${id}`,
 
                 {
                     headers: {
@@ -92,7 +92,7 @@ const actions = {
 
         let response = await axios
             .post(
-                `http://localhost:8080/api/Score/Update`,
+                `http://95.217.131.10/api/Score/Update`,
                 form,
 
                 {

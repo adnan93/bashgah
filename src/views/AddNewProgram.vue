@@ -8,7 +8,7 @@
         <b-row>
           <b-col align="center" cols="7">
             <v-img
-              :src="`http://localhost:8080/api/Program/GetPictureFile/${programDetails.data.Picture}`"
+              :src="`http://95.217.131.10/api/Program/GetPictureFile/${programDetails.data.Picture}`"
               height="60%%"
               width="60%"
               style="border-radius: 10px; position: relative"
@@ -19,11 +19,13 @@
             <br />
 
             <b-row class="myCard" align="center">
-              <b-col align="left">
+              <!-- <b-col align="left">
                 <h5><b style="color: black"> نام برنامه: </b></h5>
-              </b-col>
-              <b-col align="right">
-                {{ programDetails.data.Title }}
+              </b-col> -->
+              <b-col align="center">
+                <h5> <b> 
+                {{ programDetails.data.Title }} 
+                </b>  </h5>
               </b-col>
             </b-row>
 
@@ -32,7 +34,7 @@
             <b-row class="myCard" align="center">
               <b-col align="left">
                 <h5 class="mt-2">
-                  <b style="color: black">تعداد امتیاز لازم: </b>
+                  <b style="color: black">امتیاز مورد نیاز: </b>
                 </h5>
               </b-col>
 
@@ -133,14 +135,14 @@
         v-model="showApplyModal"
         dir="rtl"
         id="modal-center"
-        title=" افزودن برنامه"
+        title=" افزودن جایزه"
         :header-bg-variant="headerBgVariant"
         :header-text-variant="headerTextVariant"
       >
         <b-container fluid>
           <b-row>
             <b-col>
-              <h4>برنامه مورد نظر اضافه شود؟</h4>
+              <h4>از انتخاب خود مطمئن هستيد  ؟</h4>
             </b-col>
           </b-row>
         </b-container>
@@ -172,6 +174,7 @@
         </template>
       </b-modal>
     </div>
+
   </div>
 </template>
 
@@ -200,7 +203,7 @@ export default {
   async created() {
     console.log(this.$route.params.id);
     await axios
-      .get(`http://localhost:8080/api/Program/GetById/${this.programId}`, {
+      .get(`http://95.217.131.10/api/Program/GetById/${this.programId}`, {
         headers: {
           token: localStorage.getItem("token"),
         },
@@ -230,7 +233,7 @@ export default {
       this.addProgrmLoading = true;
       await axios
         .post(
-          `http://localhost:8080/api/Customer/AddProgramToCustomer/${this.programId}`,
+          `http://95.217.131.10/api/Customer/AddProgramToCustomer/${this.programId}`,
           this.programId,
           {
             headers: {

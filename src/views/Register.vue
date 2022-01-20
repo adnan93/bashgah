@@ -3,7 +3,7 @@
     <b-row dir="rtl">
       <b-col cols="3"> </b-col>
       <b-col cols="6">
-        <b-card class="mt-5" border-variant="dark" header-bg-variant="dark">
+        <b-card class="mt-5" border-variant="dark" header-bg-variant="#10503b">
           <template #header>
             <div style="text-align: center">
               <p style="color: white" class="mb-0">ثبت نام</p>
@@ -17,6 +17,7 @@
                   type="text"
                   v-model="checkMelliCode"
                   placeholder="کد ملی ده رقمی"
+                  color="#10503b"
                   required
                   outlined
                   dense
@@ -31,6 +32,7 @@
                 <v-text-field
                   v-model="checkPhone"
                   placeholder="شماره موبایل"
+                  color="#10503b"
                   required
                   outlined
                   dense
@@ -47,9 +49,10 @@
             <v-btn
               class="btnsize ml-1"
               color="#90c445"
+              style="color:white"
               elevation="5"
               rounded
-              x-large
+              large
               @click="updateCust()"
               type="submit"
               variant="primary"
@@ -114,8 +117,9 @@
       :footer-bg-variant="bodyBgVariant"
       :footer-text-variant="footerTextVariant"
     >
-      <h4>جهت استفاده از خدمات باشگاه مشتریان زمرد،</h4>
-      <h4>باید در کارگزاری اقتصاد بیدار ثبت‌نام نمایید.</h4>
+      <h4>جهت استفاده از خدمات باشگاه زمرد،
+      باید در کارگزاری اقتصاد بیدار ثبت‌نام نمایید.
+      </h4>
 
       <template #modal-footer>
         <div class="w-100">
@@ -123,6 +127,7 @@
             :loading="getCodeLoading"
             class="btnsize ml-1"
             color="#90c445"
+            style="color:white"
             elevation="5"
             rounded
             large
@@ -199,7 +204,7 @@ export default {
 
   data() {
     return {
-      headerBgVariant: "dark",
+      headerBgVariant: "10503b",
       headerTextVariant: "light",
       bodyBgVariant: "light",
       bodyTextVariant: "dark",
@@ -281,7 +286,7 @@ export default {
 
       this.loadingbtn = true;
       await axios
-        .post(`http://localhost:8080/api/RegisterLog/Create`, this.form, {
+        .post(`http://95.217.131.10/api/RegisterLog/Create`, this.form, {
           headers: {
             token: localStorage.getItem("token"),
           },
@@ -309,5 +314,12 @@ export default {
   background: #333;
   border: 1px solid #555;
   color: #eee;
+}
+
+.card-header {
+  background-color: #10503b;
+}
+.modal-header {
+  background-color: #10503b;
 }
 </style>

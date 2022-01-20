@@ -6,13 +6,10 @@
 
         <b-col cols="6">
           <div dir="rtl">
-            <b-card
-              class="mt-3"
-              border-variant="dark"
-            >
+            <b-card class="mt-3" border-variant="dark">
               <template #header>
                 <div style="text-align: center">
-                  <p style="color: balack" class="mb-0">بازیابی کلمه عبور</p>
+                  <p style="color: white" class="mb-0">بازیابی کلمه عبور</p>
                 </div>
               </template>
 
@@ -24,6 +21,7 @@
                   placeholder="شماره موبایل"
                   required
                   outlined
+                  color="#10503b"
                   dense
                   :rules="[phoneRules.required, phoneRules.validNum]"
                 />
@@ -37,6 +35,7 @@
                   @click:append="show4 = !show4"
                   outlined
                   dense
+                  color="#10503b"
                   :rules="[phoneRules.required]"
                 />
 
@@ -45,6 +44,7 @@
                   placeholder="کد  تایید"
                   required
                   outlined
+                  color="#10503b"
                   dense
                 />
 
@@ -54,6 +54,7 @@
                   :loading="signUpLoading"
                   class="btnsize ml-1"
                   color="#90c445"
+                  style="color:white"
                   elevation="5"
                   rounded
                   large
@@ -99,6 +100,8 @@
                       :loading="getCodeLoading"
                       class="btnsize ml-1"
                       color="#90c445"
+                                        style="color:white"
+
                       elevation="5"
                       rounded
                       large
@@ -193,7 +196,7 @@ export default {
 
       // modal
       show: false,
-      headerBgVariant: "dark",
+      headerBgVariant: "#10503b",
       headerTextVariant: "light",
       bodyBgVariant: "light",
       bodyTextVariant: "dark",
@@ -224,7 +227,7 @@ export default {
       this.signUpLoading = true;
 
       await axios
-        .post(`http://localhost:8080/api/Customer/ForgotPassword`, this.form)
+        .post(`http://95.217.131.10/api/Customer/ForgotPassword`, this.form)
         .then((response) => {
           console.log(response.data);
 
@@ -252,7 +255,7 @@ export default {
       await axios
 
         .post(
-          `http://localhost:8080/api/Customer/SendVerificationCode?PhoneNumber=${this.PhoneNumber}`
+          `http://95.217.131.10/api/Customer/SendVerificationCode?PhoneNumber=${this.PhoneNumber}`
         )
 
         .then((response) => {
@@ -309,5 +312,12 @@ p {
 
 .home {
   background-color: #f0f0f5;
+}
+
+.card-header {
+  background-color: #10503b;
+}
+.modal-header {
+  background-color: #10503b;
 }
 </style>

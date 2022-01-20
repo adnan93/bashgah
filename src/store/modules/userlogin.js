@@ -11,7 +11,7 @@ const actions = {
     async logIn({ commit }, form) {
         localStorage.removeItem("token") ;
 
-        let response = await axios.post(`http://localhost:8080/api/User/Login`, form);
+        let response = await axios.post(`http://95.217.131.10/api/User/Login`, form);
         commit('setToken', response.data.Token)
         commit('setMessage', response.data.Message)
         commit('setMessageType', response.data.MessageType)

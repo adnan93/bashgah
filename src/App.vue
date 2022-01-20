@@ -5,7 +5,7 @@
         toggleable="lg"
         type="dark"
         variant="dark"
-        style="background-color: #f0f0f5"
+        style="background-color: #a5b9bd"
       >
         <div>
           <!-- Just an image -->
@@ -13,21 +13,23 @@
             <b-navbar-brand class="mr-15" href="/">
               <!-- <img
                 class="mt-0 mb-0 pt-0 pb-0"
-                width="55px"
+                width="100px"
                 height="55px"
-                src="@/assets/talagram.png"
+                src="@/assets/logo.png"
                 alt="طلاگرام"
               /> -->
+
+              <!-- <h4 class="mt-2"><b style="text-shadow: 2px 2px 4px #000000"> ZMRD </b></h4> -->
             </b-navbar-brand>
           </b-navbar>
         </div>
         <b-navbar-brand>
-          <p>باشگاه مشتریان</p>
+          <p>باشگاه زمرد</p>
         </b-navbar-brand>
 
         <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
-        <b-collapse class="mr-15" id="nav-collapse" is-nav>
+        <b-collapse class="mr-15" id="nav-collapse" is-nav >
           <b-navbar-nav>
             <b-nav-item class="ml-2" href="#">
               <h6>
@@ -46,14 +48,15 @@
             <b-nav-item class="ml-2" @click="checkLogout()" v-show="showBtn()">
               <h6><b style="color: #90c445">خروج </b></h6>
             </b-nav-item>
+<!-- 
+            <b-nav-item class="ml-2" href="#">
+              <h6><b style="color: #90c445"> اخبار توليد و تجارت </b></h6>
+            </b-nav-item> -->
 
             <!-- <b-nav-item class="ml-2" href="#">
-              <h6><b style="color: #90c445"> اخبار توليد و تجارت </b></h6>
-            </b-nav-item>
-
-            <b-nav-item class="ml-2" href="#">
               <h6><b style="color: #90c445"> اخبار اقتصادی </b></h6>
             </b-nav-item> -->
+
           </b-navbar-nav>
         </b-collapse>
       </b-navbar>
@@ -121,44 +124,41 @@
 
         <b-col>
           <div class="place container">
-          
-             <h5>  <b> لینک های مفید </b> </h5> 
-              <br />
+            <h5><b> لینک های مفید </b></h5>
+            <br />
 
-              <h6 class="place bedar" style="color:black;">
-                <a  href="https://ex.ebidar.com/v-533" style="color:black;">
-                  <li class="bedar">اقتصاد بیدار</li>
-                </a>
-              </h6>
+            <h6 class="place bedar" style="color: black">
+              <a href="https://ex.ebidar.com/v-533" style="color: black">
+                <li class="bedar">اقتصاد بیدار</li>
+              </a>
+            </h6>
 
-             
+            <h6>
+              <a style="color: black" href="https://t.me/tahlilonline_com">
+                <li>تحلیل انلاین</li>
+              </a>
+            </h6>
 
-              <h6>
-                <a style="color: black" href="https://t.me/tahlilonline_com">
-                  <li>تحلیل انلاین</li>
-                </a>
-              </h6>
-
-               <h6 class="ml-10">
-                <a style="color: black"> <li>طلاگرام</li> </a>
-              </h6>
-        
+            <h6 class="ml-10">
+              <a style="color: black"> <li>طلاگرام</li> </a>
+            </h6>
           </div>
         </b-col>
 
         <b-col>
-          <div >
-
-            <h5 class="place "> <b> راه های ارتباطی </b> </h5>
+          <div>
+            <h5 class="place"><b> راه های ارتباطی </b></h5>
             <br />
-            <div > 
-            <h6 style="color: white;">شیراز، بلوار شهید رجائی (فرهنگ شهر)، کوچه 30، ساختمان زمرد </h6>
+            <div>
+              <h6 style="color: white">
+                شیراز، بلوار شهید رجائی (فرهنگ شهر)، کوچه 30، ساختمان زمرد
+              </h6>
             </div>
 
-          <div class="place"> 
-            <h3>
-              <a href="tel:07136317299" style="color: red;"> 071-36317299 </a> 
-            </h3>
+            <div class="place">
+              <h3>
+                <a href="tel:07136317299" style="color: red"> 071-36317299 </a>
+              </h3>
             </div>
 
             <br />
@@ -175,8 +175,6 @@
               <img src="@/assets/ins.png" />
             </a>
 
-      
-
             <a class="ml-2" href="https://www.aparat.com/tahlilonline.com">
               <img src="@/assets/apa.png" />
             </a>
@@ -187,7 +185,7 @@
           </div>
         </b-col>
         <hr />
-        <br>
+        <br />
 
         <h6>
           <v-icon style="font-size: 20px; color: white"> copyright </v-icon>
@@ -328,12 +326,10 @@ a {
   background-color: #c8cfc7;
 }
 
-.bedar{
+.bedar {
   color: rgb(253, 247, 247) !important;
 }
-.place{
-    color: #10503b !important;
-
-  
+.place {
+  color: #10503b !important;
 }
 </style>

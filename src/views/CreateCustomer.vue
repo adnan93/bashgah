@@ -235,7 +235,7 @@ export default {
       this.signUpLoading = true;
 
       let response = await axios.post(
-        `http://localhost:8080/api/User/RegisterNewCustomer`,
+        `http://95.217.131.10/api/User/RegisterNewCustomer`,
         this.form,
         {
           headers: {

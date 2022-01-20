@@ -11,7 +11,7 @@
           <div class="container" dir="rtl">
             <b-row>
               <h3>
-                مشتری گرامی
+                کاربر گرامی
                 {{ FullName }}
                 تعداد امتیاز های فعلی ( {{ points }} ) امتیاز می باشد
               </h3>
@@ -32,6 +32,7 @@
             <v-btn
               class="btnsize ml-3"
               color="#90c445"
+              style="color:white"
               elevation="3"
               rounded
               large
@@ -39,12 +40,13 @@
               :loading="loadingbtn"
             >
               <v-icon style="font-size: 20px">star_outline</v-icon>
-              مشاهده لیست فعالیت ها
+               تاریخچه امتیازات
             </v-btn>
 
             <v-btn
               class="btnsize"
               color="#90c445"
+              style="color:white"
               elevation="3"
               rounded
               large
@@ -52,15 +54,16 @@
               :loading="loadingbtn"
             >
               <v-icon style="font-size: 20px">star_outline</v-icon>
-              مشاهده لیست برنامه ها
+               جایزه های دریافتی
             </v-btn>
 
             <hr />
-            <h4>برنامه مد نظر خود را انتخاب کنید:</h4>
+            <h4>جایزه خود را انتخاب کنید:</h4>
             <br />
             <br />
 
             <Programs :programs="AllPrograms" />
+
           </div>
 
           <div>
@@ -68,7 +71,7 @@
               v-model="showCreateModal"
               dir="rtl"
               id="modal-center"
-              title=" لیست فعالیت ها"
+              title=" لیست امتیازات"
               :header-bg-variant="headerBgVariant"
               :header-text-variant="headerTextVariant"
             >
@@ -407,11 +410,16 @@
 <script>
 import axios from "axios";
 import Programs from "../components/Programs.vue";
+// import AddNewProgram from "../views/AddNewProgram.vue"
 
 export default {
+   props: {
+    text: String,
+  },
   name: "customerProfile",
 
   components: {
+    // AddNewProgram,
     Programs,
   },
 
@@ -426,7 +434,7 @@ export default {
       //snackbar
       snackColor: "",
       snackbarGreen: false,
-      text: "",
+    //  text: "",
       token: "",
       y: "top",
 
@@ -534,7 +542,7 @@ export default {
       this.removeProgramFromCustomerModal = false;
       await axios
         .post(
-          `http://localhost:8080/api/Customer/RemoveProgramByCustomer/${this.programId}`,
+          `http://95.217.131.10/api/Customer/RemoveProgramByCustomer/${this.programId}`,
           this.programId,
           {
             headers: {
@@ -548,7 +556,7 @@ export default {
         });
 
       await axios
-        .get(`http://localhost:8080/api/Customer/GetCustomerPrograms`, {
+        .get(`http://95.217.131.10/api/Customer/GetCustomerPrograms`, {
           headers: {
             token: localStorage.getItem("token"),
           },
@@ -575,7 +583,7 @@ export default {
         });
 
       await axios
-        .get(`http://localhost:8080/api/Customer/GetCustomerPoints`, {
+        .get(`http://95.217.131.10/api/Customer/GetCustomerPoints`, {
           headers: {
             token: localStorage.getItem("token"),
           },
@@ -665,7 +673,7 @@ export default {
 
         await axios
           .post(
-            `http://localhost:8080/api/Customer/AddScoreToCustomer/${this.selectedId}`,
+            `http://95.217.131.10/api/Customer/AddScoreToCustomer/${this.selectedId}`,
             this.selectedId,
             {
               headers: {
@@ -688,7 +696,7 @@ export default {
           });
 
         await axios
-          .get(`http://localhost:8080/api/Customer/GetCustomerScores`, {
+          .get(`http://95.217.131.10/api/Customer/GetCustomerScores`, {
             headers: {
               token: localStorage.getItem("token"),
             },
@@ -703,7 +711,7 @@ export default {
 
         //Customer Points
         await axios
-          .get(`http://localhost:8080/api/Customer/GetCustomerPoints`, {
+          .get(`http://95.217.131.10/api/Customer/GetCustomerPoints`, {
             headers: {
               token: localStorage.getItem("token"),
             },
@@ -755,7 +763,7 @@ export default {
 
     //     await axios
     //       .post(
-    //         `http://localhost:8080/api/Customer/AddProgramToCustomer/${this.selectedId}`,
+    //         `http://95.217.131.10/api/Customer/AddProgramToCustomer/${this.selectedId}`,
     //         this.selectedId,
     //         {
     //           headers: {
@@ -777,7 +785,7 @@ export default {
     //       });
 
     //     await axios
-    //       .get(`http://localhost:8080/api/Customer/GetCustomerPrograms`, {
+    //       .get(`http://95.217.131.10/api/Customer/GetCustomerPrograms`, {
     //         headers: {
     //           token: localStorage.getItem("token"),
     //         },
@@ -792,7 +800,7 @@ export default {
 
     //     //Customer Points
     //     await axios
-    //       .get(`http://localhost:8080/api/Customer/GetCustomerPoints`, {
+    //       .get(`http://95.217.131.10/api/Customer/GetCustomerPoints`, {
     //         headers: {
     //           token: localStorage.getItem("token"),
     //         },
@@ -831,7 +839,7 @@ export default {
     this.isBusyProgram = true;
     //Customer Points
     await axios
-      .get(`http://localhost:8080/api/Customer/GetCustomerPoints`, {
+      .get(`http://95.217.131.10/api/Customer/GetCustomerPoints`, {
         headers: {
           token: localStorage.getItem("token"),
         },
@@ -845,7 +853,7 @@ export default {
 
     //get customer
     await axios
-      .get(`http://localhost:8080/api/Customer/GetMyUser`, {
+      .get(`http://95.217.131.10/api/Customer/GetMyUser`, {
         headers: {
           token: localStorage.getItem("token"),
         },
@@ -859,7 +867,7 @@ export default {
 
     //get All scores
     // await axios
-    //   .get(`http://localhost:8080/api/Score/GetAll`, {
+    //   .get(`http://95.217.131.10/api/Score/GetAll`, {
     //     headers: {
     //       token: localStorage.getItem("token"),
     //     },
@@ -874,7 +882,7 @@ export default {
 
     //GetCustomerProgram
     await axios
-      .get(`http://localhost:8080/api/Customer/GetCustomerPrograms`, {
+      .get(`http://95.217.131.10/api/Customer/GetCustomerPrograms`, {
         headers: {
           token: localStorage.getItem("token"),
         },
@@ -909,7 +917,7 @@ export default {
 
     //GetCustomerScores
     await axios
-      .get(`http://localhost:8080/api/Customer/GetCustomerScores`, {
+      .get(`http://95.217.131.10/api/Customer/GetCustomerScores`, {
         headers: {
           token: localStorage.getItem("token"),
         },
@@ -926,7 +934,7 @@ export default {
 
     //get All programs
     await axios
-      .get(`http://localhost:8080/api/Program/GetAll`, {
+      .get(`http://95.217.131.10/api/Program/GetAll`, {
         headers: {
           token: localStorage.getItem("token"),
         },
