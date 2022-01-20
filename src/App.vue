@@ -29,7 +29,7 @@
 
         <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
-        <b-collapse class="mr-15" id="nav-collapse" is-nav >
+        <b-collapse class="mr-15" id="nav-collapse" is-nav>
           <b-navbar-nav>
             <b-nav-item class="ml-2" href="#">
               <h6>
@@ -48,7 +48,7 @@
             <b-nav-item class="ml-2" @click="checkLogout()" v-show="showBtn()">
               <h6><b style="color: #90c445">خروج </b></h6>
             </b-nav-item>
-<!-- 
+            <!-- 
             <b-nav-item class="ml-2" href="#">
               <h6><b style="color: #90c445"> اخبار توليد و تجارت </b></h6>
             </b-nav-item> -->
@@ -56,7 +56,6 @@
             <!-- <b-nav-item class="ml-2" href="#">
               <h6><b style="color: #90c445"> اخبار اقتصادی </b></h6>
             </b-nav-item> -->
-
           </b-navbar-nav>
         </b-collapse>
       </b-navbar>
@@ -123,72 +122,80 @@
         <hr />
 
         <b-col>
-          <div class="place container">
+          <div class="container">
             <h5><b> لینک های مفید </b></h5>
             <br />
 
-            <h6 class="place bedar" style="color: black">
-              <a href="https://ex.ebidar.com/v-533" style="color: black">
-                <li class="bedar">اقتصاد بیدار</li>
-              </a>
-            </h6>
+            <div class="place">
+              <h6>
+                <a href="https://ex.ebidar.com/v-533">
+                  <li class="place">اقتصاد بیدار</li>
+                </a>
+              </h6>
 
-            <h6>
-              <a style="color: black" href="https://t.me/tahlilonline_com">
-                <li>تحلیل انلاین</li>
-              </a>
-            </h6>
+              <h6 class="place">
+                <a style="color: black" href="https://t.me/tahlilonline_com">
+                  <li class="place">تحلیل انلاین</li>
+                </a>
+              </h6>
 
-            <h6 class="ml-10">
-              <a style="color: black"> <li>طلاگرام</li> </a>
-            </h6>
+              <h6 class="place ml-10">
+                <a style="color: black"> <li class="place">طلاگرام</li> </a>
+              </h6>
+            </div>
           </div>
         </b-col>
 
         <b-col>
           <div>
-            <h5 class="place"><b> راه های ارتباطی </b></h5>
+            <h5 style="color: "><b> راه های ارتباطی </b></h5>
             <br />
             <div>
-              <h6 style="color: white">
+              <h6 style="color: #78878a">
                 شیراز، بلوار شهید رجائی (فرهنگ شهر)، کوچه 30، ساختمان زمرد
               </h6>
             </div>
 
             <div class="place">
               <h3>
-                <a href="tel:07136317299" style="color: red"> 071-36317299 </a>
+                <a href="tel:07136317299">
+                  <p class="place">071-36317299</p>
+                </a>
               </h3>
             </div>
 
             <br />
           </div>
-          <div class="container">
-            <a class="ml-1" href="https://t.me/tahlilonline_com">
-              <img src="@/assets/tel3.png" />
-            </a>
 
-            <a
-              class="ml-1"
-              href="https://instagram.com/tahlilonline_com?utm_medium=copy_link"
-            >
-              <img src="@/assets/ins.png" />
-            </a>
+        <div class="place1 container">
+          <a class="place1 ml-1" href="https://t.me/talagram_chnl">
+            <img class="place1" src="@/assets/tel3.png" />
+          </a>
 
-            <a class="ml-2" href="https://www.aparat.com/tahlilonline.com">
-              <img src="@/assets/apa.png" />
-            </a>
+          <a
+            class="place1 ml-1"
+            href="https://instagram.com/tahlilonline_com?utm_medium=copy_link"
+          >
+            <img src="@/assets/ins.png" />
+          </a>
 
-            <a href="https://www.youtube.com/channel/UCo0Q1Re84VCVjemnr6-uN_g">
-              <img src="@/assets/you.png" />
-            </a>
-          </div>
+          <a class="place1 ml-2" href="https://www.aparat.com/tahlilonline.com">
+            <img src="@/assets/apa.png" />
+          </a>
+
+          <a
+            class="place1"
+            href="https://www.youtube.com/channel/UCo0Q1Re84VCVjemnr6-uN_g"
+          >
+            <img src="@/assets/you.png" />
+          </a>
+        </div>
         </b-col>
         <hr />
         <br />
 
         <h6>
-          <v-icon style="font-size: 20px; color: white"> copyright </v-icon>
+          <v-icon style="font-size: 20px; color: black"> copyright </v-icon>
 
           کلیه حقوق متعلق به گروه مالی زمرد ‌می ‌باشد.
         </h6>
@@ -326,10 +333,16 @@ a {
   background-color: #c8cfc7;
 }
 
-.bedar {
-  color: rgb(253, 247, 247) !important;
-}
 .place {
-  color: #10503b !important;
+  color: #78878a;
+}
+.place :hover {
+  color: #ffffff;
+  transition: 0.1s;
+  // opacity: 0.6;
+}
+
+.place1 :hover {
+  -webkit-transform: translate(-10%, -10%);
 }
 </style>

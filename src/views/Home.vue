@@ -81,10 +81,7 @@
       <br />
        <br />
       <br />
-      <br />
-        <br />
-      <br />
-      <br />
+    
     
     
 
@@ -170,5 +167,8 @@ p {
    background-size: cover;
   height: 100%;
   width: 100%;
+   background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 </style>
