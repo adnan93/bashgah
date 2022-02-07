@@ -20,7 +20,7 @@
                   :item-value="'Id'"
                   type="text"
                   v-model="form.ProvinceId"
-                  placeholder="استان"
+                  label="استان"
                   required
                   outlined
                   dense
@@ -41,7 +41,7 @@
                   :item-value="'Id'"
                   type="text"
                   v-model="form.CityId"
-                  placeholder="شهر"
+                  label="شهر"
                   required
                   outlined
                   dense
@@ -54,10 +54,11 @@
           
                 
                 <v-select
-                  color="#10503b"
+                                  color="#10503b"
+
                   id="deg1"
                   :items="Degree"
-                  placeholder="تحصیلات"
+                  label="تحصیلات"
                   :item-text="'Name'"
                   :item-value="'Value'"
                   v-model="form.Degree"
@@ -71,8 +72,9 @@
                 <br />
 
                 <v-text-field
-                  color="#10503b"
-                  placeholder="شغل"
+                                  color="#10503b"
+
+                  label="شغل"
                   :item-text="'Name'"
                   :item-value="'Value'"
                   v-model="form.JobType"
@@ -88,7 +90,7 @@
                   
                       <v-text-field
                       id="date3"
-                    placeholder="تاریخ تولد"
+                    label="تاریخ تولد"
                   :item-text="'Name'"
                   :item-value="'Value'"
                     v-model="form.BirthDate"
@@ -122,7 +124,7 @@
 
                   v-model="form.Address"
                   type="text"
-                  placeholder="آدرس"
+                  label="آدرس"
                   outlined
                   required
                   dense
@@ -136,7 +138,7 @@
                   v-model="form.Email"
                   style="hight: 150px"
                   type="Email"
-                  placeholder="ایمیل"
+                  label="ایمیل"
                   :rules="[emailRules.required]"
                   outlined
                   required
@@ -145,9 +147,10 @@
                 <br />
 
                 <v-select
-                  color="#10503b"
+                                  color="#10503b"
+
                   :items="Married"
-                  placeholder="وضعیت تاهل"
+                  label="وضعیت تاهل"
                   :item-text="'Name'"
                   :item-value="'Value'"
                   v-model="form.IsMarried"
@@ -167,7 +170,7 @@
                   :item-text="'Name'"
                   :item-value="'Value'"
                   type="text"
-                  placeholder="جنسیت"
+                  label="جنسیت"
                   v-model="form.Gender"
                   required
                   outlined

@@ -140,7 +140,9 @@
               </h6>
 
               <h6 class="place ml-10">
-                <a style="color: black"> <li class="place">طلاگرام</li> </a>
+                <a style="color: black" href="/">
+                   <li class="place">طلاگرام</li> 
+                   </a>
               </h6>
             </div>
           </div>

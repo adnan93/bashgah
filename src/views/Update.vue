@@ -17,7 +17,7 @@
                   <v-text-field
                     type="text"
                     v-model="form.Name"
-                    placeholder="نام"
+                    label="نام"
                     required
                     outlined
                     dense
@@ -31,7 +31,7 @@
                     color="#10503b"
                     type="text"
                     v-model="form.Family"
-                    placeholder="نام خانوادگی"
+                    label="نام خانوادگی"
                     required
                     outlined
                     dense
@@ -46,7 +46,7 @@
                     v-model="form.Password"
                     :type="show4 ? 'text' : 'password'"
                     required
-                    placeholder="رمز عبور"
+                    label="رمز عبور"
                     @click:append="show4 = !show4"
                     outlined
                     dense
@@ -60,7 +60,8 @@
                     color="#10503b"
                     type="text"
                     v-model="checkMelliCode"
-                    placeholder="کد ملی"
+                    label="کد ملی"
+                    placeholder="کد ملی ده رقمی"
                     required
                     outlined
                     dense
@@ -82,7 +83,7 @@
                     :item-value="'Id'"
                     type="text"
                     v-model="form.Kargozar"
-                    placeholder="کارگزار ناظر"
+                    label="کارگزار ناظر"
                     required
                     outlined
                     :rules="[phoneRules.required]"
