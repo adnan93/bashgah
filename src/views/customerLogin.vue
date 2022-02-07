@@ -200,6 +200,7 @@ export default {
 
   async created() {
     //date
+   
     this.today = new Date().toLocaleDateString("fa-IR");
   },
 };

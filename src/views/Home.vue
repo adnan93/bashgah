@@ -110,7 +110,9 @@ export default {
     };
   },
   components: {},
-  mounted() {},
+  mounted() {
+    
+  },
   methods: {
     UserLogin() {
       this.$router.push("Register");

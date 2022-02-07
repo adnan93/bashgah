@@ -165,7 +165,7 @@ export default {
         meli_code == "8888888888" ||
         meli_code == "9999999999"
       ) {
-        console.log("meli_code", meli_code);
+      //  console.log("meli_code", meli_code);
 
         this.MelliCodeStatus = false;
         return this.MobileStatus;
@@ -215,7 +215,10 @@ export default {
       checkMelliCode: "",
       regExp: /[a-zA-Z]/g,
       MobileStatus: false,
+      MelliCodeStatus: false,
       checkPhone: "",
+      snackbarGreen: false,
+
 
       //validation
       melliRules: {

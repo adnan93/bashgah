@@ -10,21 +10,21 @@
         <div>
           <!-- Just an image -->
           <b-navbar variant="faded" type="light">
-            <b-navbar-brand class="mr-15" href="/">
-              <!-- <img
+            <b-navbar-brand class="mr-5" href="/">
+              <img
                 class="mt-0 mb-0 pt-0 pb-0"
-                width="100px"
-                height="55px"
+                width="100%"
+                height="60px"
                 src="@/assets/logo.png"
-                alt="طلاگرام"
-              /> -->
+                alt="باشگاه زمرد"
+              />
 
               <!-- <h4 class="mt-2"><b style="text-shadow: 2px 2px 4px #000000"> ZMRD </b></h4> -->
             </b-navbar-brand>
           </b-navbar>
         </div>
         <b-navbar-brand>
-          <p>باشگاه زمرد</p>
+          <b style="font-size:25px">باشگاه زمرد</b>
         </b-navbar-brand>
 
         <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
@@ -253,7 +253,7 @@ export default {
     showBtn() {
       //  console.log("token: ", this.token);
       if (this.token == null) {
-        console.log("no token ");
+      //  console.log("no token ");
 
         return false;
       } else {
@@ -276,7 +276,7 @@ export default {
 <style scoped lang="scss">
 @font-face {
   font-family: "IRYekan";
-  src: local("IRYekan"), url(./font/IRYekan.ttf) format("truetype");
+  src: local("IRYekan"), url(./font/IRANSansWeb_LightJustPersianNum.1bb7aba5.woff) format("truetype");
 }
 .chart {
   position: absolute;
