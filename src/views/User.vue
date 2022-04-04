@@ -491,7 +491,7 @@
                     <b-row>
                       <div class="container" align="center">
                         <v-img
-                          :src="`http://95.217.131.10/api/Customer/GetPictureFile/${personal.ProfilePictrue}`"
+                          :src="`${config.paseUrl}/api/Customer/GetPictureFile/${personal.ProfilePictrue}`"
                           width="25%"
                           height="100%"
                           style="border-radius: 10px; position: relative"
@@ -1040,7 +1040,7 @@
                           <b-row>
                             <div class="container" align="left">
                               <v-img
-                                :src="`http://95.217.131.10/api/Program/GetPictureFile/${imgId}`"
+                                :src="`${config.paseUrl}/api/Program/GetPictureFile/${imgId}`"
                                 width="25%"
                                 height="100%"
                                 style="border-radius: 10px; position: relative"
@@ -1265,7 +1265,7 @@
                   <template align="center" #cell(Picture)="row">
                     <div class="container pic" align="right">
                       <v-img
-                        :src="`http://95.217.131.10/api/Program/GetPictureFile/${row.item.Picture}`"
+                        :src="`${config.paseUrl}/api/Program/GetPictureFile/${row.item.Picture}`"
                         width="100%"
                         style="border-radius: 10px"
                       ></v-img>
@@ -2242,7 +2242,7 @@ export default {
       this.showScoreModal = true;
       await axios
         .get(
-          `http://95.217.131.10/api/User/GetCustomerPoints/${row.item.Id}`,
+          `${config.paseUrl}/api/User/GetCustomerPoints/${row.item.Id}`,
           {
             headers: {
               token: localStorage.getItem("token"),
@@ -2293,7 +2293,7 @@ export default {
 
       await axios
         .get(
-          `http://95.217.131.10/api/RegisterLog/GetAll`,
+          `${config.paseUrl}/api/RegisterLog/GetAll`,
 
           {
             headers: {
@@ -2316,7 +2316,7 @@ export default {
 
       await axios
         .get(
-          `http://95.217.131.10/api/User/GetAllProgramCustomersWaiting`,
+          `${config.paseUrl}/api/User/GetAllProgramCustomersWaiting`,
 
           {
             headers: {
@@ -2352,7 +2352,7 @@ export default {
 
       await axios
         .get(
-          `http://95.217.131.10/api/User/GetCustomerPrograms/${this.IdOfCustomer}`,
+          `${config.paseUrl}/api/User/GetCustomerPrograms/${this.IdOfCustomer}`,
 
           {
             headers: {
@@ -2375,7 +2375,7 @@ export default {
 
       await axios
         .post(
-          `http://95.217.131.10/api/User/UpdateProgramCustomerStatus/${this.customerStatus}`,
+          `${config.paseUrl}/api/User/UpdateProgramCustomerStatus/${this.customerStatus}`,
           this.customerStatus,
           {
             headers: {
@@ -2402,7 +2402,7 @@ export default {
 
       await axios
         .get(
-          `http://95.217.131.10/api/User/GetCustomerPrograms/${this.IdOfCustomer}`,
+          `${config.paseUrl}/api/User/GetCustomerPrograms/${this.IdOfCustomer}`,
 
           {
             headers: {
@@ -2424,7 +2424,7 @@ export default {
 
       this.loadingTable = true;
       await axios
-        .get(`http://95.217.131.10/api/Score/GetAll`, {
+        .get(`${config.paseUrl}/api/Score/GetAll`, {
           headers: {
             token: localStorage.getItem("token"),
           },
@@ -2447,7 +2447,7 @@ export default {
 
       this.loadingTable = true;
       await axios
-        .get(`http://95.217.131.10/api/Program/GetAll`, {
+        .get(`${config.paseUrl}/api/Program/GetAll`, {
           headers: {
             token: localStorage.getItem("token"),
           },
@@ -2471,7 +2471,7 @@ export default {
 
       this.loadingTable = true;
       await axios
-        .get(`http://95.217.131.10/api/User/GetAllCustomers`, {
+        .get(`${config.paseUrl}/api/User/GetAllCustomers`, {
           headers: {
             token: localStorage.getItem("token"),
           },
@@ -2507,7 +2507,7 @@ export default {
     async deleteScoreOfCustomerbtn() {
       this.deleteCustomerScoreLoading = true;
       let response = await axios.post(
-        `http://95.217.131.10/api/User/RemoveScoreFromCustomer/${this.scoreOfCustomer}`,
+        `${config.paseUrl}/api/User/RemoveScoreFromCustomer/${this.scoreOfCustomer}`,
         this.scoreOfCustomer,
         {
           headers: {
@@ -2518,7 +2518,7 @@ export default {
 
       await axios
         .get(
-          `http://95.217.131.10/api/User/GetCustomerScores/${this.IdOfCustomer}`,
+          `${config.paseUrl}/api/User/GetCustomerScores/${this.IdOfCustomer}`,
           {
             headers: {
               token: localStorage.getItem("token"),
@@ -2542,7 +2542,7 @@ export default {
     async deleteProgramOfCustomerbtn() {
       this.deleteCustomerScoreLoading = true;
       let response = await axios.post(
-        `http://95.217.131.10/api/User/RemoveProgramFromCustomer/${this.programOfCustomer}`,
+        `${config.paseUrl}/api/User/RemoveProgramFromCustomer/${this.programOfCustomer}`,
         this.programOfCustomer,
         {
           headers: {
@@ -2553,7 +2553,7 @@ export default {
 
       await axios
         .get(
-          `http://95.217.131.10/api/User/GetCustomerPrograms/${this.IdOfCustomer}`,
+          `${config.paseUrl}/api/User/GetCustomerPrograms/${this.IdOfCustomer}`,
           {
             headers: {
               token: localStorage.getItem("token"),
@@ -2576,7 +2576,7 @@ export default {
     async doSearchScore() {
       this.showSearchScore = true;
       let res = await axios.get(
-        `http://95.217.131.10/api/Score/GetByName?name=${this.searchScore}`,
+        `${config.paseUrl}/api/Score/GetByName?name=${this.searchScore}`,
         {
           headers: {
             token: localStorage.getItem("token"),
@@ -2589,7 +2589,7 @@ export default {
     async doSearch() {
       this.showSearch = true;
       let res = await axios.get(
-        `http://95.217.131.10/api/User/GetByName?fullname=${this.searchName}`,
+        `${config.paseUrl}/api/User/GetByName?fullname=${this.searchName}`,
 
         {
           headers: {
@@ -2604,7 +2604,7 @@ export default {
     async doSearchProgram() {
       this.showSearchProgram = true;
       let res = await axios.get(
-        `http://95.217.131.10/api/Program/GetByName?name=${this.searchProgram}`,
+        `${config.paseUrl}/api/Program/GetByName?name=${this.searchProgram}`,
 
         {
           headers: {
@@ -2620,7 +2620,7 @@ export default {
 
     async getImg() {
       let res = await axios.get(
-        `http://95.217.131.10/api/Customer/GetPictureFile/${this.imgId}`,
+        `${config.paseUrl}/api/Customer/GetPictureFile/${this.imgId}`,
         this.imgId,
         {
           headers: {
@@ -2660,7 +2660,7 @@ export default {
 
       await axios
         .get(
-          `http://95.217.131.10/api/User/GetCustomerScores/${this.IdOfCustomer}`,
+          `${config.paseUrl}/api/User/GetCustomerScores/${this.IdOfCustomer}`,
           {
             headers: {
               token: localStorage.getItem("token"),
@@ -2694,7 +2694,7 @@ export default {
 
       await axios
         .get(
-          `http://95.217.131.10/api/User/GetCustomerScores/${this.customerId}`,
+          `${config.paseUrl}/api/User/GetCustomerScores/${this.customerId}`,
           {
             headers: {
               token: localStorage.getItem("token"),
@@ -2728,7 +2728,7 @@ export default {
 
       await axios
         .post(
-          `http://95.217.131.10/api/User/AddScoreToCustomer/${this.customerId}?scoreid=${this.scoreId}`,
+          `${config.paseUrl}/api/User/AddScoreToCustomer/${this.customerId}?scoreid=${this.scoreId}`,
           this.customerId,
           {
             headers: {
@@ -2752,7 +2752,7 @@ export default {
 
       await axios
         .get(
-          `http://95.217.131.10/api/User/GetCustomerScores/${this.customerId}`,
+          `${config.paseUrl}/api/User/GetCustomerScores/${this.customerId}`,
           this.customerId,
           {
             headers: {
@@ -2807,7 +2807,7 @@ export default {
 
       await axios
         .post(
-          `http://95.217.131.10/api/User/UpdateCustomer/${this.editId}`,
+          `${config.paseUrl}/api/User/UpdateCustomer/${this.editId}`,
           this.editCustomer,
           {
             headers: {
@@ -2839,7 +2839,7 @@ export default {
       this.editCustomerLoading = false;
 
       await axios
-        .get(`http://95.217.131.10/api/User/GetAllCustomers`, {
+        .get(`${config.paseUrl}/api/User/GetAllCustomers`, {
           headers: {
             token: localStorage.getItem("token"),
           },
@@ -2866,7 +2866,7 @@ export default {
 
       await axios
         .post(
-          `http://95.217.131.10/api/User/DeleteCustomer?id=${this.deleteID}`,
+          `${config.paseUrl}/api/User/DeleteCustomer?id=${this.deleteID}`,
           this.deleteID,
           {
             headers: {
@@ -2896,7 +2896,7 @@ export default {
         });
 
       await axios
-        .get(`http://95.217.131.10/api/User/GetAllCustomers`, {
+        .get(`${config.paseUrl}/api/User/GetAllCustomers`, {
           headers: {
             token: localStorage.getItem("token"),
           },
@@ -3009,7 +3009,7 @@ export default {
       this.personal.CityId = row.item.CityId;
 
       await axios
-        .get(`http://95.217.131.10/api/City/GetById/${row.item.CityId}`, {
+        .get(`${config.paseUrl}/api/City/GetById/${row.item.CityId}`, {
           headers: {
             token: localStorage.getItem("token"),
           },
@@ -3284,7 +3284,7 @@ export default {
       this.signUpLoading = true;
 
       await axios
-        .post(`http://95.217.131.10/api/User/RegisterNewCustomer`, this.form, {
+        .post(`${config.paseUrl}/api/User/RegisterNewCustomer`, this.form, {
           headers: {
             token: localStorage.getItem("token"),
           },
@@ -3311,7 +3311,7 @@ export default {
         });
 
       await axios
-        .get(`http://95.217.131.10/api/User/GetAllCustomers`, {
+        .get(`${config.paseUrl}/api/User/GetAllCustomers`, {
           headers: {
             token: localStorage.getItem("token"),
           },
@@ -3360,7 +3360,7 @@ export default {
     this.customerTableLoading=true;
     this.loadingTable = true;
     await axios
-      .get(`http://95.217.131.10/api/User/GetAllCustomers`, {
+      .get(`${config.paseUrl}/api/User/GetAllCustomers`, {
         headers: {
           token: localStorage.getItem("token"),
         },

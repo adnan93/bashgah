@@ -238,7 +238,7 @@ export default {
       this.signUpLoading = true;
 
       await axios
-        .post(`http://95.217.131.10/api/Customer/Register`, this.form)
+        .post(`${config.paseUrl}/api/Customer/Register`, this.form)
         .then((response) => {
           this.text = response.data.Description;
 
@@ -264,7 +264,7 @@ export default {
       await axios
 
         .post(
-          `http://95.217.131.10/api/Customer/SendVerificationCode?PhoneNumber=${this.PhoneNumber}`
+          `${config.paseUrl}/api/Customer/SendVerificationCode?PhoneNumber=${this.PhoneNumber}`
         )
 
         .then((response) => {

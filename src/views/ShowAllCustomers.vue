@@ -26,6 +26,8 @@
 <script>
 import axios from "axios";
 import Papa from "papaparse";
+ import config from "@/config";
+
 
 export default {
   data() {
@@ -52,9 +54,7 @@ export default {
   },
   async created() {
     await axios
-      .get(
-        `http://95.217.131.10/api/User/GetAllCustomerJson`,
-
+      .get(`${config.paseUrl}/api/User/GetAllCustomerJson`,
         {
           headers: {
             token: localStorage.getItem("token"),

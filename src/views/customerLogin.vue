@@ -117,6 +117,8 @@
 <script>
 import axios from "axios";
 import { mapGetters, mapActions } from "vuex";
+import config from "@/config";
+
 
 export default {
   name: "Login",
@@ -169,7 +171,7 @@ export default {
 
       if ((await this.getMessageType) == 1) {
         let response = await axios.get(
-          `http://95.217.131.10/api/Customer/GetMyUser`,
+          `${config.paseUrl}/api/Customer/GetMyUser`,
           {
             headers: {
               token: localStorage.getItem("token"),

@@ -124,6 +124,8 @@
 
 <script>
 import axios from "axios";
+import config from "@/config";
+
 
 export default {
   watch: {
@@ -235,7 +237,7 @@ export default {
       this.signUpLoading = true;
 
       let response = await axios.post(
-        `http://95.217.131.10/api/User/RegisterNewCustomer`,
+        `${config.paseUrl}/api/User/RegisterNewCustomer`,
         this.form,
         {
           headers: {

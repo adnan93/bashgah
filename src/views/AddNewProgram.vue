@@ -7,8 +7,8 @@
         <br />
         <b-row>
           <b-col align="center" cols="7">
-            <v-img
-              :src="`http://95.217.131.10/api/Program/GetPictureFile/${programDetails.data.Picture}`"
+            <v-img            
+              :src="`${config.paseUrl}/api/Program/GetPictureFile/${programDetails.data.Picture}`"
               height="60%%"
               width="60%"
               style="border-radius: 10px; position: relative"
@@ -180,6 +180,8 @@
 
 <script>
 import axios from "axios";
+import config from "@/config";
+
 
 export default {
   data() {
@@ -201,9 +203,11 @@ export default {
     };
   },
   async created() {
-    console.log(this.$route.params.id);
+   // console.log(this.$route.params.id);
+        console.log(config.paseUrl);
+
     await axios
-      .get(`http://95.217.131.10/api/Program/GetById/${this.programId}`, {
+      .get(`${config.paseUrl}/api/Program/GetById/${this.programId}`, {
         headers: {
           token: localStorage.getItem("token"),
         },
@@ -233,7 +237,7 @@ export default {
       this.addProgrmLoading = true;
       await axios
         .post(
-          `http://95.217.131.10/api/Customer/AddProgramToCustomer/${this.programId}`,
+          `${config.paseUrl}/api/Customer/AddProgramToCustomer/${this.programId}`,
           this.programId,
           {
             headers: {

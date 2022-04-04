@@ -236,6 +236,10 @@ export default {
     this.showBtn();
   },
   methods: {
+      changeRTL () {
+        this.$vuetify.rtl = true
+      },
+      
     checkLogout() {
       this.openCreateModal();
     },

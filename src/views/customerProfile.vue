@@ -410,6 +410,8 @@
 <script>
 import axios from "axios";
 import Programs from "../components/Programs.vue";
+import config from "@/config";
+
 // import AddNewProgram from "../views/AddNewProgram.vue"
 
 export default {
@@ -542,7 +544,7 @@ export default {
       this.removeProgramFromCustomerModal = false;
       await axios
         .post(
-          `http://95.217.131.10/api/Customer/RemoveProgramByCustomer/${this.programId}`,
+          `${config.paseUrl}/api/Customer/RemoveProgramByCustomer/${this.programId}`,
           this.programId,
           {
             headers: {
@@ -556,7 +558,7 @@ export default {
         });
 
       await axios
-        .get(`http://95.217.131.10/api/Customer/GetCustomerPrograms`, {
+        .get(`${config.paseUrl}/api/Customer/GetCustomerPrograms`, {
           headers: {
             token: localStorage.getItem("token"),
           },
@@ -583,7 +585,7 @@ export default {
         });
 
       await axios
-        .get(`http://95.217.131.10/api/Customer/GetCustomerPoints`, {
+        .get(`${config.paseUrl}/api/Customer/GetCustomerPoints`, {
           headers: {
             token: localStorage.getItem("token"),
           },
@@ -673,7 +675,7 @@ export default {
 
         await axios
           .post(
-            `http://95.217.131.10/api/Customer/AddScoreToCustomer/${this.selectedId}`,
+            `${config.paseUrl}/api/Customer/AddScoreToCustomer/${this.selectedId}`,
             this.selectedId,
             {
               headers: {
@@ -696,7 +698,7 @@ export default {
           });
 
         await axios
-          .get(`http://95.217.131.10/api/Customer/GetCustomerScores`, {
+          .get(`${config.paseUrl}/api/Customer/GetCustomerScores`, {
             headers: {
               token: localStorage.getItem("token"),
             },
@@ -711,7 +713,7 @@ export default {
 
         //Customer Points
         await axios
-          .get(`http://95.217.131.10/api/Customer/GetCustomerPoints`, {
+          .get(`${config.paseUrl}/api/Customer/GetCustomerPoints`, {
             headers: {
               token: localStorage.getItem("token"),
             },
@@ -839,7 +841,7 @@ export default {
     this.isBusyProgram = true;
     //Customer Points
     await axios
-      .get(`http://95.217.131.10/api/Customer/GetCustomerPoints`, {
+      .get(`${config.paseUrl}/api/Customer/GetCustomerPoints`, {
         headers: {
           token: localStorage.getItem("token"),
         },
@@ -853,7 +855,7 @@ export default {
 
     //get customer
     await axios
-      .get(`http://95.217.131.10/api/Customer/GetMyUser`, {
+      .get(`${config.paseUrl}/api/Customer/GetMyUser`, {
         headers: {
           token: localStorage.getItem("token"),
         },
@@ -882,7 +884,7 @@ export default {
 
     //GetCustomerProgram
     await axios
-      .get(`http://95.217.131.10/api/Customer/GetCustomerPrograms`, {
+      .get(`${config.paseUrl}/api/Customer/GetCustomerPrograms`, {
         headers: {
           token: localStorage.getItem("token"),
         },
@@ -917,7 +919,7 @@ export default {
 
     //GetCustomerScores
     await axios
-      .get(`http://95.217.131.10/api/Customer/GetCustomerScores`, {
+      .get(`${config.paseUrl}/api/Customer/GetCustomerScores`, {
         headers: {
           token: localStorage.getItem("token"),
         },
@@ -934,7 +936,7 @@ export default {
 
     //get All programs
     await axios
-      .get(`http://95.217.131.10/api/Program/GetAll`, {
+      .get(`${config.paseUrl}/api/Program/GetAll`, {
         headers: {
           token: localStorage.getItem("token"),
         },

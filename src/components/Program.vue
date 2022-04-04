@@ -3,7 +3,7 @@
     <div class="mCard mb-10">
       <b-card
         :class="[program.reminder ? 'reminder' : 'program']"
-        :img-src="`http://95.217.131.10/api/Program/GetPictureFile/${program.Picture}`"
+        :img-src="`${config.paseUrl}/api/Program/GetPictureFile/${program.Picture}`"
         img-alt="Image"
         img-top
         tag="article"
@@ -51,6 +51,8 @@
 
 <script>
 // import axios from "axios";
+//  import config from "@/config";
+
 
 export default {
   name: "Program",

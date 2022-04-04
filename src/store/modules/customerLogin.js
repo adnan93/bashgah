@@ -1,4 +1,7 @@
 import axios from "axios";
+import config from "@/config";
+
+
 const state = {
     token: null,
     message: null,
@@ -10,7 +13,7 @@ const actions = {
     async CustomerLogIn({ commit }, form) {
 
         localStorage.removeItem("token");
-        const response = await axios.post(`http://95.217.131.10/api/Customer/Login`, form);
+        const response = await axios.post(`${config.paseUrl}/api/Customer/Login`, form);
         localStorage.setItem('token', response.data.Token)
 
         commit('setToken', response.data.Token)

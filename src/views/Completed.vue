@@ -212,7 +212,7 @@
                 <b-row>
                   <div class="container" align="left">
                     <v-img
-                      :src="`http://95.217.131.10/api/Customer/GetPictureFile/${imgId}`"
+                      :src="`${config.paseUrl}/api/Customer/GetPictureFile/${imgId}`"
                       width="25%"
                       height="100%"
                       style="border-radius: 10px; position: relative"
@@ -284,7 +284,7 @@
 
 <script>
 import axios from "axios";
-// import config from "@/config";
+import config from "@/config";
 
 export default {
   name: "Update",
@@ -380,7 +380,7 @@ export default {
 
     this.snackbarGreen = true;
     this.loadingbtn = true;
-    let rest = await axios.get(`http://95.217.131.10/api/Province/GetAll`, {
+    let rest = await axios.get(`${config.paseUrl}/api/Province/GetAll`, {
       headers: {
         token: localStorage.getItem("token"),
       },
@@ -391,7 +391,7 @@ export default {
     console.log("Province: ", rest.data);
 
     let response = await axios.get(
-      `http://95.217.131.10/api/Customer/GetMyUser`,
+      `${config.paseUrl}/api/Customer/GetMyUser`,
       {
         headers: {
           token: localStorage.getItem("token"),
@@ -440,7 +440,7 @@ export default {
     this.form.Kargozar = response.data.Kargozar;
 
     let res = await axios.get(
-      `http://95.217.131.10/api/City/GetByProvinceId/${response.data.ProvinceId}`,
+      `${config.paseUrl}/api/City/GetByProvinceId/${response.data.ProvinceId}`,
       response.data.ProvinceId,
       {
         headers: {
@@ -468,7 +468,7 @@ export default {
 
       this.loadingbtn = true;
       await axios
-        .post(`http://95.217.131.10/api/Customer/Update`, this.form, {
+        .post(`${config.paseUrl}/api/Customer/Update`, this.form, {
           headers: {
             token: localStorage.getItem("token"),
           },
@@ -489,7 +489,7 @@ export default {
 
     async getImg() {
       await axios.get(
-        `http://95.217.131.10/api/Customer/GetPictureFile/${this.imgId}`,
+        `${config.paseUrl}/api/Customer/GetPictureFile/${this.imgId}`,
         this.imgId,
         {
           headers: {
@@ -521,7 +521,7 @@ export default {
 
     async OstanChange() {
       let res = await axios.get(
-        `http://95.217.131.10/api/City/GetByProvinceId/${this.form.ProvinceId}`,
+        `${config.paseUrl}/api/City/GetByProvinceId/${this.form.ProvinceId}`,
         this.form.ProvinceId,
         {
           headers: {
@@ -536,7 +536,7 @@ export default {
     async sendImg() {
       console.log(this.imageFile);
 
-      await axios.post(`http://95.217.131.10/api/Customer/UpdateUserImage`, {
+      await axios.post(`${config.paseUrl}/api/Customer/UpdateUserImage`, {
         headers: {
           "Content-Type": "multipart/form-data",
           token: localStorage.getItem("token"),

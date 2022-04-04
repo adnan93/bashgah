@@ -145,7 +145,7 @@
 
 <script>
 import axios from "axios";
-// import config from "@/config";
+ import config from "@/config";
 
 export default {
   name: "Update",
@@ -289,7 +289,7 @@ export default {
 
       this.loadingbtn = true;
       await axios
-        .post(`http://95.217.131.10/api/RegisterLog/Create`, this.form, {
+        .post(`${config.paseUrl}/api/RegisterLog/Create`, this.form, {
           headers: {
             token: localStorage.getItem("token"),
           },
