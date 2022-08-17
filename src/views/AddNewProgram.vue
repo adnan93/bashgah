@@ -8,7 +8,7 @@
         <b-row>
           <b-col align="center" cols="7">
             <v-img            
-              :src="`${config.paseUrl}/api/Program/GetPictureFile/${programDetails.data.Picture}`"
+              :src="`${config}/api/Program/GetPictureFile/${programDetails.data.Picture}`"
               height="60%%"
               width="60%"
               style="border-radius: 10px; position: relative"
@@ -204,7 +204,7 @@ export default {
   },
   async created() {
    // console.log(this.$route.params.id);
-        console.log(config.paseUrl);
+        console.log("ppp",config);
 
     await axios
       .get(`${config.paseUrl}/api/Program/GetById/${this.programId}`, {

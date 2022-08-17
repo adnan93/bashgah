@@ -1,5 +1,5 @@
 import axios from "axios";
-import config from "@/config";
+import {config} from "@/config";
 
 
 const state = {
@@ -17,13 +17,13 @@ const state = {
 const actions = {
     async getUserprograms({ commit }) {
         let response = await axios.get(
-            `${config.paseUrl}/api/Program/GetUserPrograms`,
+            `${this.config.paseUrl}/api/Program/GetUserPrograms`,
             {
                 headers: {
                     token: localStorage.getItem("token"),
                 },
             });
-       // console.log('programssssss',response.data)
+        console.log('proiiiiiiiiiiiiiiiiiiiiiiiiiiiiigramssssss',response.data)
         commit('setprograms', response.data)
     },
 
@@ -120,6 +120,7 @@ const actions = {
 };
 
 const mutations = {
+
     setprograms: (state, programs) => (state.programs = programs),
     setprogram: (state, program) => (state.program = program),
 
@@ -134,6 +135,8 @@ const mutations = {
 
 
 const getters = {
+
+
     getprograms: state => state.programs,
     getprogram: state => state.program,
 

@@ -212,7 +212,7 @@
                 <b-row>
                   <div class="container" align="left">
                     <v-img
-                      :src="`${config.paseUrl}/api/Customer/GetPictureFile/${imgId}`"
+                      :src="`${this.paseUrl}/api/Customer/GetPictureFile/${imgId}`"
                       width="25%"
                       height="100%"
                       style="border-radius: 10px; position: relative"
@@ -284,12 +284,17 @@
 
 <script>
 import axios from "axios";
-import config from "@/config";
+// import { mapGetters, mapActions } from "vuex";
+
+import config from "../config";
 
 export default {
   name: "Update",
   data() {
     return {
+
+      paseUrl: `${config.paseUrl}`,
+
       text: "  در حال دریافت اطلاعات ...",
       bDate: "",
       snackbarGreen: false,
@@ -373,6 +378,7 @@ export default {
     };
   },
   async created() {
+    console.log("coooon"+this.paseUrl)
     if (!window.location.hash) {
       window.location = window.location + "#loaded";
       window.location.reload();
@@ -380,7 +386,7 @@ export default {
 
     this.snackbarGreen = true;
     this.loadingbtn = true;
-    let rest = await axios.get(`${config.paseUrl}/api/Province/GetAll`, {
+    let rest = await axios.get(`${this.paseUrl}/api/Province/GetAll`, {
       headers: {
         token: localStorage.getItem("token"),
       },
@@ -391,7 +397,7 @@ export default {
     console.log("Province: ", rest.data);
 
     let response = await axios.get(
-      `${config.paseUrl}/api/Customer/GetMyUser`,
+      `${this.paseUrl}/api/Customer/GetMyUser`,
       {
         headers: {
           token: localStorage.getItem("token"),
@@ -440,7 +446,7 @@ export default {
     this.form.Kargozar = response.data.Kargozar;
 
     let res = await axios.get(
-      `${config.paseUrl}/api/City/GetByProvinceId/${response.data.ProvinceId}`,
+      `${this.paseUrl}/api/City/GetByProvinceId/${response.data.ProvinceId}`,
       response.data.ProvinceId,
       {
         headers: {
@@ -468,7 +474,7 @@ export default {
 
       this.loadingbtn = true;
       await axios
-        .post(`${config.paseUrl}/api/Customer/Update`, this.form, {
+        .post(`${this.paseUrl}/api/Customer/Update`, this.form, {
           headers: {
             token: localStorage.getItem("token"),
           },
@@ -489,7 +495,7 @@ export default {
 
     async getImg() {
       await axios.get(
-        `${config.paseUrl}/api/Customer/GetPictureFile/${this.imgId}`,
+        `${this.paseUrl}/api/Customer/GetPictureFile/${this.imgId}`,
         this.imgId,
         {
           headers: {
@@ -521,7 +527,7 @@ export default {
 
     async OstanChange() {
       let res = await axios.get(
-        `${config.paseUrl}/api/City/GetByProvinceId/${this.form.ProvinceId}`,
+        `${this.paseUrl}/api/City/GetByProvinceId/${this.form.ProvinceId}`,
         this.form.ProvinceId,
         {
           headers: {
@@ -536,7 +542,7 @@ export default {
     async sendImg() {
       console.log(this.imageFile);
 
-      await axios.post(`${config.paseUrl}/api/Customer/UpdateUserImage`, {
+      await axios.post(`${this.paseUrl}/api/Customer/UpdateUserImage`, {
         headers: {
           "Content-Type": "multipart/form-data",
           token: localStorage.getItem("token"),

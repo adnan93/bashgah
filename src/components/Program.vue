@@ -3,7 +3,7 @@
     <div class="mCard mb-10">
       <b-card
         :class="[program.reminder ? 'reminder' : 'program']"
-        :img-src="`${config.paseUrl}/api/Program/GetPictureFile/${program.Picture}`"
+        :img-src="`${config}/api/Program/GetPictureFile/${program.Picture}`"
         img-alt="Image"
         img-top
         tag="article"
@@ -51,7 +51,7 @@
 
 <script>
 // import axios from "axios";
-//  import config from "@/config";
+  import config from "../config";
 
 
 export default {
@@ -65,7 +65,8 @@ export default {
     };
   },
   async created() {
-    console.log("program is: ", this.program);
+
+    console.log("the config: ", config);
     //  let res = await axios.get(
     //   `http://95.217.131.10/api/Customer/GetPictureFile/${this.program.Picture}`,
     //   this.program.Picture,

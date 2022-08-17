@@ -205,12 +205,12 @@
                   :busy="customerTableLoading"
                   loading-text="در حال بارگیری ..."
                 >
-                  <template #table-busy>
+                  <!-- <template #table-busy>
                     <div class="text-center my-2">
                       <b-spinner class="align-middle"></b-spinner>
                       <strong>در حال دریافت اطلاعات...</strong>
                     </div>
-                  </template>
+                  </template> -->
 
                   <template #cell(details)="row">
                     <v-icon
@@ -491,7 +491,7 @@
                     <b-row>
                       <div class="container" align="center">
                         <v-img
-                          :src="`${config.paseUrl}/api/Customer/GetPictureFile/${personal.ProfilePictrue}`"
+                          :src="`${config}/api/Customer/GetPictureFile/${personal.ProfilePictrue}`"
                           width="25%"
                           height="100%"
                           style="border-radius: 10px; position: relative"
@@ -1040,7 +1040,7 @@
                           <b-row>
                             <div class="container" align="left">
                               <v-img
-                                :src="`${config.paseUrl}/api/Program/GetPictureFile/${imgId}`"
+                                :src="`${config}/api/Program/GetPictureFile/${imgId}`"
                                 width="25%"
                                 height="100%"
                                 style="border-radius: 10px; position: relative"
@@ -1265,7 +1265,7 @@
                   <template align="center" #cell(Picture)="row">
                     <div class="container pic" align="right">
                       <v-img
-                        :src="`${config.paseUrl}/api/Program/GetPictureFile/${row.item.Picture}`"
+                        :src="`${config}/api/Program/GetPictureFile/${row.item.Picture}`"
                         width="100%"
                         style="border-radius: 10px"
                       ></v-img>
@@ -3373,7 +3373,7 @@ export default {
 
         this.snackColor = "green";
 
-        console.log("AllUsers: ", this.AllUsers);
+        console.log("AllUserssss: ", this.AllUsers);
 
         // if (response.data.MessageType == 1) {
         //   this.snackbarGreen = true;
@@ -3400,6 +3400,7 @@ export default {
     this.programitems = this.getprograms;
     console.log("allPrograms :", this.programitems);
     this.loadingTable = false;
+    
         this.customerTableLoading=false;
 
   },

@@ -410,7 +410,7 @@
 <script>
 import axios from "axios";
 import Programs from "../components/Programs.vue";
-import config from "@/config";
+import config from "../config";
 
 // import AddNewProgram from "../views/AddNewProgram.vue"
 
@@ -427,6 +427,8 @@ export default {
 
   data() {
     return {
+      paseUrl: `${config.paseUrl}`,
+
       programStatus: "",
       deleteCustomerWaiting: false,
       testprograms: [],
@@ -544,7 +546,7 @@ export default {
       this.removeProgramFromCustomerModal = false;
       await axios
         .post(
-          `${config.paseUrl}/api/Customer/RemoveProgramByCustomer/${this.programId}`,
+          `${this.paseUrl}/api/Customer/RemoveProgramByCustomer/${this.programId}`,
           this.programId,
           {
             headers: {
@@ -558,7 +560,7 @@ export default {
         });
 
       await axios
-        .get(`${config.paseUrl}/api/Customer/GetCustomerPrograms`, {
+        .get(`${this.paseUrl}/api/Customer/GetCustomerPrograms`, {
           headers: {
             token: localStorage.getItem("token"),
           },
@@ -585,7 +587,7 @@ export default {
         });
 
       await axios
-        .get(`${config.paseUrl}/api/Customer/GetCustomerPoints`, {
+        .get(`${this.paseUrl}/api/Customer/GetCustomerPoints`, {
           headers: {
             token: localStorage.getItem("token"),
           },
@@ -675,7 +677,7 @@ export default {
 
         await axios
           .post(
-            `${config.paseUrl}/api/Customer/AddScoreToCustomer/${this.selectedId}`,
+            `${this.paseUrl}/api/Customer/AddScoreToCustomer/${this.selectedId}`,
             this.selectedId,
             {
               headers: {
@@ -698,7 +700,7 @@ export default {
           });
 
         await axios
-          .get(`${config.paseUrl}/api/Customer/GetCustomerScores`, {
+          .get(`${this.paseUrl}/api/Customer/GetCustomerScores`, {
             headers: {
               token: localStorage.getItem("token"),
             },
@@ -713,7 +715,7 @@ export default {
 
         //Customer Points
         await axios
-          .get(`${config.paseUrl}/api/Customer/GetCustomerPoints`, {
+          .get(`${this.paseUrl}/api/Customer/GetCustomerPoints`, {
             headers: {
               token: localStorage.getItem("token"),
             },
@@ -825,6 +827,8 @@ export default {
   },
 
   async created() {
+    console.log("ooooooooouuuu",this.paseUrl);
+
     if (!window.location.hash) {
       window.location = window.location + "#loaded";
       window.location.reload();
@@ -841,7 +845,7 @@ export default {
     this.isBusyProgram = true;
     //Customer Points
     await axios
-      .get(`${config.paseUrl}/api/Customer/GetCustomerPoints`, {
+      .get(`${this.paseUrl}/api/Customer/GetCustomerPoints`, {
         headers: {
           token: localStorage.getItem("token"),
         },
@@ -855,7 +859,7 @@ export default {
 
     //get customer
     await axios
-      .get(`${config.paseUrl}/api/Customer/GetMyUser`, {
+      .get(`${this.paseUrl}/api/Customer/GetMyUser`, {
         headers: {
           token: localStorage.getItem("token"),
         },
@@ -884,7 +888,7 @@ export default {
 
     //GetCustomerProgram
     await axios
-      .get(`${config.paseUrl}/api/Customer/GetCustomerPrograms`, {
+      .get(`${this.paseUrl}/api/Customer/GetCustomerPrograms`, {
         headers: {
           token: localStorage.getItem("token"),
         },
@@ -919,7 +923,7 @@ export default {
 
     //GetCustomerScores
     await axios
-      .get(`${config.paseUrl}/api/Customer/GetCustomerScores`, {
+      .get(`${this.paseUrl}/api/Customer/GetCustomerScores`, {
         headers: {
           token: localStorage.getItem("token"),
         },
@@ -936,14 +940,14 @@ export default {
 
     //get All programs
     await axios
-      .get(`${config.paseUrl}/api/Program/GetAll`, {
+      .get(`${this.paseUrl}/api/Program/GetAll`, {
         headers: {
           token: localStorage.getItem("token"),
         },
       })
       .then((response) => {
         this.AllPrograms = response.data;
-        console.log("All programs:", response.data);
+        console.log("All programs:..", response.data);
       })
       .catch((e) => {
         this.errors.push(e);
